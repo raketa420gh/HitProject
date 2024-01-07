@@ -18,19 +18,19 @@ public class InitializeState : GameLoopState
         _factory = _stateMachine.Parent.Factory;
         _currenciesController = _stateMachine.Parent.CurrenciesController;
         
-        Debug.Log("Initialise state registered");
+        Debug.Log($"{this} registered");
     }
 
     public override void OnStateActivated()
     {
-        Debug.Log("Initialize state entered");
+        Debug.Log($"{this} entered");
         
         _saveService.Initialise(Time.time, false, false);
         _factory.Initialize();
         _currenciesController.Initialise(_saveService);
 
         Debug.Log("Game systems initialized");
-        
+
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
     }
 
@@ -39,6 +39,16 @@ public class InitializeState : GameLoopState
     }
 
     public override void Update()
+    {
+    }
+
+    private void InitializeGame()
+    {
+        PlayerSaveData playerSaveData = _saveService.GetSaveObject<PlayerSaveData>("PlayerSave") ?? new PlayerSaveData();
+        LoadPlayerDataFromSave(playerSaveData);
+    }
+
+    private void LoadPlayerDataFromSave(PlayerSaveData playerSaveData)
     {
     }
 }

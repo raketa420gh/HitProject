@@ -1252,8 +1252,6 @@ public static class CoreExtensions
             return Random.Range(0, 2) == 0;
         }
 
-        #endregion
-
 
         public static Vector3 GetRandomPosition(Bounds bounds)
         {
@@ -1268,5 +1266,14 @@ public static class CoreExtensions
 
             return result;
         }
+
+        public static T RandomEnumValue<T>() where T : IConvertible
+        {
+            Array values = Enum.GetValues(typeof(T));
+            int rValue = UnityEngine.Random.Range(0, values.Length);
+            return (T)values.GetValue(rValue);
+        }
     }
+    
+    #endregion
 }

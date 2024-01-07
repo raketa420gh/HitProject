@@ -13,13 +13,13 @@ public class LevelController : MonoBehaviour
     
     public void InitializeLevel()
     {
-        var levelSave = _saveService.GetSaveObject<PlayerSave>("level") ?? new PlayerSave();
+        var levelSave = _saveService.GetSaveObject<PlayerSaveData>("level") ?? new PlayerSaveData();
         LoadLevelDataFromSave(levelSave);
     }
 
-    private void LoadLevelDataFromSave(PlayerSave playerSave)
+    private void LoadLevelDataFromSave(PlayerSaveData playerSaveData)
     {
-        if (playerSave == null)
+        if (playerSaveData == null)
         {
             Debug.Log($"LEVEL SAVE NULL");
             return;

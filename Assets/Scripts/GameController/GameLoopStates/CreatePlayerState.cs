@@ -1,19 +1,19 @@
 using UnityEngine;
 
-public class MainMenuState : GameLoopState
+public class CreatePlayerState : GameLoopState
 {
-    public MainMenuState(GameLoopStateMachine stateMachine) : base(stateMachine)
+    public CreatePlayerState(GameLoopStateMachine stateMachine) : base(stateMachine)
     {
     }
 
     public override void OnStateRegistered()
     {
-        Debug.Log("Main menu state registered");
+        Debug.Log($"{this} registered");
     }
 
     public override void OnStateActivated()
     {
-        Debug.Log("Main menu state entered");
+        Debug.Log($"{this} entered");
     }
 
     public override void OnStateDisabled()
