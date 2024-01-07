@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MainMenuState : GameLoopState
 {
-    private readonly IUIController _uiController;
+    private IUIController _uiController;
 
     public MainMenuState(GameLoopStateMachine stateMachine) : base(stateMachine)
     {

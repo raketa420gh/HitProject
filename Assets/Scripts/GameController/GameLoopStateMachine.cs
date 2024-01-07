@@ -3,7 +3,7 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
     protected override void RegisterStates()
     {
         RegisterState(new InitializeState(this), State.Initialize);
-        RegisterState(new CreatePlayerState(this), State.Initialize);
+        RegisterState(new CreatePlayerState(this), State.CreatePlayer);
         RegisterState(new MainMenuState(this), State.MainMenu);
         RegisterState(new RollDiceState(this), State.RollDice);
     }
