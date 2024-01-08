@@ -26,6 +26,20 @@ public class GameController : MonoBehaviour
         _levelController = levelController;
     }
 
+    private void OnEnable()
+    {
+        _uiController.GameModesPanel.OnSoloButtonClicked += HandleSoloGameStart;
+        _uiController.GameModesPanel.OnVersusButtonClicked += HandleVersusGameStart;
+        _uiController.GameModesPanel.OnTimeChallengeButtonClicked += HandleTimeChallengeGameStart;
+    }
+
+    private void OnDisable()
+    {
+        _uiController.GameModesPanel.OnSoloButtonClicked -= HandleSoloGameStart;
+        _uiController.GameModesPanel.OnVersusButtonClicked -= HandleVersusGameStart;
+        _uiController.GameModesPanel.OnTimeChallengeButtonClicked -= HandleTimeChallengeGameStart;
+    }
+
     private void Start()
     {
         InitializeGameLoopStateMachine();
@@ -46,5 +60,20 @@ public class GameController : MonoBehaviour
     {
         _gameLoopStateMachine = new GameLoopStateMachine();
         _gameLoopStateMachine.Initialise(this, GameLoopStateMachine.State.Initialize);
+    }
+
+    private void HandleSoloGameStart()
+    {
+        Debug.Log($"START SOLO GAME");
+    }
+
+    private void HandleVersusGameStart()
+    {
+        Debug.Log($"START VERSUS GAME");
+    }
+
+    private void HandleTimeChallengeGameStart()
+    {
+        Debug.Log($"START TIME CHALLENGE GAME");
     }
 }
