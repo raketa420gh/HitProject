@@ -3,10 +3,12 @@ using UnityEngine;
 public class MainMenuState : GameLoopState
 {
     private readonly IUIController _uiController;
+    private GameModesUIPanel _gameModesPanel;
 
-    public MainMenuState(GameLoopStateMachine stateMachine) : base(stateMachine)
+    public MainMenuState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
-        _uiController = _stateMachine.Parent.UIController;
+        _uiController = gameLoopStateMachine.Parent.UIController;
+        _gameModesPanel = _uiController.GameModesPanel;
     }
 
     public override void OnStateRegistered()
@@ -24,7 +26,7 @@ public class MainMenuState : GameLoopState
 
     public override void OnStateDisabled()
     {
-        
+        _gameModesPanel.Hide();
     }
 
     public override void Update()

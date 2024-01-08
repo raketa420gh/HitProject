@@ -14,9 +14,9 @@ public class InitializeState : GameLoopState
 
     public override void OnStateRegistered()
     {
-        _saveService = _stateMachine.Parent.SaveService;
-        _factory = _stateMachine.Parent.Factory;
-        _currenciesController = _stateMachine.Parent.CurrenciesController;
+        _saveService = _gameLoopStateMachine.Parent.SaveService;
+        _factory = _gameLoopStateMachine.Parent.Factory;
+        _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
         
         Debug.Log($"{this} registered");
     }
@@ -31,7 +31,7 @@ public class InitializeState : GameLoopState
 
         Debug.Log("Game systems initialized");
 
-        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
+        _gameLoopStateMachine.SetState(global::GameLoopStateMachine.State.MainMenu);
     }
 
     public override void OnStateDisabled()

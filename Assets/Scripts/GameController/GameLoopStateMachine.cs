@@ -6,6 +6,7 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
         RegisterState(new CreatePlayerState(this), State.CreatePlayer);
         RegisterState(new MainMenuState(this), State.MainMenu);
         RegisterState(new RollDiceState(this), State.RollDice);
+        RegisterState(new SoloGameState(this), State.SoloGame);
     }
 
     public enum State
@@ -13,6 +14,7 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
         Initialize = 0,
         CreatePlayer = 1,
         MainMenu = 2,
-        RollDice = 3
+        RollDice = 3,
+        SoloGame = 4
     }
 }

@@ -65,6 +65,8 @@ public class GameController : MonoBehaviour
     private void HandleSoloGameStart()
     {
         Debug.Log($"START SOLO GAME");
+        
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
     }
 
     private void HandleVersusGameStart()

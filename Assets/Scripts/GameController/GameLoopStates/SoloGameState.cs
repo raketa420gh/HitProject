@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class CreatePlayerState : GameLoopState
+public class SoloGameState : GameLoopState
 {
-    public CreatePlayerState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
+    public SoloGameState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
     }
 
