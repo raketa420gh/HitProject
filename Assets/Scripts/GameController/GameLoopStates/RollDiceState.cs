@@ -6,6 +6,8 @@ public class RollDiceState : GameLoopState
     private readonly RollDiceUIPanel _rollDicePanel;
     private QuestionCategoryType _rolledCategoryType = QuestionCategoryType.Triforce;
 
+    public QuestionCategoryType RolledCategoryType => _rolledCategoryType;
+
     public RollDiceState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _uiController = gameLoopStateMachine.Parent.UIController;
@@ -21,8 +23,9 @@ public class RollDiceState : GameLoopState
     {
         Debug.Log($"{this} entered");
         
-        _rollDicePanel.Show();
         _rollDicePanel.OnRollDiceCompleted += HandleRollDiceCompleteEvent;
+        _rollDicePanel.Reset();
+        _rollDicePanel.Show();
     }
 
     public override void OnStateDisabled()
@@ -38,6 +41,6 @@ public class RollDiceState : GameLoopState
 
     private void HandleRollDiceCompleteEvent(QuestionCategoryType questionCategoryType)
     {
-        Debug.Log($"DICE = {questionCategoryType}");
+        _rolledCategoryType = questionCategoryType;
     }
 }

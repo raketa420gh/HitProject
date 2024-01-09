@@ -5,4 +5,5 @@ public interface IUIController
     RollDiceUIPanel RollDicePanel { get; }
     CreatePlayerUIPanel CreatePlayerPanel { get; }
     GameModesUIPanel GameModesPanel { get; }
+    InGameUIPanel InGamePanel { get; }
 }
