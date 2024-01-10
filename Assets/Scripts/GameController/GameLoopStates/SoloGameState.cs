@@ -65,8 +65,6 @@ public class SoloGameState : GameLoopState
         _categoryQuestions = new List<QuestionData>();
         RollDiceState rollDiceState = (RollDiceState)_gameLoopStateMachine.GetState(GameLoopStateMachine.State.RollDice);
         
-        Debug.Log($"Roll dice category type = {rollDiceState.RolledCategoryType}");
-        
         List<QuestionData> questionsDatabase = _gameLoopStateMachine.Parent.QuestionsDatabase;
 
         for (int i = 0; i < questionsDatabase.Count; i++)
@@ -76,7 +74,6 @@ public class SoloGameState : GameLoopState
             if (questionData.CategoryType == rollDiceState.RolledCategoryType)
             {
                 _categoryQuestions.Add(questionData);
-                Debug.Log("ADD QUESTION TO CATEGORY");
             }
         }
         
@@ -91,15 +88,16 @@ public class SoloGameState : GameLoopState
         var rQuestionDataIndex = Random.Range(0, _categoryQuestions.Count);
         var currentQuestionData = _categoryQuestions[rQuestionDataIndex];
 
-        if (currentQuestionData == null)
-        {
-            Debug.Log("NO QUESTION DATA");
-        }
-
         _currentCorrectAnswerIndex = currentQuestionData.CorrectAnswerIndex;
         _inGamePanel.QuestionPanel.SetQuestion(currentQuestionData);
 
         _categoryQuestions.Remove(currentQuestionData);
+
+        if (_categoryQuestions.Count == 0)
+        {
+            Debug.Log("Reset category questions");
+            InitializeQuestionsCategory();
+        }
     }
 
     private void HandleAnswerClickEvent(int index)
