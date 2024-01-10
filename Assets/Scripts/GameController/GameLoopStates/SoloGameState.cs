@@ -9,9 +9,12 @@ public class SoloGameState : GameLoopState
     private readonly AnswerUIButton[] _answerUIButtons;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
+    
     private bool _isResultViewing;
     private float _resultViewTimer;
     private float _resultViewTime = 2f;
+
+    private PlayerGameSession _playerGameSession;
 
     public SoloGameState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -29,6 +32,8 @@ public class SoloGameState : GameLoopState
     public override void OnStateActivated()
     {
         Debug.Log($"{this} entered");
+
+        _playerGameSession ??= new PlayerGameSession();
         
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.OnClicked += HandleAnswerClickEvent;
@@ -42,6 +47,8 @@ public class SoloGameState : GameLoopState
     {
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.OnClicked -= HandleAnswerClickEvent;
+        
+        _inGamePanel.Hide();
     }
 
     public override void Update()
@@ -109,21 +116,50 @@ public class SoloGameState : GameLoopState
             answerUIButton.SetInteractable(false);
 
         if (index == _currentCorrectAnswerIndex)
-        {
-            Debug.Log("CORRECT ANSWER");
-            
-            _inGamePanel.QuestionPanel.ShowResultView(true);
-            _answerUIButtons[index].SetAnswerViewResult(true);
-        }
+            HandleCorrectAnswer(index);
         else
-        {
-            Debug.Log("WRONG ANSWER");
-            
-            _inGamePanel.QuestionPanel.ShowResultView(false);
-            _answerUIButtons[index].SetAnswerViewResult(false);
-            _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
-        }
-        
+            HandleWrongAnswer(index);
+
+        clickedAnswerButton.transform.localScale = Vector3.one * 1.1f;
+        correctAnswerButton.transform.localScale = Vector3.one * 1.1f;
+
         _isResultViewing = true;
+    }
+
+    private void HandleCorrectAnswer(int index)
+    {
+        Debug.Log("CORRECT ANSWER");
+
+        _inGamePanel.QuestionPanel.ShowResultView(true);
+        _answerUIButtons[index].SetAnswerViewResult(true);
+
+        _playerGameSession.AddTrueAnswer();
+
+        if (_playerGameSession.TrueAnswersCount >= 3)
+        {
+            _playerGameSession.ResetTrueAnswers();
+            _playerGameSession.AddCategoryPoint();
+
+            if (_playerGameSession.CategoryPoints >= 5)
+            {
+                Debug.Log("Complete solo game level");
+                _playerGameSession.ResetAll();
+
+                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
+            }
+            else
+            {
+                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
+            }
+        }
+    }
+
+    private void HandleWrongAnswer(int index)
+    {
+        Debug.Log("WRONG ANSWER");
+
+        _inGamePanel.QuestionPanel.ShowResultView(false);
+        _answerUIButtons[index].SetAnswerViewResult(false);
+        _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
     }
 }

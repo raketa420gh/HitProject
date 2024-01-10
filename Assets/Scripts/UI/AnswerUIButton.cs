@@ -47,6 +47,7 @@ public class AnswerUIButton : MonoBehaviour
     {
         _answerText.text = "";
         _buttonImage.color = Color.white;
+        transform.localScale = Vector3.one;
         SetInteractable(true);
     }
 
