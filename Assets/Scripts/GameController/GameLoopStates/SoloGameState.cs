@@ -159,7 +159,7 @@ public class SoloGameState : GameLoopState
             _playerGameSessionStats.ResetTrueAnswers();
             _playerGameSessionStats.AddCategoryPoint();
 
-            if (_playerGameSessionStats.CategoryPoints >= 2)
+            if (_playerGameSessionStats.CategoryPoints >= 5)
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
                 
@@ -176,13 +176,19 @@ public class SoloGameState : GameLoopState
         }
     }
 
-    private void HandleWrongAnswer(int index)
+    private async UniTaskVoid HandleWrongAnswer(int index)
     {
         Debug.Log("WRONG ANSWER");
 
         _inGamePanel.QuestionPanel.ShowResultView(false);
         _answerUIButtons[index].SetAnswerViewResult(false);
         _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
+        
+        _playerGameSessionStats.ResetAll();
+
+        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+        
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
     }
 
     private void HandlePlayerGameSessionStatsUpdateEvent(PlayerGameSessionStats playerGameSessionStats)

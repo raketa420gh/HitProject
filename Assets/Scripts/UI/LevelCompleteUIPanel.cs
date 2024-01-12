@@ -43,6 +43,13 @@ public class LevelCompleteUIPanel : UIPanel
         _gameStatsPanel.Hide();
     }
 
+    public override void Hide()
+    {
+        base.Hide();
+        
+        _gameStatsPanel.Hide();
+    }
+
     public void SetGameStats(int scoreCount, int timeSeconds, int coinsCount)
     {
         _scoreCountText.text = scoreCount.ToString();
