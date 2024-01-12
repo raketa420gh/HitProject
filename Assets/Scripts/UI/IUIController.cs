@@ -6,4 +6,5 @@ public interface IUIController
     CreatePlayerUIPanel CreatePlayerPanel { get; }
     GameModesUIPanel GameModesPanel { get; }
     InGameUIPanel InGamePanel { get; }
+    LevelCompleteUIPanel LevelCompletePanel { get; }
 }

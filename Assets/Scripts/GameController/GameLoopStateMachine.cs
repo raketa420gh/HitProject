@@ -7,6 +7,7 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
         RegisterState(new MainMenuState(this), State.MainMenu);
         RegisterState(new RollDiceState(this), State.RollDice);
         RegisterState(new SoloGameState(this), State.SoloGame);
+        RegisterState(new LevelCompleteState(this), State.LevelComplete);
     }
 
     public enum State
@@ -15,6 +16,7 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
         CreatePlayer = 1,
         MainMenu = 2,
         RollDice = 3,
-        SoloGame = 4
+        SoloGame = 4,
+        LevelComplete = 5
     }
 }

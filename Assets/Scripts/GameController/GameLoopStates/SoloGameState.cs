@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SoloGameState : GameLoopState
 {
@@ -14,7 +17,7 @@ public class SoloGameState : GameLoopState
     private float _resultViewTimer;
     private float _resultViewTime = 2f;
 
-    private PlayerGameSession _playerGameSession;
+    private PlayerGameSessionStats _playerGameSessionStats;
 
     public SoloGameState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -32,14 +35,15 @@ public class SoloGameState : GameLoopState
     public override void OnStateActivated()
     {
         Debug.Log($"{this} entered");
-
-        _playerGameSession ??= new PlayerGameSession();
         
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.OnClicked += HandleAnswerClickEvent;
-        
+
+        ResetResultViewTimer();
+        InitializePlayerSession();
         InitializeQuestionsCategory();
         ActivateNextQuestion();
+        
         _inGamePanel.Show();
     }
 
@@ -47,6 +51,8 @@ public class SoloGameState : GameLoopState
     {
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.OnClicked -= HandleAnswerClickEvent;
+        
+        _playerGameSessionStats.OnUpdated -= HandlePlayerGameSessionStatsUpdateEvent;
         
         _inGamePanel.Hide();
     }
@@ -59,12 +65,23 @@ public class SoloGameState : GameLoopState
 
             if (_resultViewTimer > _resultViewTime)
             {
-                _resultViewTimer = 0f;
-                _isResultViewing = false;
-                
+                ResetResultViewTimer();
                 ActivateNextQuestion();
             }
         }
+    }
+
+    private void ResetResultViewTimer()
+    {
+        _resultViewTimer = 0f;
+        _isResultViewing = false;
+    }
+
+    private void InitializePlayerSession()
+    {
+        _playerGameSessionStats ??= new PlayerGameSessionStats();
+        _playerGameSessionStats.OnUpdated += HandlePlayerGameSessionStatsUpdateEvent;
+        _uiController.PlayersInfoPanel.YouPlayerPanel.SetScoreView(true);
     }
 
     private void InitializeQuestionsCategory()
@@ -105,6 +122,8 @@ public class SoloGameState : GameLoopState
             Debug.Log("Reset category questions");
             InitializeQuestionsCategory();
         }
+        
+        _inGamePanel.QuestionPanel.HideResultView();
     }
 
     private void HandleAnswerClickEvent(int index)
@@ -116,7 +135,7 @@ public class SoloGameState : GameLoopState
             answerUIButton.SetInteractable(false);
 
         if (index == _currentCorrectAnswerIndex)
-            HandleCorrectAnswer(index);
+            HandleCorrectAnswerAsync(index);
         else
             HandleWrongAnswer(index);
 
@@ -126,29 +145,32 @@ public class SoloGameState : GameLoopState
         _isResultViewing = true;
     }
 
-    private void HandleCorrectAnswer(int index)
+    private async UniTaskVoid HandleCorrectAnswerAsync(int index)
     {
         Debug.Log("CORRECT ANSWER");
 
         _inGamePanel.QuestionPanel.ShowResultView(true);
         _answerUIButtons[index].SetAnswerViewResult(true);
 
-        _playerGameSession.AddTrueAnswer();
+        _playerGameSessionStats.AddTrueAnswer();
 
-        if (_playerGameSession.TrueAnswersCount >= 3)
+        if (_playerGameSessionStats.TrueAnswersCount >= 3)
         {
-            _playerGameSession.ResetTrueAnswers();
-            _playerGameSession.AddCategoryPoint();
+            _playerGameSessionStats.ResetTrueAnswers();
+            _playerGameSessionStats.AddCategoryPoint();
 
-            if (_playerGameSession.CategoryPoints >= 5)
+            if (_playerGameSessionStats.CategoryPoints >= 5)
             {
-                Debug.Log("Complete solo game level");
-                _playerGameSession.ResetAll();
-
-                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
+                await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+                
+                _playerGameSessionStats.ResetAll();
+                
+                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
             }
             else
             {
+                await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+                
                 _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
             }
         }
@@ -161,5 +183,10 @@ public class SoloGameState : GameLoopState
         _inGamePanel.QuestionPanel.ShowResultView(false);
         _answerUIButtons[index].SetAnswerViewResult(false);
         _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
+    }
+
+    private void HandlePlayerGameSessionStatsUpdateEvent(PlayerGameSessionStats playerGameSessionStats)
+    {
+        _uiController.PlayersInfoPanel.YouPlayerPanel.SetScore(_playerGameSessionStats.CategoryPoints);
     }
 }

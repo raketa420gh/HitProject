@@ -6,6 +6,8 @@ public class QuestionUIPanel : UIPanel
     [SerializeField] private TMP_Text _questionCategoryText;
     [SerializeField] private TMP_Text _questionText;
     [SerializeField] private AnswerUIButton[] _answerButtons;
+    [SerializeField] private UIPanel _trueAnswerPanel;
+    [SerializeField] private UIPanel _wrongAnswerPanel;
 
     public AnswerUIButton[] AnswerUIButtons => _answerButtons;
 
@@ -25,11 +27,19 @@ public class QuestionUIPanel : UIPanel
     {
         if (isCorrect)
         {
-            _questionText.text = "EXCELLENT!";
+            _trueAnswerPanel.Show();
+            _wrongAnswerPanel.Hide();
         }
         else
         {
-            _questionText.text = "INCORRECT";
+            _wrongAnswerPanel.Show();
+            _trueAnswerPanel.Hide();
         }
+    }
+
+    public void HideResultView()
+    {
+        _trueAnswerPanel.Hide();
+        _wrongAnswerPanel.Hide();
     }
 }
