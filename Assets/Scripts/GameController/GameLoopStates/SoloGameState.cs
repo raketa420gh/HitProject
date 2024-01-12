@@ -159,7 +159,7 @@ public class SoloGameState : GameLoopState
             _playerGameSessionStats.ResetTrueAnswers();
             _playerGameSessionStats.AddCategoryPoint();
 
-            if (_playerGameSessionStats.CategoryPoints >= 5)
+            if (_playerGameSessionStats.CategoryPoints >= 2)
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
                 

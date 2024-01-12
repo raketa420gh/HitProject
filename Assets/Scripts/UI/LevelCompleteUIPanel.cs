@@ -37,10 +37,10 @@ public class LevelCompleteUIPanel : UIPanel
     public override void Show()
     {
         base.Show();
-
+        
+        _starsPanel.ShowStarsAnimation();
         _homeButton.interactable = false;
         _gameStatsPanel.Hide();
-        _starsPanel.ShowStarsAnimation();
     }
 
     public void SetGameStats(int scoreCount, int timeSeconds, int coinsCount)

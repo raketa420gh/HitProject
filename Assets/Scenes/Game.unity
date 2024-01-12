@@ -3613,6 +3613,7 @@ MonoBehaviour:
   _createPlayerPanel: {fileID: 1255824640}
   _gameModesPanel: {fileID: 1296640031}
   _inGamePanel: {fileID: 1287572743}
+  _levelCompletePanel: {fileID: 1975339548}
 --- !u!1 &494747703
 GameObject:
   m_ObjectHideFlags: 0
@@ -8834,7 +8835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1585583528
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9414,7 +9415,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 375.8, y: -97.1}
+  m_AnchoredPosition: {x: 375.8, y: -97.100006}
   m_SizeDelta: {x: 750, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648769961
