@@ -58,7 +58,10 @@ public class GameController : MonoBehaviour
             _currenciesController.Add(Currency.Type.Money, 100);
 
         if (Input.GetKeyDown(KeyCode.S))
-            _saveService.Save();
+            _saveService.ForceSave();
+
+        if (Input.GetKeyDown(KeyCode.I))
+            _saveService.GetInfo();
     }
 
     public void StartGameMode()

@@ -32,15 +32,10 @@ public class LevelSelectUISlot : MonoBehaviour
         _isUnlocked = save.IsUnlocked;
         _isCompleted = save.IsCompleted;
         _levelNumber = save.LevelNumber;
-
-        if (save.IsUnlocked)
-            Unlock();
-        else
-            Lock();
         
-        SetCompleteView(save.IsCompleted);
-        
-        _levelNumberText.text = _levelNumber.ToString();
+        SetLockState(save.IsUnlocked);
+        SetCompleteState(save.IsCompleted);
+        _levelNumberText.text = save.LevelNumber.ToString();
     }
 
     public LevelSlotSaveData Save()
@@ -50,13 +45,6 @@ public class LevelSelectUISlot : MonoBehaviour
 
     #endregion
 
-    public void Lock()
-    {
-        _isUnlocked = false;
-        _lockPanel.Show();
-        _levelSelectButton.interactable = false;
-    }
-
     public void Unlock()
     {
         _isUnlocked = true;
@@ -64,7 +52,14 @@ public class LevelSelectUISlot : MonoBehaviour
         _levelSelectButton.interactable = true;
     }
 
-    private void SetCompleteView(bool isComplete)
+    private void Lock()
+    {
+        _isUnlocked = false;
+        _lockPanel.Show();
+        _levelSelectButton.interactable = false;
+    }
+
+    private void SetCompleteState(bool isComplete)
     {
         if (isComplete)
             _starsPanel.Show();
@@ -74,6 +69,14 @@ public class LevelSelectUISlot : MonoBehaviour
         }
     }
 
+    private void SetLockState(bool isUnlocked)
+    {
+        if (isUnlocked)
+            Unlock();
+        else
+            Lock();
+    }
+    
     private void HandleLevelSelectButtonEvent()
     {
         OnLevelSelectedButtonClicked?.Invoke(_levelNumber);
