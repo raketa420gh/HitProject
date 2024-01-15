@@ -7,8 +7,8 @@ public class LevelSelectUISlot : MonoBehaviour
 {
     [SerializeField] private Button _levelSelectButton;
     [SerializeField] private TMP_Text _levelNumberText;
-    [SerializeField] private UIPanel _lockPanel;
-    [SerializeField] private UIPanel _starsPanel;
+    [SerializeField] private GameObject _lockObject;
+    [SerializeField] private GameObject _starsObject;
     private bool _isUnlocked;
     private bool _isCompleted;
     private int _levelNumber;
@@ -25,13 +25,6 @@ public class LevelSelectUISlot : MonoBehaviour
         _levelSelectButton.onClick.RemoveListener(HandleLevelSelectButtonEvent);
     }
 
-    public void Reset()
-    {
-        SetUnlockState(false);
-        SetCompleteState(false);
-        SetLevelNumber(0);
-    }
-
     #region Load/Save
 
     public void Load(LevelSlotSaveData save)
@@ -43,6 +36,8 @@ public class LevelSelectUISlot : MonoBehaviour
         SetUnlockState(save.IsUnlocked);
         SetCompleteState(save.IsCompleted);
         SetLevelNumber(save.LevelNumber);
+        
+        UpdateView();
     }
 
     public LevelSlotSaveData Save()
@@ -52,6 +47,15 @@ public class LevelSelectUISlot : MonoBehaviour
 
     #endregion
 
+    public void Reset()
+    {
+        SetUnlockState(false);
+        SetCompleteState(false);
+        SetLevelNumber(0);
+        
+        UpdateView();
+    }
+
     public void SetUnlockState(bool isUnlocked)
     {
         if (isUnlocked)
@@ -60,33 +64,51 @@ public class LevelSelectUISlot : MonoBehaviour
             Lock();
     }
 
-    public void SetCompleteState(bool isComplete)
+    public void SetCompleteState(bool isCompleted)
     {
-        if (isComplete)
-            _starsPanel.Show();
-        else
-        {
-            _starsPanel.Hide();
-        }
+        _isCompleted = isCompleted;
+        
+        UpdateView();
     }
 
     public void SetLevelNumber(int number)
     {
-        _levelNumberText.text = number.ToString();
+        _levelNumber = number;
+        
+        UpdateView();
     }
 
     private void Unlock()
     {
         _isUnlocked = true;
-        _lockPanel.Hide();
-        _levelSelectButton.interactable = true;
+        
+        UpdateView();
     }
 
     private void Lock()
     {
         _isUnlocked = false;
-        _lockPanel.Show();
-        _levelSelectButton.interactable = false;
+        
+        UpdateView();
+    }
+
+    private void UpdateView()
+    {
+        if (_isUnlocked)
+        {
+            _lockObject.SetActive(false);
+            _levelNumberText.gameObject.SetActive(true);
+            _levelSelectButton.interactable = true;
+        }
+        else
+        {
+            _lockObject.SetActive(true);
+            _levelNumberText.gameObject.SetActive(false);
+            _levelSelectButton.interactable = false;
+        }
+
+        _levelNumberText.text = _levelNumber.ToString();
+        _starsObject.SetActive(_isCompleted);
     }
 
     private void HandleLevelSelectButtonEvent()

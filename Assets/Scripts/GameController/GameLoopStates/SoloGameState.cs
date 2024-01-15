@@ -10,8 +10,10 @@ public class SoloGameState : GameLoopState
     private readonly IUIController _uiController;
     private readonly InGameUIPanel _inGamePanel;
     private readonly AnswerUIButton[] _answerUIButtons;
+    private readonly ILevelController _levelController;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
+    private int _activeLevelNumber;
     
     private bool _isResultViewing;
     private float _resultViewTimer;
@@ -22,9 +24,10 @@ public class SoloGameState : GameLoopState
     public SoloGameState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _gameLoopStateMachine = gameLoopStateMachine;
-        _uiController = gameLoopStateMachine.Parent.UIController;
+        _uiController = _gameLoopStateMachine.Parent.UIController;
         _inGamePanel = _uiController.InGamePanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
+        _levelController = _gameLoopStateMachine.Parent.LevelController;
     }
 
     public override void OnStateRegistered()
@@ -69,6 +72,11 @@ public class SoloGameState : GameLoopState
                 ActivateNextQuestion();
             }
         }
+    }
+
+    public void SetLevel(int levelNumber)
+    {
+        _activeLevelNumber = levelNumber;
     }
 
     private void ResetResultViewTimer()
@@ -164,6 +172,8 @@ public class SoloGameState : GameLoopState
                 await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
                 
                 _playerGameSessionStats.ResetAll();
+                
+                _levelController.CompleteLevel(_activeLevelNumber);
                 
                 _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
             }

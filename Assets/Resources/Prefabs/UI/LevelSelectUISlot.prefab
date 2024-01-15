@@ -504,7 +504,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 73
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 95a34b4e1c1774b978f7ca6e4463ed69, type: 2}
   m_sharedMaterial: {fileID: 4775821340172660260, guid: 95a34b4e1c1774b978f7ca6e4463ed69, type: 2}
@@ -668,8 +668,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelSelectButton: {fileID: 1750711686386542626}
   _levelNumberText: {fileID: 2065092208286604421}
-  _lockPanel: {fileID: 3380701333977736340}
-  _starsPanel: {fileID: 3374768343081609380}
+  _lockObject: {fileID: 8246325722520338506}
+  _starsObject: {fileID: 1347672391379976065}
 --- !u!1 &4216247363710484961
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,7 +837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6240664534813005029
 RectTransform:
   m_ObjectHideFlags: 0
@@ -854,7 +854,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -50.300014}
+  m_AnchoredPosition: {x: -25, y: -25.099998}
   m_SizeDelta: {x: 96, y: 29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3482769943107603460

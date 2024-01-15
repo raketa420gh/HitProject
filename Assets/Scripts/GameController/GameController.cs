@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour
         _uiController.GameModesPanel.OnSoloButtonClicked += HandleSoloGameStartButtonEvent;
         _uiController.GameModesPanel.OnVersusButtonClicked += HandleVersusGameStartButtonEvent;
         _uiController.GameModesPanel.OnTimeChallengeButtonClicked += HandleTimeChallengeGameStartButtonEvent;
+        _levelController.OnLevelSelected += HandleLevelSelectEvent;
     }
 
     private void OnDisable()
@@ -43,6 +44,7 @@ public class GameController : MonoBehaviour
         _uiController.GameModesPanel.OnSoloButtonClicked -= HandleSoloGameStartButtonEvent;
         _uiController.GameModesPanel.OnVersusButtonClicked -= HandleVersusGameStartButtonEvent;
         _uiController.GameModesPanel.OnTimeChallengeButtonClicked -= HandleTimeChallengeGameStartButtonEvent;
+        _levelController.OnLevelSelected -= HandleLevelSelectEvent;
     }
 
     private void Start()
@@ -84,9 +86,8 @@ public class GameController : MonoBehaviour
     private void HandleSoloGameStartButtonEvent()
     {
         Debug.Log($"START SOLO GAME");
-        
-        SetGameMode(GameModeType.Solo);
-        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
+
+        _levelController.InitializeSelectLevelPanel();
     }
 
     private void HandleVersusGameStartButtonEvent()
@@ -101,5 +102,15 @@ public class GameController : MonoBehaviour
         Debug.Log($"START TIME CHALLENGE GAME");
         
         SetGameMode(GameModeType.TimeChallenge);
+    }
+
+    private void HandleLevelSelectEvent(int levelNumber)
+    {
+        SetGameMode(GameModeType.Solo);
+
+        SoloGameState soloGameState = (SoloGameState)_gameLoopStateMachine.GetState(GameLoopStateMachine.State.SoloGame);
+        soloGameState.SetLevel(levelNumber);
+        
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
     }
 }

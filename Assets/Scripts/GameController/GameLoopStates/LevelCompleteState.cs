@@ -4,12 +4,14 @@ public class LevelCompleteState : GameLoopState
 {
     private readonly GameLoopStateMachine _gameLoopStateMachine;
     private readonly LevelCompleteUIPanel _levelCompletePanel;
+    private readonly ISaveService _saveService;
     private PlayerGameSessionStats _playerGameSessionStats;
 
     public LevelCompleteState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _gameLoopStateMachine = gameLoopStateMachine;
         _levelCompletePanel = gameLoopStateMachine.Parent.UIController.LevelCompletePanel;
+        _saveService = _gameLoopStateMachine.Parent.SaveService;
     }
 
     public override void OnStateRegistered()
@@ -26,6 +28,8 @@ public class LevelCompleteState : GameLoopState
         _levelCompletePanel.OnNextLevelButtonClicked += HandleNextLevelButtonClickEvent;
         
         _levelCompletePanel.Show();
+        
+        _saveService.ForceSave();
     }
 
     public override void OnStateDisabled()
