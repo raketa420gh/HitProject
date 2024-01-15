@@ -11,10 +11,10 @@ public class LevelSlotSaveData
     public bool IsUnlocked => _isUnlocked;
     public bool IsCompleted => _isCompleted;
 
-    public LevelSlotSaveData(bool isUnlocked, bool isCompleted, int levelNumber)
+    public LevelSlotSaveData(int levelNumber, bool isUnlocked, bool isCompleted)
     {
+        _levelNumber = levelNumber;
         _isUnlocked = isUnlocked;
         _isCompleted = isCompleted;
-        _levelNumber = levelNumber;
     }
 }

@@ -25,6 +25,13 @@ public class LevelSelectUISlot : MonoBehaviour
         _levelSelectButton.onClick.RemoveListener(HandleLevelSelectButtonEvent);
     }
 
+    public void Reset()
+    {
+        SetUnlockState(false);
+        SetCompleteState(false);
+        SetLevelNumber(0);
+    }
+
     #region Load/Save
 
     public void Load(LevelSlotSaveData save)
@@ -33,19 +40,42 @@ public class LevelSelectUISlot : MonoBehaviour
         _isCompleted = save.IsCompleted;
         _levelNumber = save.LevelNumber;
         
-        SetLockState(save.IsUnlocked);
+        SetUnlockState(save.IsUnlocked);
         SetCompleteState(save.IsCompleted);
-        _levelNumberText.text = save.LevelNumber.ToString();
+        SetLevelNumber(save.LevelNumber);
     }
 
     public LevelSlotSaveData Save()
     {
-        return new LevelSlotSaveData(_isUnlocked, _isCompleted, _levelNumber);
+        return new LevelSlotSaveData(_levelNumber, _isUnlocked, _isCompleted);
     }
 
     #endregion
 
-    public void Unlock()
+    public void SetUnlockState(bool isUnlocked)
+    {
+        if (isUnlocked)
+            Unlock();
+        else
+            Lock();
+    }
+
+    public void SetCompleteState(bool isComplete)
+    {
+        if (isComplete)
+            _starsPanel.Show();
+        else
+        {
+            _starsPanel.Hide();
+        }
+    }
+
+    public void SetLevelNumber(int number)
+    {
+        _levelNumberText.text = number.ToString();
+    }
+
+    private void Unlock()
     {
         _isUnlocked = true;
         _lockPanel.Hide();
@@ -59,24 +89,6 @@ public class LevelSelectUISlot : MonoBehaviour
         _levelSelectButton.interactable = false;
     }
 
-    private void SetCompleteState(bool isComplete)
-    {
-        if (isComplete)
-            _starsPanel.Show();
-        else
-        {
-            _starsPanel.Hide();
-        }
-    }
-
-    private void SetLockState(bool isUnlocked)
-    {
-        if (isUnlocked)
-            Unlock();
-        else
-            Lock();
-    }
-    
     private void HandleLevelSelectButtonEvent()
     {
         OnLevelSelectedButtonClicked?.Invoke(_levelNumber);

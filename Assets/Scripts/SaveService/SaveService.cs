@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class SaveService : ISaveService
@@ -32,11 +33,8 @@ public class SaveService : ISaveService
         else
             Load(time);
 
-        /*if (useAutoSave)
-        {
-            // Enable auto-save coroutine
-            Tween.InvokeCoroutine(AutoSaveCoroutine());
-        }*/
+        if (useAutoSave)
+            StartAutoSavingAsync();
     }
 
     public void UpdateTime(float time)
@@ -48,7 +46,7 @@ public class SaveService : ISaveService
     {
         if (!_isSaveLoaded)
         {
-            Debug.LogError("Save controller has not been initialized");
+            Debug.LogError("Save service has not been initialized");
             return default;
         }
 
@@ -70,7 +68,7 @@ public class SaveService : ISaveService
         var saveThread = new Thread(SaveThreadFunction);
         saveThread.Start();
 
-        Debug.Log("[Save Controller]: Game is saved!");
+        Debug.Log("Game is saved!");
 
         _isSaveRequired = false;
     }
@@ -82,7 +80,7 @@ public class SaveService : ISaveService
         var saveThread = new Thread(SaveThreadFunction);
         saveThread.Start();
 
-        Debug.Log("[Save Controller]: Game is saved!");
+        Debug.Log("Game is saved!");
 
         _isSaveRequired = false;
     }
@@ -112,7 +110,7 @@ public class SaveService : ISaveService
         _globalSave = new GlobalSave();
         _globalSave.Init(time);
 
-        Debug.Log("[Save Controller]: Created clear save!");
+        Debug.Log("Created clear save!");
 
         _isSaveLoaded = true;
     }
@@ -128,7 +126,7 @@ public class SaveService : ISaveService
 
         _globalSave.Init(time);
 
-        Debug.Log("[Save Controller]: Save is loaded!");
+        Debug.Log("Global save is loaded!");
 
         _isSaveLoaded = true;
 
@@ -140,13 +138,11 @@ public class SaveService : ISaveService
         Serializer.SerializeToPDP(_globalSave, SAVE_FILE_NAME, SAVE_SERIALIZE_TYPE);
     }
 
-    private IEnumerator AutoSaveCoroutine()
+    private async UniTaskVoid StartAutoSavingAsync()
     {
-        WaitForSeconds waitForSeconds = new WaitForSeconds(SAVE_DELAY);
-
         while (true)
         {
-            yield return waitForSeconds;
+            await UniTask.Delay(SAVE_DELAY);
 
             Save();
         }

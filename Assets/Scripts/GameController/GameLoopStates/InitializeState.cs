@@ -27,7 +27,7 @@ public class InitializeState : GameLoopState
     {
         Debug.Log($"{this} entered");
         
-        _saveService.Initialise(Time.time, false, false);
+        _saveService.Initialise(Time.time, false);
         _factory.Initialize();
         _currenciesController.Initialise(_saveService);
 
