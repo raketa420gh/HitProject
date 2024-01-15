@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     private IFactory _factory;
     private ICurrenciesController _currenciesController;
     private IUIController _uiController;
+    private ILevelController _levelController;
     private GameLoopStateMachine _gameLoopStateMachine;
     private GameModeType _gameModeType = GameModeType.Solo;
 
@@ -17,15 +18,17 @@ public class GameController : MonoBehaviour
     public IFactory Factory => _factory;
     public ICurrenciesController CurrenciesController => _currenciesController;
     public IUIController UIController => _uiController;
+    public ILevelController LevelController => _levelController;
 
     [Inject]
     public void Construct(ISaveService saveService, IFactory factory, ICurrenciesController currenciesController,
-        IUIController uiController)
+        IUIController uiController, ILevelController levelController)
     {
         _saveService = saveService;
         _factory = factory;
         _currenciesController = currenciesController;
         _uiController = uiController;
+        _levelController = levelController;
     }
 
     private void OnEnable()

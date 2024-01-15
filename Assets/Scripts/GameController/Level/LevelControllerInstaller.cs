@@ -12,6 +12,6 @@ public class LevelControllerInstaller : MonoInstaller
 
     private void Bind()
     {
-        Container.Bind<LevelController>().FromInstance(_levelController).AsSingle().NonLazy();
+        Container.Bind<ILevelController>().FromInstance(_levelController).AsSingle().NonLazy();
     }
 }

@@ -25,7 +25,7 @@ public class PlayerInfoUIPanel : UIPanel
 
     public void SetPlayerInfo(Sprite iconSprite, string playerName)
     {
-        _playerIcon.sprite = iconSprite;
+        //_playerIcon.sprite = iconSprite;
         _playerNameText.text = playerName;
     }
 }

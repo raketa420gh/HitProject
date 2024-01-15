@@ -2,8 +2,15 @@ using UnityEngine;
 
 public class CreatePlayerState : GameLoopState
 {
+    private readonly GameLoopStateMachine _gameLoopStateMachine;
+    private readonly CreatePlayerUIPanel _createPlayerPanel;
+    private readonly PlayersInfoUIPanel _playersInfoPanel;
+
     public CreatePlayerState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
+        _gameLoopStateMachine = gameLoopStateMachine;
+        _createPlayerPanel = _gameLoopStateMachine.Parent.UIController.CreatePlayerPanel;
+        _playersInfoPanel = _gameLoopStateMachine.Parent.UIController.PlayersInfoPanel;
     }
 
     public override void OnStateRegistered()
@@ -14,15 +21,26 @@ public class CreatePlayerState : GameLoopState
     public override void OnStateActivated()
     {
         Debug.Log($"{this} entered");
+
+        _createPlayerPanel.OnNameConfirmButtonClicked += HandleNameConfirmButtonEvent;
+        _createPlayerPanel.Show();
     }
 
     public override void OnStateDisabled()
     {
-        
+        _createPlayerPanel.OnNameConfirmButtonClicked -= HandleNameConfirmButtonEvent;
+        _createPlayerPanel.Hide();
     }
 
     public override void Update()
     {
         
+    }
+
+    private void HandleNameConfirmButtonEvent(string nameText)
+    {
+        _playersInfoPanel.YouPlayerPanel.SetPlayerInfo(null, nameText);
+        
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
     }
 }
