@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class MainMenuState : GameLoopState
 {
+    private readonly GameLoopStateMachine _gameLoopStateMachine;
     private readonly IUIController _uiController;
-    private GameModesUIPanel _gameModesPanel;
+    private readonly GameModesUIPanel _gameModesPanel;
+    private ILevelController _levelController;
 
     public MainMenuState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
-        _uiController = gameLoopStateMachine.Parent.UIController;
+        _gameLoopStateMachine = gameLoopStateMachine;
+        _uiController = _gameLoopStateMachine.Parent.UIController;
         _gameModesPanel = _uiController.GameModesPanel;
+        _levelController = _gameLoopStateMachine.Parent.LevelController;
     }
 
     public override void OnStateRegistered()
@@ -19,6 +23,10 @@ public class MainMenuState : GameLoopState
     public override void OnStateActivated()
     {
         Debug.Log($"{this} entered");
+        
+        _uiController.GameModesPanel.OnSoloButtonClicked += HandleSoloGameStartButtonEvent;
+        _uiController.GameModesPanel.OnVersusButtonClicked += HandleVersusGameStartButtonEvent;
+        _uiController.GameModesPanel.OnTimeChallengeButtonClicked += HandleTimeChallengeGameStartButtonEvent;
 
         InitializeMainMenu();
         InitializePlayerInfoPanelsView();
@@ -26,6 +34,10 @@ public class MainMenuState : GameLoopState
 
     public override void OnStateDisabled()
     {
+        _uiController.GameModesPanel.OnSoloButtonClicked += HandleSoloGameStartButtonEvent;
+        _uiController.GameModesPanel.OnVersusButtonClicked += HandleVersusGameStartButtonEvent;
+        _uiController.GameModesPanel.OnTimeChallengeButtonClicked += HandleTimeChallengeGameStartButtonEvent;
+        
         _gameModesPanel.Hide();
     }
 
@@ -45,5 +57,26 @@ public class MainMenuState : GameLoopState
     private void InitializeMainMenu()
     {
         _uiController.MainMenuPanel.SetStartButtonObjectView(true);
+    }
+    
+    private void HandleSoloGameStartButtonEvent()
+    {
+        Debug.Log($"START SOLO GAME");
+
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelSelect);
+    }
+
+    private void HandleVersusGameStartButtonEvent()
+    {
+        Debug.Log($"START VERSUS GAME");
+        
+        _levelController.SetGameMode(GameModeType.Versus);
+    }
+
+    private void HandleTimeChallengeGameStartButtonEvent()
+    {
+        Debug.Log($"START TIME CHALLENGE GAME");
+        
+        _levelController.SetGameMode(GameModeType.TimeChallenge);
     }
 }

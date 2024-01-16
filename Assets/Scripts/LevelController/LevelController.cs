@@ -9,10 +9,12 @@ public class LevelController : MonoBehaviour, ILevelController
     private IUIController _uiController;
     private LevelSelectUISlot[] _levelSlots;
     private int _lastCompletedLevelNumber;
+    private GameModeType _currentGameMode;
 
     public int LastCompletedLevelNumber => _lastCompletedLevelNumber;
 
     public event Action<int> OnLevelSelected;
+    public event Action<GameModeType> OnRollDicePanelPlayButtonClicked;
 
     [Inject]
     public void Construct(ISaveService saveService, IUIController uiController)
@@ -57,6 +59,16 @@ public class LevelController : MonoBehaviour, ILevelController
         _uiController.LevelSelectPanel.OnLevelSelected += HandleLevelSelectEvent;
         _uiController.LevelSelectPanel.Show();
         _uiController.GameModesPanel.Hide();
+    }
+    
+    public void HandleRollDicePlayButtonEvent()
+    {
+        OnRollDicePanelPlayButtonClicked?.Invoke(_currentGameMode);
+    }
+
+    public void SetGameMode(GameModeType type)
+    {
+        _currentGameMode = type;
     }
 
     public void CompleteLevel(int levelNumber)

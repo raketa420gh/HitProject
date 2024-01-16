@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -31,25 +32,20 @@ public class GameController : MonoBehaviour
         _levelController = levelController;
     }
 
+    private void Start()
+    {
+        InitializeGameLoopStateMachine();
+    }
+
+
     private void OnEnable()
     {
-        _uiController.GameModesPanel.OnSoloButtonClicked += HandleSoloGameStartButtonEvent;
-        _uiController.GameModesPanel.OnVersusButtonClicked += HandleVersusGameStartButtonEvent;
-        _uiController.GameModesPanel.OnTimeChallengeButtonClicked += HandleTimeChallengeGameStartButtonEvent;
-        _levelController.OnLevelSelected += HandleLevelSelectEvent;
+        _levelController.OnRollDicePanelPlayButtonClicked += HandleRollDicePlayButtonEvent;
     }
 
     private void OnDisable()
     {
-        _uiController.GameModesPanel.OnSoloButtonClicked -= HandleSoloGameStartButtonEvent;
-        _uiController.GameModesPanel.OnVersusButtonClicked -= HandleVersusGameStartButtonEvent;
-        _uiController.GameModesPanel.OnTimeChallengeButtonClicked -= HandleTimeChallengeGameStartButtonEvent;
-        _levelController.OnLevelSelected -= HandleLevelSelectEvent;
-    }
-
-    private void Start()
-    {
-        InitializeGameLoopStateMachine();
+        _levelController.OnRollDicePanelPlayButtonClicked -= HandleRollDicePlayButtonEvent;
     }
 
     private void Update()
@@ -66,51 +62,15 @@ public class GameController : MonoBehaviour
             _saveService.GetInfo();
     }
 
-    public void StartGameMode()
-    {
-        if (_gameModeType == GameModeType.Solo)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.SoloGame);
-    }
-    
-    private void SetGameMode(GameModeType type)
-    {
-        _gameModeType = type;
-    }
-
     private void InitializeGameLoopStateMachine()
     {
         _gameLoopStateMachine = new GameLoopStateMachine();
         _gameLoopStateMachine.Initialise(this, GameLoopStateMachine.State.Initialize);
     }
 
-    private void HandleSoloGameStartButtonEvent()
+    private void HandleRollDicePlayButtonEvent(GameModeType gameModeType)
     {
-        Debug.Log($"START SOLO GAME");
-
-        _levelController.InitializeSelectLevelPanel();
-    }
-
-    private void HandleVersusGameStartButtonEvent()
-    {
-        Debug.Log($"START VERSUS GAME");
-        
-        SetGameMode(GameModeType.Versus);
-    }
-
-    private void HandleTimeChallengeGameStartButtonEvent()
-    {
-        Debug.Log($"START TIME CHALLENGE GAME");
-        
-        SetGameMode(GameModeType.TimeChallenge);
-    }
-
-    private void HandleLevelSelectEvent(int levelNumber)
-    {
-        SetGameMode(GameModeType.Solo);
-
-        SoloGameState soloGameState = (SoloGameState)_gameLoopStateMachine.GetState(GameLoopStateMachine.State.SoloGame);
-        soloGameState.SetLevel(levelNumber);
-        
-        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
+        if (gameModeType == GameModeType.Solo)
+            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.SoloGame);
     }
 }
