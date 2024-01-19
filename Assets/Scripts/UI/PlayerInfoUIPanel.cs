@@ -8,6 +8,8 @@ public class PlayerInfoUIPanel : UIPanel
     [SerializeField] private TMP_Text _playerNameText;
     [SerializeField] private TMP_Text _playerScoreText;
 
+    public string PlayerName => _playerNameText.text;
+
     public void SetView(bool isActive)
     {
         gameObject.SetActive(isActive);
@@ -23,9 +25,8 @@ public class PlayerInfoUIPanel : UIPanel
         _playerScoreText.text = scoreCount.ToString();
     }
 
-    public void SetPlayerInfo(Sprite iconSprite, string playerName)
+    public void SetPlayerInfo(string playerName)
     {
-        //_playerIcon.sprite = iconSprite;
         _playerNameText.text = playerName;
     }
 }

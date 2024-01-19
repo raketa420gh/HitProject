@@ -12,7 +12,6 @@ public class GameController : MonoBehaviour
     private IUIController _uiController;
     private ILevelController _levelController;
     private GameLoopStateMachine _gameLoopStateMachine;
-    private GameModeType _gameModeType = GameModeType.Solo;
 
     public List<QuestionData> QuestionsDatabase => _questionsDatabase;
     public ISaveService SaveService => _saveService;
@@ -70,7 +69,14 @@ public class GameController : MonoBehaviour
 
     private void HandleRollDicePlayButtonEvent(GameModeType gameModeType)
     {
-        if (gameModeType == GameModeType.Solo)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.SoloGame);
+        switch (gameModeType)
+        {
+            case GameModeType.Solo:
+                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.SoloGame);
+                break;
+            case GameModeType.Versus:
+                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.VersusGame);
+                break;
+        }
     }
 }

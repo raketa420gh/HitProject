@@ -4,13 +4,16 @@ using System.Linq;
 [Serializable]
 public class LevelSave : ISaveObject
 {
+    public string PlayerName;
     public int LastCompletedLevelNumber;
     public LevelSlotSaveData[] LevelSlotSaveDatas;
 
     [NonSerialized] private LevelSelectUISlot[] _levelSlots;
+    [NonSerialized] private PlayersInfoUIPanel _playersInfoPanel;
 
     public LevelSave()
     {
+        PlayerName = null;
         LevelSlotSaveDatas = null;
     }
 
@@ -30,10 +33,17 @@ public class LevelSave : ISaveObject
             LevelSlotSaveData maxLevelNumberData = completedLevels.OrderByDescending(levelSlotSaveData => levelSlotSaveData.LevelNumber).FirstOrDefault();
             LastCompletedLevelNumber = maxLevelNumberData != null ? maxLevelNumberData!.LevelNumber : 0;
         }
+
+        PlayerName = _playersInfoPanel.YouPlayerPanel.PlayerName;
     }
 
     public void LinkLevelSlots(LevelSelectUISlot[] levelSlots)
     {
         _levelSlots = levelSlots;
+    }
+
+    public void LinkPlayersInfoPanel(PlayersInfoUIPanel playersInfoPanel)
+    {
+        _playersInfoPanel = playersInfoPanel;
     }
 }

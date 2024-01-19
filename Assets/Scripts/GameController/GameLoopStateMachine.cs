@@ -7,6 +7,8 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
         RegisterState(new MainMenuState(this), State.MainMenu);
         RegisterState(new RollDiceState(this), State.RollDice);
         RegisterState(new SoloGameState(this), State.SoloGame);
+        RegisterState(new VersusGameState(this), State.VersusGame);
+        RegisterState(new TimeChallengeGameState(this), State.TimeChallenge);
         RegisterState(new LevelCompleteState(this), State.LevelComplete);
         RegisterState(new GameOverState(this), State.GameOver);
         RegisterState(new LevelSelectState(this), State.LevelSelect);
@@ -19,8 +21,10 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
         MainMenu = 2,
         RollDice = 3,
         SoloGame = 4,
-        LevelComplete = 5,
-        GameOver = 6,
-        LevelSelect = 7
+        VersusGame = 5,
+        TimeChallenge = 6,
+        LevelSelect = 7,
+        LevelComplete = 8,
+        GameOver = 9
     }
 }

@@ -46,12 +46,11 @@ public class LevelController : MonoBehaviour, ILevelController
         }
         
         _levelSave?.LinkLevelSlots(_levelSlots);
+        _levelSave?.LinkPlayersInfoPanel(_uiController.PlayersInfoPanel);
 
         SetLevelNumbers();
-
-        //Test
         UnlockFirstLevel();
-        _saveService.Save();
+        _saveService.ForceSave();
     }
 
     public void InitializeSelectLevelPanel()
