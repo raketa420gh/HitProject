@@ -12,6 +12,8 @@ public static class ActionsMenu
         PlayerPrefs.DeleteAll();
 
         Serializer.DeleteFileAtPDP("save");
+        
+        Debug.Log("Save is cleared");
     }
 
     [MenuItem("Actions/Remove Save", true)]

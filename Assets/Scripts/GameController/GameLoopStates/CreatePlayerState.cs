@@ -40,6 +40,7 @@ public class CreatePlayerState : GameLoopState
     private void HandleNameConfirmButtonEvent(string nameText)
     {
         _playersInfoPanel.YouPlayerPanel.SetPlayerInfo(nameText);
+        _gameLoopStateMachine.Parent.SaveService.ForceSave();
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
     }
 }
