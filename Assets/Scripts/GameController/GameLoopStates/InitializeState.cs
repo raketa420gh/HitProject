@@ -22,21 +22,21 @@ public class InitializeState : GameLoopState
         _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
         _uiController = _gameLoopStateMachine.Parent.UIController;
-        
+
         Debug.Log($"{this} registered");
     }
 
     public override void OnStateActivated()
     {
         Debug.Log($"{this} entered");
-        
+
         _saveService.Initialise(Time.time, false);
         _factory.Initialize();
         _currenciesController.Initialise(_saveService);
         _levelController.InitializeLevelSave();
-        
+
         Debug.Log("Game systems initialized");
-        
+
         InitializeStartGameState();
     }
 
@@ -52,9 +52,12 @@ public class InitializeState : GameLoopState
     {
         _levelSave = _saveService.GetSaveObject<LevelSave>("save");
 
+        Debug.Log($"Try to load level save. {_levelSave != null}, PlayerName = {_levelSave?.PlayerName}");
+
         if (_levelSave != null && _levelSave.PlayerName != null)
         {
             _uiController.PlayersInfoPanel.YouPlayerPanel.SetPlayerInfo(_levelSave.PlayerName);
+            _saveService.ForceSave();
             _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
         }
         else

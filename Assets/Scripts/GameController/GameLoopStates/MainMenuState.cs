@@ -62,7 +62,8 @@ public class MainMenuState : GameLoopState
     private void HandleSoloGameStartButtonEvent()
     {
         Debug.Log($"START SOLO GAME");
-
+        
+        _levelController.SetGameMode(GameModeType.Solo);
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelSelect);
     }
 

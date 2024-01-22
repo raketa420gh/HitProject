@@ -33,8 +33,8 @@ public class SaveService : ISaveService
         else
             Load(time);
 
-        if (useAutoSave)
-            StartAutoSavingAsync();
+        //if (useAutoSave)
+            //StartAutoSavingAsync();
     }
 
     public void UpdateTime(float time)

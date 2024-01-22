@@ -50,7 +50,6 @@ public class LevelController : MonoBehaviour, ILevelController
 
         SetLevelNumbers();
         UnlockFirstLevel();
-        _saveService.ForceSave();
     }
 
     public void InitializeSelectLevelPanel()
