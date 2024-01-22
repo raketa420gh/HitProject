@@ -11,6 +11,7 @@ public class SoloGameState : GameLoopState
     private readonly InGameUIPanel _inGamePanel;
     private readonly LevelCompleteUIPanel _levelCompletePanel;
     private readonly GameOverUIPanel _gameOverPanel;
+    private readonly SoloGameStageCompleteUIPanel _soloGameStageCompletePanel;
     private readonly AnswerUIButton[] _answerUIButtons;
     private readonly ILevelController _levelController;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
@@ -38,6 +39,7 @@ public class SoloGameState : GameLoopState
         _inGamePanel = _uiController.InGamePanel;
         _levelCompletePanel = _uiController.LevelCompletePanel;
         _gameOverPanel = _uiController.GameOverPanel;
+        _soloGameStageCompletePanel = _uiController.SoloGameStageCompletePanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
     }
@@ -175,6 +177,8 @@ public class SoloGameState : GameLoopState
     {
         ResetResultViewTimer();
         
+        _isTurnTimerActive = true;
+
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.Reset();
 
@@ -203,17 +207,17 @@ public class SoloGameState : GameLoopState
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.SetInteractable(false);
 
-        if (index == _currentCorrectAnswerIndex)
-            HandleCorrectAnswerAsync(index);
-        else
-            HandleWrongAnswer(index);
-
         clickedAnswerButton.transform.localScale = Vector3.one * 1.1f;
         correctAnswerButton.transform.localScale = Vector3.one * 1.1f;
 
         _isResultViewing = true;
         
         ResetTurnTimer();
+
+        if (index == _currentCorrectAnswerIndex)
+            HandleCorrectAnswerAsync(index);
+        else
+            HandleWrongAnswer(index);
     }
 
     private async UniTaskVoid HandleCorrectAnswerAsync(int index)
@@ -250,6 +254,10 @@ public class SoloGameState : GameLoopState
             else
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+                
+                _soloGameStageCompletePanel.Show();
+                await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+                _soloGameStageCompletePanel.Hide();
                 
                 _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
             }

@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour, IUIController
     [SerializeField] private LevelSelectUIPanel _levelSelectPanel;
     [SerializeField] private LevelCompleteUIPanel _levelCompletePanel;
     [SerializeField] private GameOverUIPanel _gameOverPanel;
+    [SerializeField] private SoloGameStageCompleteUIPanel _soloGameStageCompletePanel;
 
     public MainMenuUIPanel MainMenuPanel => _mainMenuPanel;
     public PlayersInfoUIPanel PlayersInfoPanel => _playersInfoPanel;
@@ -23,4 +24,5 @@ public class UIController : MonoBehaviour, IUIController
     public LevelSelectUIPanel LevelSelectPanel => _levelSelectPanel;
     public LevelCompleteUIPanel LevelCompletePanel => _levelCompletePanel;
     public GameOverUIPanel GameOverPanel => _gameOverPanel;
+    public SoloGameStageCompleteUIPanel SoloGameStageCompletePanel => _soloGameStageCompletePanel;
 }

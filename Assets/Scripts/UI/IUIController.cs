@@ -10,4 +10,5 @@ public interface IUIController
     LevelSelectUIPanel LevelSelectPanel { get; }
     LevelCompleteUIPanel LevelCompletePanel { get; }
     GameOverUIPanel GameOverPanel { get; }
+    SoloGameStageCompleteUIPanel SoloGameStageCompletePanel { get; }
 }
