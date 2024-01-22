@@ -48,13 +48,17 @@ public class LevelController : MonoBehaviour, ILevelController
         
         _levelSave?.LinkLevelSlots(_levelSlots);
         _levelSave?.LinkPlayersInfoPanel(_uiController.PlayersInfoPanel);
-
+        
         SetLevelNumbers();
         UnlockFirstLevel();
     }
 
     public void InitializeSelectLevelPanel()
     {
+        int allStarsCount = _levelSlots.Length * 3;
+        int currentStarsCount = _lastCompletedLevelNumber * 3;
+        _uiController.LevelSelectPanel.SetLevelsInfoText(currentStarsCount, allStarsCount);
+        
         _uiController.LevelSelectPanel.OnLevelSelected += HandleLevelSelectEvent;
         _uiController.LevelSelectPanel.Show();
         _uiController.GameModesPanel.Hide();

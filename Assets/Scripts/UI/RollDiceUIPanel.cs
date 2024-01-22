@@ -40,7 +40,8 @@ public class RollDiceUIPanel : UIPanel
 
     public void ActivateExtraSpin()
     {
-        _rollDiceButton.interactable = true;
+        Reset();
+        RollDice();
     }
 
     public async UniTaskVoid SetRolledDice(QuestionCategoryType questionCategoryType)
