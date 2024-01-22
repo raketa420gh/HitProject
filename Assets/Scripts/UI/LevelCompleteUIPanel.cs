@@ -1,18 +1,16 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelCompleteUIPanel : UIPanel
 {
     [SerializeField] private StarsUIPanel _starsPanel;
-    [SerializeField] private UIPanel _gameStatsPanel;
-    [SerializeField] private TMP_Text _scoreCountText;
-    [SerializeField] private TMP_Text _timeCountText;
-    [SerializeField] private TMP_Text _coinCountText;
+    [SerializeField] private GameStatsUIPanel _gameStatsPanel;
     [SerializeField] private Button _homeButton;
     [SerializeField] private Button _replayButton;
     [SerializeField] private Button _nextLevelButton;
+
+    public GameStatsUIPanel GameStatsPanel => _gameStatsPanel;
 
     public event Action OnHomeButtonClicked;
     public event Action OnReplayButtonClicked;
@@ -48,13 +46,6 @@ public class LevelCompleteUIPanel : UIPanel
         base.Hide();
         
         _gameStatsPanel.Hide();
-    }
-
-    public void SetGameStats(int scoreCount, int timeSeconds, int coinsCount)
-    {
-        _scoreCountText.text = scoreCount.ToString();
-        _timeCountText.text = timeSeconds.ToString();
-        _coinCountText.text = coinsCount.ToString();
     }
 
     private void HandleHomeButtonClickEvent()

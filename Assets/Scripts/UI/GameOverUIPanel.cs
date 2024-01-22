@@ -5,6 +5,9 @@ using UnityEngine.UI;
 public class GameOverUIPanel : UIPanel
 {
     [SerializeField] private Button _homeButton;
+    [SerializeField] private GameStatsUIPanel _gameStatsPanel;
+    
+    public GameStatsUIPanel GameStatsPanel => _gameStatsPanel;
     
     public event Action OnHomeButtonClicked;
     

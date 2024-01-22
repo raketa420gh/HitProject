@@ -20,12 +20,14 @@ public class GameOverState : GameLoopState
     {
         Debug.Log($"{this} entered");
         
+        _gameOverPanel.GameStatsPanel.Show();
         _gameOverPanel.OnHomeButtonClicked += HandleHomeButtonClickEvent;
         _gameOverPanel.Show();
     }
 
     public override void OnStateDisabled()
     {
+        _gameOverPanel.GameStatsPanel.Hide();
         _gameOverPanel.OnHomeButtonClicked -= HandleHomeButtonClickEvent;
         _gameOverPanel.Hide();
     }

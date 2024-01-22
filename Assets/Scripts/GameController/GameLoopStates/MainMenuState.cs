@@ -79,5 +79,6 @@ public class MainMenuState : GameLoopState
         Debug.Log($"START TIME CHALLENGE GAME");
 
         _levelController.SetGameMode(GameModeType.TimeChallenge);
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.TimeChallenge);
     }
 }
