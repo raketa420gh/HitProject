@@ -5,6 +5,7 @@ public class LevelCompleteState : GameLoopState
     private readonly GameLoopStateMachine _gameLoopStateMachine;
     private readonly LevelCompleteUIPanel _levelCompletePanel;
     private readonly ISaveService _saveService;
+    private readonly ILevelController _levelController;
     private PlayerGameSessionStats _playerGameSessionStats;
 
     public LevelCompleteState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
@@ -12,6 +13,7 @@ public class LevelCompleteState : GameLoopState
         _gameLoopStateMachine = gameLoopStateMachine;
         _levelCompletePanel = gameLoopStateMachine.Parent.UIController.LevelCompletePanel;
         _saveService = _gameLoopStateMachine.Parent.SaveService;
+        _levelController = _gameLoopStateMachine.Parent.LevelController;
     }
 
     public override void OnStateRegistered()
@@ -53,7 +55,14 @@ public class LevelCompleteState : GameLoopState
     
     private void HandleReplayButtonClickEvent()
     {
+        if (_levelController.CurrentGameMode == GameModeType.TimeChallenge)
+            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.TimeChallenge);
         
+        if (_levelController.CurrentGameMode == GameModeType.Solo)
+            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
+        
+        if (_levelController.CurrentGameMode == GameModeType.Versus)
+            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.VersusGame);
     }
     
     private void HandleNextLevelButtonClickEvent()

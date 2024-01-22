@@ -10,6 +10,8 @@ public class VersusGameState : GameLoopState
     private readonly ILevelController _levelController;
     private readonly IUIController _uiController;
     private readonly InGameUIPanel _inGamePanel;
+    private readonly LevelCompleteUIPanel _levelCompletePanel;
+    private readonly GameOverUIPanel _gameOverPanel;
     private readonly PlayersInfoUIPanel _playersInfoPanel;
     private readonly SelectPlayerTurnUIPanel _selectPlayerTurnPanel;
     private readonly AnswerUIButton[] _answerUIButtons;
@@ -21,6 +23,14 @@ public class VersusGameState : GameLoopState
     private bool _isResultViewing;
     private float _resultViewTimer;
     private float _resultViewTime = 2f;
+    
+    private bool _isTurnTimerActive;
+    private float _turnTimer;
+    private float _turnTime = 5f;
+    private float _turnTimeProgressNormalized;
+    
+    private bool _isGlobalTimerActive;
+    private float _globalTimer;
 
     private PlayerGameSessionStats _youPlayerGameSessionStats;
     private PlayerGameSessionStats _opponentPlayerGameSessionStats;
@@ -31,6 +41,8 @@ public class VersusGameState : GameLoopState
         _levelController = _gameLoopStateMachine.Parent.LevelController;
         _uiController = _gameLoopStateMachine.Parent.UIController;
         _inGamePanel = _uiController.InGamePanel;
+        _levelCompletePanel = _uiController.LevelCompletePanel;
+        _gameOverPanel = _uiController.GameOverPanel;
         _playersInfoPanel = _uiController.PlayersInfoPanel;
         _selectPlayerTurnPanel = _uiController.SelectPlayerTurnPanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
@@ -47,6 +59,8 @@ public class VersusGameState : GameLoopState
         
         _levelController.SetGameMode(GameModeType.Versus);
         InitializePlayersInfoPanel();
+        _inGamePanel.TurnTimeProgressBar.Show();
+        _inGamePanel.GlobalTimeProgressBar.Hide();
 
         if (_isNewGame)
         {
@@ -80,6 +94,36 @@ public class VersusGameState : GameLoopState
                 ChangeNextPlayerTurnType();
             }
         }
+        
+        if (_isTurnTimerActive)
+        {
+            _turnTimer += Time.deltaTime;
+            
+            _turnTimeProgressNormalized = _turnTimer / _turnTime;
+            _inGamePanel.TurnTimeProgressBar.SetFillAmount(_turnTimeProgressNormalized);
+
+            if (_turnTimer > _turnTime)
+            {
+                GameOverVersus();
+            }
+        }
+        
+        if (_isGlobalTimerActive)
+        {
+            _globalTimer += Time.deltaTime;
+        }
+    }
+    
+    private void ResetTurnTimer()
+    {
+        _turnTimer = 0f;
+        _isTurnTimerActive = false;
+    }
+
+    private void ResetGlobalTimer()
+    {
+        _globalTimer = 0f;
+        _isGlobalTimerActive = false;
     }
 
     private void ResetResultViewTimer()
@@ -131,6 +175,11 @@ public class VersusGameState : GameLoopState
 
     private void ActivateNextQuestion()
     {
+        ResetResultViewTimer();
+        ResetTurnTimer();
+        
+        _isTurnTimerActive = true;
+        
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.Reset();
 
@@ -170,10 +219,14 @@ public class VersusGameState : GameLoopState
         {
             foreach (AnswerUIButton answerUIButton in _answerUIButtons)
                 answerUIButton.OnClicked += HandleAnswerClickEvent;
+            
+            _playersInfoPanel.SetInfoTextColor(Color.blue);
         }
 
         if (_currentPlayerTurnType == PlayerTurnType.Opponent)
         {
+            _playersInfoPanel.SetInfoTextColor(Color.red);
+            
             float rDelay = Random.Range(2, 4);
             int rAnswerIndex = Random.Range(0, 3);
             
@@ -200,15 +253,17 @@ public class VersusGameState : GameLoopState
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.SetInteractable(false);
 
-        if (index == _currentCorrectAnswerIndex)
-            HandleCorrectAnswerAsync(index);
-        else
-            HandleWrongAnswer(index);
-
         clickedAnswerButton.transform.localScale = Vector3.one * 1.1f;
         correctAnswerButton.transform.localScale = Vector3.one * 1.1f;
 
         _isResultViewing = true;
+        
+        ResetTurnTimer();
+
+        if (index == _currentCorrectAnswerIndex)
+            HandleCorrectAnswerAsync(index);
+        else
+            HandleWrongAnswer(index);
     }
 
     private async UniTaskVoid HandleCorrectAnswerAsync(int index)
@@ -224,11 +279,7 @@ public class VersusGameState : GameLoopState
 
             if (_youPlayerGameSessionStats.CategoryPoints >= 3)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
-                
-                _youPlayerGameSessionStats.ResetAll();
-                _opponentPlayerGameSessionStats.ResetAll();
-                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
+                CompleteVersusLevelAsync();
             }
         }
 
@@ -238,10 +289,16 @@ public class VersusGameState : GameLoopState
             
             if (_opponentPlayerGameSessionStats.CategoryPoints >= 3)
             {
+                _gameOverPanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
+                _gameOverPanel.GameStatsPanel.SetTime((int)_globalTimer);
+                _gameOverPanel.GameStatsPanel.SetCoins(0);
+                
                 await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
                 
+                ResetTurnTimer();
                 _youPlayerGameSessionStats.ResetAll();
                 _opponentPlayerGameSessionStats.ResetAll();
+                
                 _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
             }
         }
@@ -254,6 +311,48 @@ public class VersusGameState : GameLoopState
         _inGamePanel.QuestionPanel.ShowResultView(false);
         _answerUIButtons[index].SetAnswerViewResult(false);
         _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
+    }
+    
+    private void GameOverVersus()
+    {
+        _gameOverPanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
+        _gameOverPanel.GameStatsPanel.SetTime((int)_globalTimer);
+        _gameOverPanel.GameStatsPanel.SetCoins(0);
+                
+        _youPlayerGameSessionStats.ResetAll();
+        _opponentPlayerGameSessionStats.ResetAll();
+        ResetTurnTimer();
+        ResetGlobalTimer();
+                
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
+    }
+
+    private async UniTaskVoid GameOverVersusAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+        
+        GameOverVersus();
+    }
+
+    private void CompleteVersusLevel()
+    {
+        _levelCompletePanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
+        _levelCompletePanel.GameStatsPanel.SetTime((int)_globalTimer);
+        _levelCompletePanel.GameStatsPanel.SetCoins(100);
+                
+        ResetTurnTimer();
+        ResetGlobalTimer();
+        _youPlayerGameSessionStats.ResetAll();
+        _opponentPlayerGameSessionStats.ResetAll();
+                
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
+    }
+
+    private async UniTaskVoid CompleteVersusLevelAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+                
+        CompleteVersusLevel();
     }
 
     private void HandleYouPlayerGameSessionStatsUpdateEvent(PlayerGameSessionStats playerGameSessionStats)
@@ -277,5 +376,7 @@ public class VersusGameState : GameLoopState
         ActivateCurrentPlayerTurnAsync();
         
         _inGamePanel.Show();
+        
+        _isGlobalTimerActive = true;
     }
 }

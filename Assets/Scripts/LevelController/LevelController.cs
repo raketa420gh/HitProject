@@ -12,6 +12,7 @@ public class LevelController : MonoBehaviour, ILevelController
     private GameModeType _currentGameMode;
 
     public int LastCompletedLevelNumber => _lastCompletedLevelNumber;
+    public GameModeType CurrentGameMode => _currentGameMode;
 
     public event Action<int> OnLevelSelected;
     public event Action<GameModeType> OnRollDicePanelPlayButtonClicked;
@@ -58,11 +59,6 @@ public class LevelController : MonoBehaviour, ILevelController
         _uiController.LevelSelectPanel.Show();
         _uiController.GameModesPanel.Hide();
     }
-    
-    public void HandleRollDicePlayButtonEvent()
-    {
-        OnRollDicePanelPlayButtonClicked?.Invoke(_currentGameMode);
-    }
 
     public void SetGameMode(GameModeType type)
     {
@@ -92,6 +88,11 @@ public class LevelController : MonoBehaviour, ILevelController
             levelSlot.SetLevelNumber(levelNumber);
             levelNumber++;
         }
+    }
+
+    public void HandleRollDicePlayButtonEvent()
+    {
+        OnRollDicePanelPlayButtonClicked?.Invoke(_currentGameMode);
     }
 
     private void HandleLevelSelectEvent(int levelNumber)

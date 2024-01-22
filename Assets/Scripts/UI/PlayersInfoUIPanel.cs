@@ -14,4 +14,19 @@ public class PlayersInfoUIPanel : UIPanel
     {
         _infoText.text = text;
     }
+
+    public void SetInfoTextColor(Color color)
+    {
+        _infoText.color = color;
+    }
+
+    public void EnableInfoText()
+    {
+        _infoText.gameObject.SetActive(true);
+    }
+
+    public void DisableInfoText()
+    {
+        _infoText.gameObject.SetActive(false);
+    }
 }

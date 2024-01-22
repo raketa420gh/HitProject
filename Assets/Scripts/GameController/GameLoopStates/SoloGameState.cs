@@ -56,9 +56,9 @@ public class SoloGameState : GameLoopState
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.OnClicked += HandleAnswerClickEvent;
         
+        _levelController.SetGameMode(GameModeType.Solo);
         _inGamePanel.TurnTimeProgressBar.Show();
         _inGamePanel.GlobalTimeProgressBar.Hide();
-        _isTurnTimerActive = true;
         _isGlobalTimerActive = true;
 
         ResetResultViewTimer();
@@ -116,7 +116,7 @@ public class SoloGameState : GameLoopState
     {
         _activeLevelNumber = levelNumber;
     }
-    
+
     private void GameOverSolo()
     {
         _gameOverPanel.GameStatsPanel.SetScore(_playerGameSessionStats.CategoryPoints);
@@ -133,13 +133,13 @@ public class SoloGameState : GameLoopState
         _resultViewTimer = 0f;
         _isResultViewing = false;
     }
-    
+
     private void ResetTurnTimer()
     {
         _turnTimer = 0f;
         _isTurnTimerActive = false;
     }
-    
+
     private void ResetGlobalTimer()
     {
         _globalTimer = 0f;
@@ -176,6 +176,7 @@ public class SoloGameState : GameLoopState
     private void ActivateNextQuestion()
     {
         ResetResultViewTimer();
+        ResetTurnTimer();
         
         _isTurnTimerActive = true;
 
@@ -258,7 +259,7 @@ public class SoloGameState : GameLoopState
                 _soloGameStageCompletePanel.Show();
                 await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
                 _soloGameStageCompletePanel.Hide();
-                
+
                 _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
             }
         }
@@ -272,9 +273,15 @@ public class SoloGameState : GameLoopState
         _answerUIButtons[index].SetAnswerViewResult(false);
         _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
         
-        _playerGameSessionStats.ResetAll();
+        _gameOverPanel.GameStatsPanel.SetScore(_playerGameSessionStats.CategoryPoints);
+        _gameOverPanel.GameStatsPanel.SetTime((int)_globalTimer);
+        _gameOverPanel.GameStatsPanel.SetCoins(0);
 
         await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+        
+        _playerGameSessionStats.ResetAll();
+        ResetTurnTimer();
+        ResetGlobalTimer();
         
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
     }
