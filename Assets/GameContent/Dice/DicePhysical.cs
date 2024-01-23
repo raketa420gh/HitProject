@@ -4,7 +4,8 @@ using Random = UnityEngine.Random;
 public class DicePhysical : MonoBehaviour
 {
     [SerializeField] private float _forceUpImpulse = 3000;
-    [SerializeField] private float _randomTorqueAmplitude = 300f;
+    [SerializeField] private float _randomTorqueAmplitudeRight = 300f;
+    [SerializeField] private float _randomTorqueAmplitudeForward = 300f;
     [SerializeField] private DiceSide[] _diceSides = new DiceSide[6];
     [SerializeField] private AudioSource _audioSource;
     private Rigidbody _diceRigidbody;
@@ -18,11 +19,7 @@ public class DicePhysical : MonoBehaviour
 
     private void Start()
     {
-        float randomTorque = Random.Range(-_randomTorqueAmplitude, _randomTorqueAmplitude);
-        _diceRigidbody.AddForce(Vector3.up * _forceUpImpulse);
-        _diceRigidbody.AddTorque(Vector3.right * randomTorque);
-
-        _isDiceStopCheckActive = true;
+        RollDice();
     }
 
     private void FixedUpdate()
@@ -57,5 +54,16 @@ public class DicePhysical : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         _audioSource.Play();
+    }
+
+    private void RollDice()
+    {
+        float randomTorqueRight = Random.Range(-_randomTorqueAmplitudeRight, _randomTorqueAmplitudeRight);
+        float randomTorqueForward = Random.Range(-_randomTorqueAmplitudeForward, _randomTorqueAmplitudeForward);
+        _diceRigidbody.AddForce(Vector3.up * _forceUpImpulse);
+        _diceRigidbody.AddTorque(Vector3.right * randomTorqueRight);
+        _diceRigidbody.AddTorque(Vector3.forward * randomTorqueForward);
+
+        _isDiceStopCheckActive = true;
     }
 }

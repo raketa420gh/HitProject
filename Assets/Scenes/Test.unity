@@ -1531,7 +1531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _forceUpImpulse: 3000
-  _randomTorqueAmplitude: 300
+  _randomTorqueAmplitude: 500
   _diceSides:
   - {fileID: 1949854958}
   - {fileID: 1454581963}
