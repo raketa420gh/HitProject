@@ -1,53 +1,46 @@
 using System;
 using Cysharp.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RollDiceUIPanel : UIPanel
 {
-    [SerializeField] private Animator _animator;
+    [SerializeField] private GameObject _physicalDiceParent;
     [SerializeField] private Button _rollDiceButton;
     [SerializeField] private UIPanel _buttonsPanel;
-    [SerializeField] private TMP_Text _diceFrontSideText;
     [SerializeField] private string _resetText = "ROLL DICE";
     [SerializeField] private SelectQuestionCategoryUIPanel _selectCategoryPanel;
 
     public event Action<QuestionCategoryType> OnRollDiceCompleted;
+    public event Action OnRollDiceStarted;
 
     private void OnEnable()
     {
         _selectCategoryPanel.OnQuestionCategorySelected += HandleQuestionCategorySelectEvent;
+        
+        _physicalDiceParent.SetActive(true);
     }
 
     private void OnDisable()
     {
         _selectCategoryPanel.OnQuestionCategorySelected -= HandleQuestionCategorySelectEvent;
+        
+        _physicalDiceParent.SetActive(false);
     }
 
     public void Reset()
     {
-        _diceFrontSideText.text = _resetText;
         _buttonsPanel.Hide();
-        _rollDiceButton.interactable = true;
-    }
-
-    public void RollDice()
-    {
-        _animator.SetTrigger("Roll");
-        _rollDiceButton.interactable = false;
     }
 
     public void ActivateExtraSpin()
     {
         Reset();
-        RollDice();
+        //RollDice();
     }
 
-    public async UniTaskVoid SetRolledDice(QuestionCategoryType questionCategoryType)
+    private async UniTaskVoid SetRolledDice(QuestionCategoryType questionCategoryType)
     {
-        SetDiceFrontSide(questionCategoryType);
-
         if (questionCategoryType == QuestionCategoryType.Triforce)
         {
             _buttonsPanel.Hide();
@@ -63,11 +56,6 @@ public class RollDiceUIPanel : UIPanel
         _buttonsPanel.Show();
 
         OnRollDiceCompleted?.Invoke(questionCategoryType);
-    }
-
-    private void SetDiceFrontSide(QuestionCategoryType questionCategoryType)
-    {
-        _diceFrontSideText.text = questionCategoryType.ToString();
     }
 
     private void HandleQuestionCategorySelectEvent(QuestionCategoryType questionCategoryType)

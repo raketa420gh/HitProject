@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class RollDiceState : GameLoopState
 {
+    private readonly DiceController _diceController;
     private readonly IUIController _uiController;
     private readonly RollDiceUIPanel _rollDicePanel;
     private QuestionCategoryType _rolledCategoryType = QuestionCategoryType.Triforce;
@@ -10,6 +11,7 @@ public class RollDiceState : GameLoopState
 
     public RollDiceState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
+        _diceController = gameLoopStateMachine.Parent.DiceController;
         _uiController = gameLoopStateMachine.Parent.UIController;
         _rollDicePanel = _uiController.RollDicePanel;
     }

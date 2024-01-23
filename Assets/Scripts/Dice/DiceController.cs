@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class DicePhysical : MonoBehaviour
+public class DiceController : MonoBehaviour
 {
     [SerializeField] private float _forceUpImpulse = 3000;
     [SerializeField] private float _randomTorqueAmplitudeRight = 300f;
@@ -10,16 +11,17 @@ public class DicePhysical : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     private Rigidbody _diceRigidbody;
     private bool _isDiceStopCheckActive;
+    private Vector3 _startDicePosition;
+    private Quaternion _startDiceRotation;
+    
+    public event Action<QuestionCategoryType> OnRollDiceCompleted;
     
     private void Awake()
     {
         _diceRigidbody = GetComponent<Rigidbody>();
         _diceRigidbody.solverIterations = 250;
-    }
-
-    private void Start()
-    {
-        RollDice();
+        _startDicePosition = transform.position;
+        _startDiceRotation = transform.rotation;
     }
 
     private void FixedUpdate()
@@ -46,7 +48,7 @@ public class DicePhysical : MonoBehaviour
                     }
                 }
                 
-                Debug.Log("Верхняя грань: " + diceSideWithMaxY.QuestionCategoryType);
+                Debug.Log("Top side: " + diceSideWithMaxY.QuestionCategoryType);
             }
         }
     }
@@ -56,8 +58,10 @@ public class DicePhysical : MonoBehaviour
         _audioSource.Play();
     }
 
-    private void RollDice()
+    public void RollDice()
     {
+        ResetDice();
+        
         float randomTorqueRight = Random.Range(-_randomTorqueAmplitudeRight, _randomTorqueAmplitudeRight);
         float randomTorqueForward = Random.Range(-_randomTorqueAmplitudeForward, _randomTorqueAmplitudeForward);
         _diceRigidbody.AddForce(Vector3.up * _forceUpImpulse);
@@ -65,5 +69,11 @@ public class DicePhysical : MonoBehaviour
         _diceRigidbody.AddTorque(Vector3.forward * randomTorqueForward);
 
         _isDiceStopCheckActive = true;
+    }
+
+    private void ResetDice()
+    {
+        transform.position = _startDicePosition;
+        transform.rotation = _startDiceRotation;
     }
 }

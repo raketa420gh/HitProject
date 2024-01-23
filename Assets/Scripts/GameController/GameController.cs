@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     private ICurrenciesController _currenciesController;
     private IUIController _uiController;
     private ILevelController _levelController;
+    private DiceController _diceController;
     private GameLoopStateMachine _gameLoopStateMachine;
 
     public List<QuestionData> QuestionsDatabase => _questionsDatabase;
@@ -18,6 +19,7 @@ public class GameController : MonoBehaviour
     public ICurrenciesController CurrenciesController => _currenciesController;
     public IUIController UIController => _uiController;
     public ILevelController LevelController => _levelController;
+    public DiceController DiceController => _diceController;
 
     [Inject]
     public void Construct(ISaveService saveService, IFactory factory, ICurrenciesController currenciesController,
