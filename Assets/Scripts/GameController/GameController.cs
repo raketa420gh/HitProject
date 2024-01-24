@@ -5,13 +5,13 @@ using Zenject;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private List<QuestionData> _questionsDatabase = new List<QuestionData>();
+    private GameLoopStateMachine _gameLoopStateMachine;
     private ISaveService _saveService;
     private IFactory _factory;
     private ICurrenciesController _currenciesController;
     private IUIController _uiController;
     private ILevelController _levelController;
-    private DiceController _diceController;
-    private GameLoopStateMachine _gameLoopStateMachine;
+    private DicePhysical _dicePhysical;
 
     public List<QuestionData> QuestionsDatabase => _questionsDatabase;
     public ISaveService SaveService => _saveService;
@@ -19,17 +19,18 @@ public class GameController : MonoBehaviour
     public ICurrenciesController CurrenciesController => _currenciesController;
     public IUIController UIController => _uiController;
     public ILevelController LevelController => _levelController;
-    public DiceController DiceController => _diceController;
+    public DicePhysical DicePhysical => _dicePhysical;
 
     [Inject]
     public void Construct(ISaveService saveService, IFactory factory, ICurrenciesController currenciesController,
-        IUIController uiController, ILevelController levelController)
+        IUIController uiController, ILevelController levelController, DicePhysical dicePhysical)
     {
         _saveService = saveService;
         _factory = factory;
         _currenciesController = currenciesController;
         _uiController = uiController;
         _levelController = levelController;
+        _dicePhysical = dicePhysical;
     }
 
     private void Start()

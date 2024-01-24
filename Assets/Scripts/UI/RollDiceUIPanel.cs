@@ -1,31 +1,26 @@
 using System;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RollDiceUIPanel : UIPanel
 {
-    [SerializeField] private GameObject _physicalDiceParent;
     [SerializeField] private Button _rollDiceButton;
     [SerializeField] private UIPanel _buttonsPanel;
     [SerializeField] private string _resetText = "ROLL DICE";
     [SerializeField] private SelectQuestionCategoryUIPanel _selectCategoryPanel;
 
-    public event Action<QuestionCategoryType> OnRollDiceCompleted;
-    public event Action OnRollDiceStarted;
+    public event Action<QuestionCategoryType> OnTriforceCategorySelected;
+    public event Action OnRerollButtonClicked;
 
     private void OnEnable()
     {
+        Reset();
         _selectCategoryPanel.OnQuestionCategorySelected += HandleQuestionCategorySelectEvent;
-        
-        _physicalDiceParent.SetActive(true);
     }
 
     private void OnDisable()
     {
         _selectCategoryPanel.OnQuestionCategorySelected -= HandleQuestionCategorySelectEvent;
-        
-        _physicalDiceParent.SetActive(false);
     }
 
     public void Reset()
@@ -36,38 +31,35 @@ public class RollDiceUIPanel : UIPanel
     public void ActivateExtraSpin()
     {
         Reset();
-        //RollDice();
+        
+        OnRerollButtonClicked?.Invoke();
     }
 
-    private async UniTaskVoid SetRolledDice(QuestionCategoryType questionCategoryType)
+    public void EnableButtons()
     {
-        if (questionCategoryType == QuestionCategoryType.Triforce)
-        {
-            _buttonsPanel.Hide();
-            
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
-            
-            _selectCategoryPanel.Show();
-            
-            return;
-        }
-        
-        _selectCategoryPanel.Hide();
         _buttonsPanel.Show();
+    }
 
-        OnRollDiceCompleted?.Invoke(questionCategoryType);
+    public void DisableButtons()
+    {
+        _buttonsPanel.Hide();
+    }
+
+    public void EnableSelectCategoryPanel()
+    {
+        _selectCategoryPanel.Show();
+    }
+    
+    public void DisableSelectCategoryPanel()
+    {
+        _selectCategoryPanel.Hide();
     }
 
     private void HandleQuestionCategorySelectEvent(QuestionCategoryType questionCategoryType)
     {
-        SetRolledDice(questionCategoryType);
-    }
-
-    private void HandleRollDiceCompleteEvent()
-    {
-        QuestionCategoryType questionCategoryType = CoreExtensions.ExtendedRandom.RandomEnumValue<QuestionCategoryType>();
-        
         _selectCategoryPanel.Hide();
-        SetRolledDice(questionCategoryType);
+        _buttonsPanel.Show();
+
+        OnTriforceCategorySelected?.Invoke(questionCategoryType);
     }
 }

@@ -6,6 +6,8 @@ public interface ILevelController
     void InitializeSelectLevelPanel();
     void CompleteLevel(int levelNumber);
     void SetGameMode(GameModeType type);
+    void HandleRollDicePlayButtonEvent();
+    
     int LastCompletedLevelNumber { get; }
     GameModeType CurrentGameMode { get; }
 
