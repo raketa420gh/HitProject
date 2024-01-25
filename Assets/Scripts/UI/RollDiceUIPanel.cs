@@ -1,12 +1,9 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RollDiceUIPanel : UIPanel
 {
-    [SerializeField] private Button _rollDiceButton;
     [SerializeField] private UIPanel _buttonsPanel;
-    [SerializeField] private string _resetText = "ROLL DICE";
     [SerializeField] private SelectQuestionCategoryUIPanel _selectCategoryPanel;
 
     public event Action<QuestionCategoryType> OnTriforceCategorySelected;
