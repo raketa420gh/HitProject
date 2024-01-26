@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +18,7 @@ public class VersusGameState : GameLoopState
     private readonly PlayersInfoUIPanel _playersInfoPanel;
     private readonly SelectPlayerTurnUIPanel _selectPlayerTurnPanel;
     private readonly AnswerUIButton[] _answerUIButtons;
+    private readonly ParallaxController _parallaxController;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
     private PlayerTurnType _currentPlayerTurnType = PlayerTurnType.You;
@@ -46,6 +50,7 @@ public class VersusGameState : GameLoopState
         _playersInfoPanel = _uiController.PlayersInfoPanel;
         _selectPlayerTurnPanel = _uiController.SelectPlayerTurnPanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
+        _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
     }
 
     public override void OnStateRegistered()
@@ -56,8 +61,9 @@ public class VersusGameState : GameLoopState
     public override void OnStateActivated()
     {
         Debug.Log($"{this} entered");
-        
+
         _levelController.SetGameMode(GameModeType.Versus);
+        _parallaxController.EnableParallax();
         InitializePlayersInfoPanel();
         _inGamePanel.TurnTimeProgressBar.Show();
         _inGamePanel.GlobalTimeProgressBar.Hide();
@@ -78,6 +84,9 @@ public class VersusGameState : GameLoopState
         _youPlayerGameSessionStats.OnUpdated -= HandleYouPlayerGameSessionStatsUpdateEvent;
         _selectPlayerTurnPanel.OnPlayerTurnTypeSelected -= HandlePlayerTurnTypeSelectEvent;
         
+        _parallaxController.ResetPositions();
+        _parallaxController.DisableParallax();
+        
         _inGamePanel.Hide();
     }
 
@@ -89,8 +98,7 @@ public class VersusGameState : GameLoopState
 
             if (_resultViewTimer > _resultViewTime)
             {
-                ResetResultViewTimer();
-                ActivateNextQuestion();
+                ActivateNextQuestionAnimation();
                 ChangeNextPlayerTurnType();
             }
         }
@@ -172,12 +180,28 @@ public class VersusGameState : GameLoopState
         
         Debug.Log($"Questions initialized. Category = {rollDiceState.RolledCategoryType}, Questions count = {_categoryQuestions.Count}");
     }
-
-    private void ActivateNextQuestion()
+    
+    private void ActivateNextQuestionAnimation()
     {
         ResetResultViewTimer();
         ResetTurnTimer();
         
+        RectTransform questionPanelRect = _inGamePanel.QuestionPanel.CurrentQuestionPanelRect;
+        
+        float screenWidth = 1920;
+        float distanceToMove = -screenWidth;
+        float animationTime = 2f;
+        
+        _parallaxController.DoParallaxHorizontalStep(5, animationTime);
+        
+        TweenerCore<Vector2, Vector2, VectorOptions> tween = questionPanelRect.DOAnchorPosX(questionPanelRect.anchoredPosition.x + distanceToMove, animationTime);
+
+        tween.onComplete += ActivateNextQuestion;
+    }
+
+    private void ActivateNextQuestion()
+    {
+        _inGamePanel.QuestionPanel.CurrentQuestionPanelRect.DOAnchorPosX(0, 0);
         _isTurnTimerActive = true;
         
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)

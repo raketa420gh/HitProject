@@ -9,6 +9,7 @@ public class InitializeState : GameLoopState
     private ICurrenciesController _currenciesController;
     private ILevelController _levelController;
     private IUIController _uiController;
+    private ParallaxController _parallaxController;
 
     public InitializeState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -22,6 +23,7 @@ public class InitializeState : GameLoopState
         _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
         _uiController = _gameLoopStateMachine.Parent.UIController;
+        _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
 
         Debug.Log($"{this} registered");
     }
@@ -34,6 +36,7 @@ public class InitializeState : GameLoopState
         _factory.Initialize();
         _currenciesController.Initialise(_saveService);
         _levelController.InitializeLevelSave();
+        _parallaxController.Initialize();
 
         Debug.Log("Game systems initialized");
 

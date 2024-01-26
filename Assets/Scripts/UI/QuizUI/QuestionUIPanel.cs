@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class QuestionUIPanel : UIPanel
 {
+    [SerializeField] private RectTransform _currentQuestionPanelRect;
     [SerializeField] private TMP_Text _questionCategoryText;
     [SerializeField] private TMP_Text _questionText;
     [SerializeField] private AnswerUIButton[] _answerButtons;
@@ -10,6 +11,7 @@ public class QuestionUIPanel : UIPanel
     [SerializeField] private UIPanel _wrongAnswerPanel;
 
     public AnswerUIButton[] AnswerUIButtons => _answerButtons;
+    public RectTransform CurrentQuestionPanelRect => _currentQuestionPanelRect;
 
     public void SetQuestion(QuestionData questionData)
     {

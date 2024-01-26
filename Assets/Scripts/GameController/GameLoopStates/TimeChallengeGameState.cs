@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,6 +16,7 @@ public class TimeChallengeGameState : GameLoopState
     private readonly GameOverUIPanel _gameOverPanel;
     private readonly AnswerUIButton[] _answerUIButtons;
     private readonly ILevelController _levelController;
+    private readonly ParallaxController _parallaxController;
     private int _currentCorrectAnswerIndex;
     private int _activeLevelNumber;
     private List<QuestionData> _questionsDatabase = new List<QuestionData>();
@@ -42,6 +46,7 @@ public class TimeChallengeGameState : GameLoopState
         _gameOverPanel = _uiController.GameOverPanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
+        _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
     }
 
     public override void OnStateRegistered()
@@ -60,7 +65,8 @@ public class TimeChallengeGameState : GameLoopState
         _inGamePanel.GlobalTimeProgressBar.Show();
         _isGlobalTimerActive = true;
         _isTurnTimerActive = true;
-
+        
+        _parallaxController.EnableParallax();
         ResetResultViewTimer();
         InitializePlayerSession();
         InitializeQuestions();
@@ -71,6 +77,8 @@ public class TimeChallengeGameState : GameLoopState
 
     public override void OnStateDisabled()
     {
+        _parallaxController.ResetPositions();
+        _parallaxController.DisableParallax();
         _playerGameSessionStats.ResetAll();
         _inGamePanel.Hide();
     }
@@ -83,7 +91,7 @@ public class TimeChallengeGameState : GameLoopState
 
             if (_resultViewTimer > _resultViewTime)
             {
-                ActivateNextQuestion();
+                ActivateNextQuestionAnimation();
             }
         }
 
@@ -142,11 +150,29 @@ public class TimeChallengeGameState : GameLoopState
     private void InitializeQuestions()
     {
         _questionsDatabase = _gameLoopStateMachine.Parent.QuestionsDatabase;
+    }    
+    
+    private void ActivateNextQuestionAnimation()
+    {
+        ResetResultViewTimer();
+        ResetTurnTimer();
+        
+        RectTransform questionPanelRect = _inGamePanel.QuestionPanel.CurrentQuestionPanelRect;
+        
+        float screenWidth = 1920;
+        float distanceToMove = -screenWidth;
+        float animationTime = 2f;
+        
+        _parallaxController.DoParallaxHorizontalStep(5, animationTime);
+        
+        TweenerCore<Vector2, Vector2, VectorOptions> tween = questionPanelRect.DOAnchorPosX(questionPanelRect.anchoredPosition.x + distanceToMove, animationTime);
+
+        tween.onComplete += ActivateNextQuestion;
     }
 
     private void ActivateNextQuestion()
     {
-        ResetResultViewTimer();
+        _inGamePanel.QuestionPanel.CurrentQuestionPanelRect.DOAnchorPosX(0, 0);
         _isTurnTimerActive = true;
         
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)

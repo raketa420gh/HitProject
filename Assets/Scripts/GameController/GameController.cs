@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     private IUIController _uiController;
     private ILevelController _levelController;
     private DicePhysical _dicePhysical;
+    private ParallaxController _parallaxController;
 
     public List<QuestionData> QuestionsDatabase => _questionsDatabase;
     public ISaveService SaveService => _saveService;
@@ -20,10 +21,12 @@ public class GameController : MonoBehaviour
     public IUIController UIController => _uiController;
     public ILevelController LevelController => _levelController;
     public DicePhysical DicePhysical => _dicePhysical;
+    public ParallaxController ParallaxController => _parallaxController;
 
     [Inject]
     public void Construct(ISaveService saveService, IFactory factory, ICurrenciesController currenciesController,
-        IUIController uiController, ILevelController levelController, DicePhysical dicePhysical)
+        IUIController uiController, ILevelController levelController, DicePhysical dicePhysical, 
+        ParallaxController parallaxController)
     {
         _saveService = saveService;
         _factory = factory;
@@ -31,13 +34,13 @@ public class GameController : MonoBehaviour
         _uiController = uiController;
         _levelController = levelController;
         _dicePhysical = dicePhysical;
+        _parallaxController = parallaxController;
     }
 
     private void Start()
     {
         InitializeGameLoopStateMachine();
     }
-
 
     private void OnEnable()
     {
@@ -52,6 +55,8 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         _gameLoopStateMachine?.ActiveState?.Update();
+
+        _parallaxController?.UpdateParallax();
         
         if (Input.GetKeyDown(KeyCode.M))
             _currenciesController.Add(Currency.Type.Money, 100);
@@ -78,6 +83,9 @@ public class GameController : MonoBehaviour
                 break;
             case GameModeType.Versus:
                 _gameLoopStateMachine.SetState(GameLoopStateMachine.State.VersusGame);
+                break;
+            case GameModeType.TimeChallenge:
+                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.TimeChallenge);
                 break;
         }
     }

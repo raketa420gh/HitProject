@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,6 +17,7 @@ public class SoloGameState : GameLoopState
     private readonly SoloGameStageCompleteUIPanel _soloGameStageCompletePanel;
     private readonly AnswerUIButton[] _answerUIButtons;
     private readonly ILevelController _levelController;
+    private readonly ParallaxController _parallaxController;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
     private int _activeLevelNumber;
@@ -42,6 +46,7 @@ public class SoloGameState : GameLoopState
         _soloGameStageCompletePanel = _uiController.SoloGameStageCompletePanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
+        _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
     }
 
     public override void OnStateRegistered()
@@ -61,6 +66,7 @@ public class SoloGameState : GameLoopState
         _inGamePanel.GlobalTimeProgressBar.Hide();
         _isGlobalTimerActive = true;
 
+        _parallaxController.EnableParallax();
         ResetResultViewTimer();
         InitializePlayerSession();
         InitializeQuestionsCategory();
@@ -76,6 +82,9 @@ public class SoloGameState : GameLoopState
         
         _playerGameSessionStats.OnUpdated -= HandlePlayerGameSessionStatsUpdateEvent;
         
+        _parallaxController.ResetPositions();
+        _parallaxController.DisableParallax();
+        
         _isGlobalTimerActive = false;
         
         _inGamePanel.Hide();
@@ -89,7 +98,7 @@ public class SoloGameState : GameLoopState
 
             if (_resultViewTimer > _resultViewTime)
             {
-                ActivateNextQuestion();
+                ActivateNextQuestionAnimation();
             }
         }
         
@@ -173,11 +182,27 @@ public class SoloGameState : GameLoopState
         Debug.Log($"Questions initialized. Category = {rollDiceState.RolledCategoryType}, Questions count = {_categoryQuestions.Count}");
     }
 
-    private void ActivateNextQuestion()
+    private void ActivateNextQuestionAnimation()
     {
         ResetResultViewTimer();
         ResetTurnTimer();
         
+        RectTransform questionPanelRect = _inGamePanel.QuestionPanel.CurrentQuestionPanelRect;
+        
+        float screenWidth = 1920;
+        float distanceToMove = -screenWidth;
+        float animationTime = 2f;
+        
+        _parallaxController.DoParallaxHorizontalStep(5, animationTime);
+        
+        TweenerCore<Vector2, Vector2, VectorOptions> tween = questionPanelRect.DOAnchorPosX(questionPanelRect.anchoredPosition.x + distanceToMove, animationTime);
+
+        tween.onComplete += ActivateNextQuestion;
+    }
+
+    private void ActivateNextQuestion()
+    {
+        _inGamePanel.QuestionPanel.CurrentQuestionPanelRect.DOAnchorPosX(0, 0);
         _isTurnTimerActive = true;
 
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
@@ -212,7 +237,7 @@ public class SoloGameState : GameLoopState
         correctAnswerButton.transform.localScale = Vector3.one * 1.1f;
 
         _isResultViewing = true;
-        
+
         ResetTurnTimer();
 
         if (index == _currentCorrectAnswerIndex)
