@@ -25,8 +25,13 @@ public class PlayerInfoUIPanel : UIPanel
         _playerScoreText.text = scoreCount.ToString();
     }
 
-    public void SetPlayerInfo(string playerName)
+    public void SetPlayerName(string playerName)
     {
         _playerNameText.text = playerName;
+    }
+
+    public void SetIcon(Sprite sprite)
+    {
+        _playerIcon.sprite = sprite;
     }
 }

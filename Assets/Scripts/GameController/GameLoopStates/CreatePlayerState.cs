@@ -23,12 +23,14 @@ public class CreatePlayerState : GameLoopState
         Debug.Log($"{this} entered");
 
         _createPlayerPanel.OnNameConfirmButtonClicked += HandleNameConfirmButtonEvent;
+        _createPlayerPanel.OnIconSelected += HandleIconSelectEvent;
         _createPlayerPanel.Show();
     }
 
     public override void OnStateDisabled()
     {
         _createPlayerPanel.OnNameConfirmButtonClicked -= HandleNameConfirmButtonEvent;
+        _createPlayerPanel.OnIconSelected -= HandleIconSelectEvent;
         _createPlayerPanel.Hide();
     }
 
@@ -39,8 +41,14 @@ public class CreatePlayerState : GameLoopState
 
     private void HandleNameConfirmButtonEvent(string nameText)
     {
-        _playersInfoPanel.YouPlayerPanel.SetPlayerInfo(nameText);
+        _playersInfoPanel.YouPlayerPanel.SetPlayerName(nameText);
         _gameLoopStateMachine.Parent.SaveService.ForceSave();
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
+    }
+    
+    private void HandleIconSelectEvent(Sprite sprite)
+    {
+        _playersInfoPanel.YouPlayerPanel.SetIcon(sprite);
+        _createPlayerPanel.SelectIconPanel.Hide();
     }
 }

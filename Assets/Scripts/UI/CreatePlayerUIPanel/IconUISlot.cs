@@ -9,7 +9,7 @@ public class IconUISlot : MonoBehaviour
 
     public Sprite Sprite => _image.sprite;
 
-    public event Action OnSelectIconButtonClicked;
+    public event Action<IconUISlot> OnSelectIconButtonClicked;
 
     private void OnEnable()
     {
@@ -23,6 +23,6 @@ public class IconUISlot : MonoBehaviour
 
     private void HandleButtonClickEvent()
     {
-        OnSelectIconButtonClicked?.Invoke();
+        OnSelectIconButtonClicked?.Invoke(this);
     }
 }

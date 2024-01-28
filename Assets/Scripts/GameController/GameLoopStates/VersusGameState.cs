@@ -155,7 +155,7 @@ public class VersusGameState : GameLoopState
     {
         _playersInfoPanel.YouPlayerPanel.SetScoreView(true);
         _playersInfoPanel.YouPlayerPanel.SetView(true);
-        _playersInfoPanel.OpponentPlayerPanel.SetPlayerInfo("Opponent");
+        _playersInfoPanel.OpponentPlayerPanel.SetPlayerName("Opponent");
         _playersInfoPanel.OpponentPlayerPanel.SetScoreView(true);
         _playersInfoPanel.OpponentPlayerPanel.SetView(true);
         _playersInfoPanel.SetInfoText("");

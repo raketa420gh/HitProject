@@ -59,7 +59,7 @@ public class InitializeState : GameLoopState
 
         if (_levelSave != null && _levelSave.PlayerName != null)
         {
-            _uiController.PlayersInfoPanel.YouPlayerPanel.SetPlayerInfo(_levelSave.PlayerName);
+            _uiController.PlayersInfoPanel.YouPlayerPanel.SetPlayerName(_levelSave.PlayerName);
             _saveService.ForceSave();
             _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
         }
