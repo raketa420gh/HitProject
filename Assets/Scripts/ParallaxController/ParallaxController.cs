@@ -57,7 +57,7 @@ public class ParallaxController : MonoBehaviour
 
     public void DoParallaxHorizontalStep(float xDistance, float seconds)
     {
-        Vector3 newPosition = _anchorTransform.position + Vector3.right * xDistance;
+        Vector3 newPosition = _anchorTransform.position + Vector3.left * xDistance;
 
         _anchorTransform.DOMove(newPosition, seconds);
     }

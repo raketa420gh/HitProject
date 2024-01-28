@@ -163,7 +163,7 @@ public class TimeChallengeGameState : GameLoopState
         float distanceToMove = -screenWidth;
         float animationTime = 2f;
         
-        _parallaxController.DoParallaxHorizontalStep(5, animationTime);
+        _parallaxController.DoParallaxHorizontalStep(20, animationTime);
         
         TweenerCore<Vector2, Vector2, VectorOptions> tween = questionPanelRect.DOAnchorPosX(questionPanelRect.anchoredPosition.x + distanceToMove, animationTime);
 
