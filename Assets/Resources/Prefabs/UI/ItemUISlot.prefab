@@ -300,6 +300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7948f999369e4c9daaa9a566eaff2b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _icon: {fileID: 8052465301353781529}
+  _amountText: {fileID: 8888061244213519261}
 --- !u!1 &6058032403406272140
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +435,7 @@ GameObject:
   - component: {fileID: 5569057050354270795}
   - component: {fileID: 8888061244213519261}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AmoutText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

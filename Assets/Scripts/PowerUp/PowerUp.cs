@@ -1,18 +1,46 @@
 using UnityEngine;
 
-public class PowerUp : MonoBehaviour, IPowerUp
+[System.Serializable]
+public class PowerUp
 {
-    public void Initialize()
+    [SerializeField] private Type _powerUpType;
+    [SerializeField] private Sprite _icon;
+    private Save _save;   
+    
+    public Type PowerUpType => _powerUpType;
+    public Sprite Icon => _icon;
+
+    public int Amount
     {
-            
+        get => _save.Amount;
+        set => _save.Amount = value;
     }
 
-    public void Activate()
+    public void SetSave(Save save)
     {
+        _save = save;
+    }
+    
+    public enum Type
+    {
+        Answer50 = 0,
+        Time = 1,
+        SecondChance = 2
     }
 
-    public void Deactivate()
+    [System.Serializable]
+    public class Save : ISaveObject
     {
-            
+        [SerializeField] int _amount;
+
+        public int Amount
+        {
+            get => _amount;
+            set => _amount = value;
+        }
+
+        public void Flush()
+        {
+        }
     }
 }

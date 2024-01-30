@@ -15,7 +15,6 @@ public class TimeChallengeGameState : GameLoopState
     private readonly LevelCompleteUIPanel _levelCompletePanel;
     private readonly GameOverUIPanel _gameOverPanel;
     private readonly AnswerUIButton[] _answerUIButtons;
-    private readonly ILevelController _levelController;
     private readonly ICurrenciesController _currenciesController;
     private readonly ParallaxController _parallaxController;
     private int _currentCorrectAnswerIndex;
@@ -46,7 +45,6 @@ public class TimeChallengeGameState : GameLoopState
         _levelCompletePanel = _uiController.LevelCompletePanel;
         _gameOverPanel = _uiController.GameOverPanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
-        _levelController = _gameLoopStateMachine.Parent.LevelController;
         _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
         _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
     }

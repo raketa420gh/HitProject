@@ -1,4 +1,6 @@
 public interface IPowerUpsController
 {
-    void Initialize();
+    PowerUp[] PowerUps { get; }
+    
+    void Initialise(ISaveService saveService);
 }

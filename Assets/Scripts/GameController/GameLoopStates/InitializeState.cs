@@ -8,6 +8,7 @@ public class InitializeState : GameLoopState
     private IFactory _factory;
     private ICurrenciesController _currenciesController;
     private ILevelController _levelController;
+    private IPowerUpsController _powerUpsController;
     private IUIController _uiController;
     private ParallaxController _parallaxController;
 
@@ -24,6 +25,7 @@ public class InitializeState : GameLoopState
         _levelController = _gameLoopStateMachine.Parent.LevelController;
         _uiController = _gameLoopStateMachine.Parent.UIController;
         _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
+        _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
 
         Debug.Log($"{this} registered");
     }
@@ -35,9 +37,10 @@ public class InitializeState : GameLoopState
         _saveService.Initialise(Time.time, false);
         _factory.Initialize();
         _currenciesController.Initialise(_saveService);
-        _levelController.InitializeLevelSave();
+        _powerUpsController.Initialise(_saveService);
         _parallaxController.Initialize();
-        _uiController.ItemsPopup.Initialize(_currenciesController);
+        _levelController.InitializeLevelSave();
+        _uiController.ItemsPopup.InitializeCurrencies(_currenciesController);
         _uiController.StorePopup.Initialize(_currenciesController);
         _uiController.CreatePlayerPanel.SelectIconPanel.InitializeSlots();
 

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class CurrenciesController : MonoBehaviour, ICurrenciesController
 {
@@ -35,18 +34,10 @@ public class CurrenciesController : MonoBehaviour, ICurrenciesController
                 Debug.LogError(string.Format("[Currency System]: Currency with type {0} added to database twice!",
                     _currencies[i].CurrencyType));
             }
-
             
-            var save = _saveService.GetSaveObject<Currency.Save>("currency" + ":" + (int)_currencies[i].CurrencyType);
+            Currency.Save save = _saveService.GetSaveObject<Currency.Save>("currency" + ":" + (int)_currencies[i].CurrencyType);
 
-            if (save != null)
-            {
-                _currencies[i].SetSave(save);
-            }
-            else
-            {
-                _currencies[i].SetSave(new Currency.Save());
-            }
+            _currencies[i].SetSave(save ?? new Currency.Save());
         }
         
         _uiCurrencies.Initialise(this);

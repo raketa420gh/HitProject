@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     private ILevelController _levelController;
     private DicePhysical _dicePhysical;
     private ParallaxController _parallaxController;
+    private IPowerUpsController _powerUpsController;
 
     public List<QuestionData> QuestionsDatabase => _questionsDatabase;
     public ISaveService SaveService => _saveService;
@@ -22,11 +23,12 @@ public class GameController : MonoBehaviour
     public ILevelController LevelController => _levelController;
     public DicePhysical DicePhysical => _dicePhysical;
     public ParallaxController ParallaxController => _parallaxController;
+    public IPowerUpsController PowerUpsController => _powerUpsController;
 
     [Inject]
     public void Construct(ISaveService saveService, IFactory factory, ICurrenciesController currenciesController,
         IUIController uiController, ILevelController levelController, DicePhysical dicePhysical, 
-        ParallaxController parallaxController)
+        ParallaxController parallaxController, IPowerUpsController powerUpsController)
     {
         _saveService = saveService;
         _factory = factory;
@@ -35,6 +37,7 @@ public class GameController : MonoBehaviour
         _levelController = levelController;
         _dicePhysical = dicePhysical;
         _parallaxController = parallaxController;
+        _powerUpsController = powerUpsController;
     }
 
     private void Start()
