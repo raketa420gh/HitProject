@@ -19,6 +19,7 @@ public class VersusGameState : GameLoopState
     private readonly SelectPlayerTurnUIPanel _selectPlayerTurnPanel;
     private readonly AnswerUIButton[] _answerUIButtons;
     private readonly ParallaxController _parallaxController;
+    private readonly ICurrenciesController _currenciesController;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
     private PlayerTurnType _currentPlayerTurnType = PlayerTurnType.You;
@@ -51,6 +52,7 @@ public class VersusGameState : GameLoopState
         _selectPlayerTurnPanel = _uiController.SelectPlayerTurnPanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
         _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
+        _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
     }
 
     public override void OnStateRegistered()
@@ -363,6 +365,8 @@ public class VersusGameState : GameLoopState
         _levelCompletePanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
         _levelCompletePanel.GameStatsPanel.SetTime((int)_globalTimer);
         _levelCompletePanel.GameStatsPanel.SetCoins(100);
+        
+        _currenciesController.Add(Currency.Type.Money, 100);
                 
         ResetTurnTimer();
         ResetGlobalTimer();

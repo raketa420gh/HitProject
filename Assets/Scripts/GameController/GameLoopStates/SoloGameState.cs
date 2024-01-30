@@ -17,6 +17,7 @@ public class SoloGameState : GameLoopState
     private readonly SoloGameStageCompleteUIPanel _soloGameStageCompletePanel;
     private readonly AnswerUIButton[] _answerUIButtons;
     private readonly ILevelController _levelController;
+    private readonly ICurrenciesController _currenciesController;
     private readonly ParallaxController _parallaxController;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
@@ -46,6 +47,7 @@ public class SoloGameState : GameLoopState
         _soloGameStageCompletePanel = _uiController.SoloGameStageCompletePanel;
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
+        _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
         _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
     }
 
@@ -264,14 +266,15 @@ public class SoloGameState : GameLoopState
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
                 
-                _playerGameSessionStats.ResetAll();
-                
                 _levelController.CompleteLevel(_activeLevelNumber);
                 
                 _levelCompletePanel.GameStatsPanel.SetScore(_playerGameSessionStats.CategoryPoints);
                 _levelCompletePanel.GameStatsPanel.SetTime((int)_globalTimer);
                 _levelCompletePanel.GameStatsPanel.SetCoins(100);
                 
+                _currenciesController.Add(Currency.Type.Money, 100);
+                
+                _playerGameSessionStats.ResetAll();
                 ResetTurnTimer();
                 ResetGlobalTimer();
                 

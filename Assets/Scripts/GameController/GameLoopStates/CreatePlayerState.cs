@@ -46,9 +46,10 @@ public class CreatePlayerState : GameLoopState
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
     }
     
-    private void HandleIconSelectEvent(Sprite sprite)
+    private void HandleIconSelectEvent(Sprite sprite, int iconNumber)
     {
         _playersInfoPanel.YouPlayerPanel.SetIcon(sprite);
+        _playersInfoPanel.YouPlayerPanel.SetIconNumber(iconNumber);
         _createPlayerPanel.SelectIconPanel.Hide();
     }
 }

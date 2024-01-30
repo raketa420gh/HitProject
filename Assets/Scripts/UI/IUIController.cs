@@ -11,4 +11,6 @@ public interface IUIController
     LevelCompleteUIPanel LevelCompletePanel { get; }
     GameOverUIPanel GameOverPanel { get; }
     SoloGameStageCompleteUIPanel SoloGameStageCompletePanel { get; }
+    ItemsUIPopup ItemsPopup { get; }
+    StoreUIPopup StorePopup { get; }
 }

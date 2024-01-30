@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
+using UnityEngine;
 
 [Serializable]
 public class LevelSave : ISaveObject
 {
     public string PlayerName;
+    public int IconNumber;
     public int LastCompletedLevelNumber;
     public LevelSlotSaveData[] LevelSlotSaveDatas;
 
@@ -14,6 +16,7 @@ public class LevelSave : ISaveObject
     public LevelSave()
     {
         PlayerName = null;
+        IconNumber = 0;
         LevelSlotSaveDatas = null;
     }
 
@@ -35,6 +38,7 @@ public class LevelSave : ISaveObject
         }
 
         PlayerName = _playersInfoPanel.YouPlayerPanel.PlayerName;
+        IconNumber = _playersInfoPanel.YouPlayerPanel.IconNumber;
     }
 
     public void LinkLevelSlots(LevelSelectUISlot[] levelSlots)

@@ -37,6 +37,9 @@ public class InitializeState : GameLoopState
         _currenciesController.Initialise(_saveService);
         _levelController.InitializeLevelSave();
         _parallaxController.Initialize();
+        _uiController.ItemsPopup.Initialize(_currenciesController);
+        _uiController.StorePopup.Initialize(_currenciesController);
+        _uiController.CreatePlayerPanel.SelectIconPanel.InitializeSlots();
 
         Debug.Log("Game systems initialized");
 
@@ -59,13 +62,22 @@ public class InitializeState : GameLoopState
 
         if (_levelSave != null && _levelSave.PlayerName != null)
         {
-            _uiController.PlayersInfoPanel.YouPlayerPanel.SetPlayerName(_levelSave.PlayerName);
-            _saveService.ForceSave();
+            SetLoadedPlayerInfoAndSave();
             _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
         }
         else
         {
             _gameLoopStateMachine.SetState(GameLoopStateMachine.State.CreatePlayer);
         }
+    }
+
+    private void SetLoadedPlayerInfoAndSave()
+    {
+        _uiController.PlayersInfoPanel.YouPlayerPanel.SetPlayerName(_levelSave.PlayerName);
+        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIconNumber(_levelSave.IconNumber);
+        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIcon(_uiController.CreatePlayerPanel.SelectIconPanel
+            .GetSprite(_levelSave.IconNumber));
+        
+        _saveService.ForceSave();
     }
 }

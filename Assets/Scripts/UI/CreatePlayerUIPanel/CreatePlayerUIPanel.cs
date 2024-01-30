@@ -15,7 +15,7 @@ public class CreatePlayerUIPanel : UIPanel
     public SelectIconUIPanel SelectIconPanel => _selectIconPanel;
 
     public event Action<string> OnNameConfirmButtonClicked;
-    public event Action<Sprite> OnIconSelected;
+    public event Action<Sprite, int> OnIconSelected;
 
     private void OnEnable()
     {
@@ -40,7 +40,7 @@ public class CreatePlayerUIPanel : UIPanel
     {
         _mainIconImage.sprite = iconSlot.Sprite;
         
-        OnIconSelected?.Invoke(iconSlot.Sprite);
+        OnIconSelected?.Invoke(iconSlot.Sprite, iconSlot.IconNumber);
     }
     
     private void HandleOpenSelectIconPanelEvent()

@@ -57,15 +57,21 @@ public class GameController : MonoBehaviour
         _gameLoopStateMachine?.ActiveState?.Update();
 
         _parallaxController?.UpdateParallax();
-        
-        if (Input.GetKeyDown(KeyCode.M))
-            _currenciesController.Add(Currency.Type.Money, 100);
 
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            _currenciesController.Add(Currency.Type.Money, 100); 
+        }
+        
         if (Input.GetKeyDown(KeyCode.S))
             _saveService.ForceSave();
 
         if (Input.GetKeyDown(KeyCode.I))
+        {
             _saveService.GetInfo();
+            Debug.Log($"Soft currency = {_currenciesController.GetCurrency(Currency.Type.Money).Amount}");
+        }
+           
     }
 
     private void InitializeGameLoopStateMachine()

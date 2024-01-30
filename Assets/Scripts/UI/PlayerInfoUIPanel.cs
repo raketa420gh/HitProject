@@ -7,8 +7,10 @@ public class PlayerInfoUIPanel : UIPanel
     [SerializeField] private Image _playerIcon;
     [SerializeField] private TMP_Text _playerNameText;
     [SerializeField] private TMP_Text _playerScoreText;
+    private int _selectedIconNumber;
 
     public string PlayerName => _playerNameText.text;
+    public int IconNumber => _selectedIconNumber;
 
     public void SetView(bool isActive)
     {
@@ -33,5 +35,10 @@ public class PlayerInfoUIPanel : UIPanel
     public void SetIcon(Sprite sprite)
     {
         _playerIcon.sprite = sprite;
+    }
+
+    public void SetIconNumber(int number)
+    {
+        _selectedIconNumber = number;
     }
 }
