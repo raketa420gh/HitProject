@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -20,6 +21,7 @@ public class VersusGameState : GameLoopState
     private readonly AnswerUIButton[] _answerUIButtons;
     private readonly ParallaxController _parallaxController;
     private readonly ICurrenciesController _currenciesController;
+    private readonly IPowerUpsController _powerUpsController;
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
     private PlayerTurnType _currentPlayerTurnType = PlayerTurnType.You;
@@ -53,6 +55,7 @@ public class VersusGameState : GameLoopState
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
         _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
         _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
+        _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
     }
 
     public override void OnStateRegistered()
@@ -69,6 +72,8 @@ public class VersusGameState : GameLoopState
         InitializePlayersInfoPanel();
         _inGamePanel.TurnTimeProgressBar.Show();
         _inGamePanel.GlobalTimeProgressBar.Hide();
+        
+        _powerUpsController.OnPowerUpActivated += HandlePowerUpActivateEvent;
 
         if (_isNewGame)
         {
@@ -85,6 +90,7 @@ public class VersusGameState : GameLoopState
         
         _youPlayerGameSessionStats.OnUpdated -= HandleYouPlayerGameSessionStatsUpdateEvent;
         _selectPlayerTurnPanel.OnPlayerTurnTypeSelected -= HandlePlayerTurnTypeSelectEvent;
+        _powerUpsController.OnPowerUpActivated -= HandlePowerUpActivateEvent;
         
         _parallaxController.ResetPositions();
         _parallaxController.DisableParallax();
@@ -216,6 +222,11 @@ public class VersusGameState : GameLoopState
         _inGamePanel.QuestionPanel.SetQuestion(currentQuestionData);
 
         _categoryQuestions.Remove(currentQuestionData);
+        
+        if (_currentPlayerTurnType == PlayerTurnType.You)
+            _powerUpsController.SetPowerUpsUsableState(true);
+        if (_currentPlayerTurnType == PlayerTurnType.Opponent)
+            _powerUpsController.SetPowerUpsUsableState(false);
 
         if (_categoryQuestions.Count == 0)
         {
@@ -270,6 +281,71 @@ public class VersusGameState : GameLoopState
                 answerUIButton.OnClicked -= HandleAnswerClickEvent;
         }
     }
+    
+    private List<AnswerUIButton> GetTwoRandomIncorrectAnswersUiButtons()
+    {
+        List<AnswerUIButton> twoIncorrectAnswersUiButtons = new List<AnswerUIButton>();
+        List<AnswerUIButton> allIncorrectAnswersUiButtons = _answerUIButtons
+            .Where(answerUIButton => answerUIButton != _answerUIButtons[_currentCorrectAnswerIndex]).ToList();
+
+        int rIndex = Random.Range(0, allIncorrectAnswersUiButtons.Count);
+        twoIncorrectAnswersUiButtons.Add(allIncorrectAnswersUiButtons[rIndex]);
+        allIncorrectAnswersUiButtons.Remove(allIncorrectAnswersUiButtons[rIndex]);
+        rIndex = Random.Range(0, allIncorrectAnswersUiButtons.Count);
+        twoIncorrectAnswersUiButtons.Add(allIncorrectAnswersUiButtons[rIndex]);
+        allIncorrectAnswersUiButtons.Clear();
+        
+        return twoIncorrectAnswersUiButtons;
+    }
+    
+    private void GameOverVersus()
+    {
+        _gameOverPanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
+        _gameOverPanel.GameStatsPanel.SetTime((int)_globalTimer);
+        _gameOverPanel.GameStatsPanel.SetCoins(0);
+                
+        _youPlayerGameSessionStats.ResetAll();
+        _opponentPlayerGameSessionStats.ResetAll();
+        ResetTurnTimer();
+        ResetGlobalTimer();
+        
+        _powerUpsController.SetPowerUpsUsableState(false);
+                
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
+    }
+
+    private async UniTaskVoid GameOverVersusAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+        
+        GameOverVersus();
+    }
+
+    private void CompleteVersusLevel()
+    {
+        _levelCompletePanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
+        _levelCompletePanel.GameStatsPanel.SetTime((int)_globalTimer);
+        _levelCompletePanel.GameStatsPanel.SetCoins(100);
+        
+        _currenciesController.Add(Currency.Type.Money, 100);
+                
+        ResetTurnTimer();
+        ResetGlobalTimer();
+        _youPlayerGameSessionStats.ResetAll();
+        _opponentPlayerGameSessionStats.ResetAll();
+        
+        _powerUpsController.SetPowerUpsUsableState(false);
+                
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
+    }
+
+    private async UniTaskVoid CompleteVersusLevelAsync()
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+                
+        CompleteVersusLevel();
+    }
+
 
     private void HandleAnswerClickEvent(int index)
     {
@@ -285,6 +361,7 @@ public class VersusGameState : GameLoopState
         _isResultViewing = true;
         
         ResetTurnTimer();
+        _powerUpsController.SetPowerUpsUsableState(false);
 
         if (index == _currentCorrectAnswerIndex)
             HandleCorrectAnswerAsync(index);
@@ -339,50 +416,6 @@ public class VersusGameState : GameLoopState
         _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
     }
     
-    private void GameOverVersus()
-    {
-        _gameOverPanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
-        _gameOverPanel.GameStatsPanel.SetTime((int)_globalTimer);
-        _gameOverPanel.GameStatsPanel.SetCoins(0);
-                
-        _youPlayerGameSessionStats.ResetAll();
-        _opponentPlayerGameSessionStats.ResetAll();
-        ResetTurnTimer();
-        ResetGlobalTimer();
-                
-        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
-    }
-
-    private async UniTaskVoid GameOverVersusAsync()
-    {
-        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
-        
-        GameOverVersus();
-    }
-
-    private void CompleteVersusLevel()
-    {
-        _levelCompletePanel.GameStatsPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
-        _levelCompletePanel.GameStatsPanel.SetTime((int)_globalTimer);
-        _levelCompletePanel.GameStatsPanel.SetCoins(100);
-        
-        _currenciesController.Add(Currency.Type.Money, 100);
-                
-        ResetTurnTimer();
-        ResetGlobalTimer();
-        _youPlayerGameSessionStats.ResetAll();
-        _opponentPlayerGameSessionStats.ResetAll();
-                
-        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
-    }
-
-    private async UniTaskVoid CompleteVersusLevelAsync()
-    {
-        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
-                
-        CompleteVersusLevel();
-    }
-
     private void HandleYouPlayerGameSessionStatsUpdateEvent(PlayerGameSessionStats playerGameSessionStats)
     {
         _uiController.PlayersInfoPanel.YouPlayerPanel.SetScore(_youPlayerGameSessionStats.CategoryPoints);
@@ -406,5 +439,22 @@ public class VersusGameState : GameLoopState
         _inGamePanel.Show();
         
         _isGlobalTimerActive = true;
+    }
+    
+    private void HandlePowerUpActivateEvent(PowerUp.Type powerUpType)
+    {
+        if (powerUpType == PowerUp.Type.Answer50)
+        {
+            List<AnswerUIButton> twoIncorrectAnswersUiButtons = GetTwoRandomIncorrectAnswersUiButtons();
+
+            foreach (AnswerUIButton incorrectAnswerUiButton in twoIncorrectAnswersUiButtons)
+            {
+                incorrectAnswerUiButton.SetAnswerViewResult(false);
+                incorrectAnswerUiButton.SetInteractable(false);
+            }
+            
+            ResetTurnTimer();
+            _uiController.ItemsPopup.Hide();
+        }
     }
 }

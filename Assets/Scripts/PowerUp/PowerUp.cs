@@ -5,10 +5,12 @@ public class PowerUp
 {
     [SerializeField] private Type _powerUpType;
     [SerializeField] private Sprite _icon;
+    [SerializeField] private int _price;
     private Save _save;   
     
     public Type PowerUpType => _powerUpType;
     public Sprite Icon => _icon;
+    public int Price => _price;
 
     public int Amount
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -17,6 +18,7 @@ public class TimeChallengeGameState : GameLoopState
     private readonly AnswerUIButton[] _answerUIButtons;
     private readonly ICurrenciesController _currenciesController;
     private readonly ParallaxController _parallaxController;
+    private readonly IPowerUpsController _powerUpsController;
     private int _currentCorrectAnswerIndex;
     private int _activeLevelNumber;
     private List<QuestionData> _questionsDatabase = new List<QuestionData>();
@@ -47,6 +49,7 @@ public class TimeChallengeGameState : GameLoopState
         _answerUIButtons = _inGamePanel.QuestionPanel.AnswerUIButtons;
         _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
         _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
+        _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
     }
 
     public override void OnStateRegistered()
@@ -60,6 +63,8 @@ public class TimeChallengeGameState : GameLoopState
         
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.OnClicked += HandleAnswerClickEvent;
+        
+        _powerUpsController.OnPowerUpActivated += HandlePowerUpActivateEvent;
         
         _inGamePanel.TurnTimeProgressBar.Show();
         _inGamePanel.GlobalTimeProgressBar.Show();
@@ -77,6 +82,10 @@ public class TimeChallengeGameState : GameLoopState
 
     public override void OnStateDisabled()
     {
+        foreach (AnswerUIButton answerUIButton in _answerUIButtons)
+            answerUIButton.OnClicked -= HandleAnswerClickEvent;
+        
+        _powerUpsController.OnPowerUpActivated -= HandlePowerUpActivateEvent;
         _parallaxController.ResetPositions();
         _parallaxController.DisableParallax();
         _playerGameSessionStats.ResetAll();
@@ -193,6 +202,23 @@ public class TimeChallengeGameState : GameLoopState
         }
         
         _inGamePanel.QuestionPanel.HideResultView();
+        _powerUpsController.SetPowerUpsUsableState(true);
+    }
+    
+    private List<AnswerUIButton> GetTwoRandomIncorrectAnswersUiButtons()
+    {
+        List<AnswerUIButton> twoIncorrectAnswersUiButtons = new List<AnswerUIButton>();
+        List<AnswerUIButton> allIncorrectAnswersUiButtons = _answerUIButtons
+            .Where(answerUIButton => answerUIButton != _answerUIButtons[_currentCorrectAnswerIndex]).ToList();
+
+        int rIndex = Random.Range(0, allIncorrectAnswersUiButtons.Count);
+        twoIncorrectAnswersUiButtons.Add(allIncorrectAnswersUiButtons[rIndex]);
+        allIncorrectAnswersUiButtons.Remove(allIncorrectAnswersUiButtons[rIndex]);
+        rIndex = Random.Range(0, allIncorrectAnswersUiButtons.Count);
+        twoIncorrectAnswersUiButtons.Add(allIncorrectAnswersUiButtons[rIndex]);
+        allIncorrectAnswersUiButtons.Clear();
+        
+        return twoIncorrectAnswersUiButtons;
     }
 
     private void GameOverTimeChallenge()
@@ -203,6 +229,8 @@ public class TimeChallengeGameState : GameLoopState
         ResetGlobalTimer();
         ResetTurnTimer();
         
+        _powerUpsController.SetPowerUpsUsableState(false);
+        
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
     }
 
@@ -210,13 +238,7 @@ public class TimeChallengeGameState : GameLoopState
     {
         await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
         
-        _gameOverPanel.GameStatsPanel.SetScore(_playerGameSessionStats.CategoryPoints);
-        _gameOverPanel.GameStatsPanel.SetTime((int)_globalTimer);
-        
-        ResetGlobalTimer();
-        ResetTurnTimer();
-        
-        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
+        GameOverTimeChallenge();
     }
 
     private void CompleteTimeChallengeLevel()
@@ -229,6 +251,8 @@ public class TimeChallengeGameState : GameLoopState
         
         ResetGlobalTimer();
         ResetTurnTimer();
+        
+        _powerUpsController.SetPowerUpsUsableState(false);
 
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
     }
@@ -237,10 +261,7 @@ public class TimeChallengeGameState : GameLoopState
     {
         await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
         
-        ResetGlobalTimer();
-        ResetTurnTimer();
-        
-        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.LevelComplete);
+        CompleteTimeChallengeLevel();
     }
 
     private void HandleAnswerClickEvent(int index)
@@ -262,6 +283,7 @@ public class TimeChallengeGameState : GameLoopState
         _isResultViewing = true;
         
         ResetTurnTimer();
+        _powerUpsController.SetPowerUpsUsableState(false);
     }
 
     private void HandleCorrectAnswerAsync(int index)
@@ -288,5 +310,22 @@ public class TimeChallengeGameState : GameLoopState
     private void HandlePlayerGameSessionStatsUpdateEvent(PlayerGameSessionStats playerGameSessionStats)
     {
         _uiController.PlayersInfoPanel.YouPlayerPanel.SetScore(_playerGameSessionStats.CategoryPoints);
+    }
+    
+    private void HandlePowerUpActivateEvent(PowerUp.Type powerUpType)
+    {
+        if (powerUpType == PowerUp.Type.Answer50)
+        {
+            List<AnswerUIButton> twoIncorrectAnswersUiButtons = GetTwoRandomIncorrectAnswersUiButtons();
+
+            foreach (AnswerUIButton incorrectAnswerUiButton in twoIncorrectAnswersUiButtons)
+            {
+                incorrectAnswerUiButton.SetAnswerViewResult(false);
+                incorrectAnswerUiButton.SetInteractable(false);
+            }
+            
+            ResetTurnTimer();
+            _uiController.ItemsPopup.Hide();
+        }
     }
 }

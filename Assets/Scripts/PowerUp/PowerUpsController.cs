@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,10 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
 
     public PowerUp[] PowerUps => _powerUps;
 
-    public void Initialise(ISaveService saveService)
+    public event Action<PowerUp.Type> OnPowerUpActivated;
+    public event Action<PowerUp.Type> OnPowerUpBought;
+
+    public void LoadPowerUps(ISaveService saveService)
     {
         _saveService = saveService;
         
@@ -37,5 +41,48 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
         }
         
         _itemsPopup.InitialisePowerUps(this);
+        
+        Enable();
+    }
+
+    public void Enable()
+    {
+        foreach (ItemPowerUpUISlot uiSlot in _itemsPopup.UiItemSlots)
+        {
+            uiSlot.OnBuyButtonClicked += HandleBuyPowerUpEvent;
+            uiSlot.OnUseButtonClicked += HandleUsePowerUpEvent;
+        }
+    }
+
+    public void Disable()
+    {
+        foreach (ItemPowerUpUISlot uiSlot in _itemsPopup.UiItemSlots)
+        {
+            uiSlot.OnBuyButtonClicked -= HandleBuyPowerUpEvent;
+            uiSlot.OnUseButtonClicked -= HandleUsePowerUpEvent;
+        }
+    }
+
+    public void SetPowerUpsUsableState(bool isUsable)
+    {
+        for (int i = 0; i < _itemsPopup.UiItemSlots.Length; i++)
+        {
+            ItemPowerUpUISlot uiItemSlot = _itemsPopup.UiItemSlots[i];
+            uiItemSlot.SetUsableState(isUsable);
+        }
+    }
+
+    private void HandleUsePowerUpEvent(PowerUp.Type type)
+    {
+        Debug.Log($"Use power up {type}");
+        
+        OnPowerUpActivated?.Invoke(type);
+    }
+
+    private void HandleBuyPowerUpEvent(PowerUp.Type type)
+    {
+        Debug.Log($"Buy power up {type}");
+        
+        OnPowerUpBought?.Invoke(type);
     }
 }

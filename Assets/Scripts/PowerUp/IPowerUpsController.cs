@@ -1,6 +1,14 @@
+using System;
+
 public interface IPowerUpsController
 {
     PowerUp[] PowerUps { get; }
     
-    void Initialise(ISaveService saveService);
+    event Action<PowerUp.Type> OnPowerUpActivated;
+    event Action<PowerUp.Type> OnPowerUpBought;
+
+    void Enable();
+    void Disable();
+    void LoadPowerUps(ISaveService saveService);
+    void SetPowerUpsUsableState(bool isUsable);
 }
