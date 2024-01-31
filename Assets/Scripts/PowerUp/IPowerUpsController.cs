@@ -4,11 +4,12 @@ public interface IPowerUpsController
 {
     PowerUp[] PowerUps { get; }
     
-    event Action<PowerUp.Type> OnPowerUpActivated;
-    event Action<PowerUp.Type> OnPowerUpBought;
+    event Action<PowerUp> OnPowerUpActivated;
+    event Action<PowerUp> OnPowerUpBought;
 
     void Enable();
     void Disable();
+    void Initialize(ICurrenciesController currenciesController);
     void LoadPowerUps(ISaveService saveService);
     void SetPowerUpsUsableState(bool isUsable);
 }

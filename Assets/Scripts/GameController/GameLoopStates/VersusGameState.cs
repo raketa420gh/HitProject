@@ -441,9 +441,9 @@ public class VersusGameState : GameLoopState
         _isGlobalTimerActive = true;
     }
     
-    private void HandlePowerUpActivateEvent(PowerUp.Type powerUpType)
+    private void HandlePowerUpActivateEvent(PowerUp powerUp)
     {
-        if (powerUpType == PowerUp.Type.Answer50)
+        if (powerUp.PowerUpType == PowerUp.Type.Answer50)
         {
             List<AnswerUIButton> twoIncorrectAnswersUiButtons = GetTwoRandomIncorrectAnswersUiButtons();
 

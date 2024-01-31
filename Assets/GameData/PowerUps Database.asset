@@ -15,7 +15,10 @@ MonoBehaviour:
   _powerUps:
   - _powerUpType: 0
     _icon: {fileID: 21300000, guid: af7b41bffa3db419b9d67b7dea1376c4, type: 3}
+    _price: 50
   - _powerUpType: 1
     _icon: {fileID: 21300000, guid: 01c092e498a7f414ba17525c9fddb159, type: 3}
+    _price: 0
   - _powerUpType: 2
     _icon: {fileID: 21300000, guid: 0dc5459da433748bfbcb88984ea34be8, type: 3}
+    _price: 0

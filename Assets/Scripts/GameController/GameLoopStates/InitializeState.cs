@@ -37,6 +37,7 @@ public class InitializeState : GameLoopState
         _saveService.Initialise(Time.time, false);
         _factory.Initialize();
         _currenciesController.Initialise(_saveService);
+        _powerUpsController.Initialize(_currenciesController);
         _powerUpsController.LoadPowerUps(_saveService);
         _parallaxController.Initialize();
         _levelController.InitializeLevelSave();

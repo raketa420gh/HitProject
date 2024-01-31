@@ -8,6 +8,8 @@ public class ItemsUIPopup : UIPopup
     [SerializeField] private GridLayoutGroup _itemsGrid;
     [SerializeField] private ItemPowerUpUISlot _itemUISlotPrefab;
     private readonly List<ItemPowerUpUISlot> _uiSlots = new List<ItemPowerUpUISlot>();
+    
+    private Dictionary<PowerUp.Type, ItemPowerUpUISlot> _activePowerUps = new();
 
     public ItemPowerUpUISlot[] UiItemSlots => _uiSlots.ToArray();
 
@@ -27,6 +29,19 @@ public class ItemsUIPopup : UIPopup
             uiItemSlot.SetUsableState(false);
             
             _uiSlots.Add(uiItemSlot);
+            _activePowerUps.Add(powerUps[i].PowerUpType, uiItemSlot);
+        }
+    }
+    
+    public void RedrawView(PowerUp.Type type, int amount)
+    {
+        if (_activePowerUps.ContainsKey(type))
+        {
+            _activePowerUps[type].SetAmount(amount);
+        }
+        else
+        {
+            //ActivateCurrency(type);
         }
     }
 }

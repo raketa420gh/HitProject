@@ -16,8 +16,8 @@ public class ItemPowerUpUISlot : MonoBehaviour
     private bool _isUsable;
     private PowerUp _powerUp;
 
-    public event Action<PowerUp.Type> OnBuyButtonClicked;
-    public event Action<PowerUp.Type> OnUseButtonClicked;
+    public event Action<PowerUp> OnBuyButtonClicked;
+    public event Action<PowerUp> OnUseButtonClicked;
 
     private void OnEnable()
     {
@@ -56,13 +56,18 @@ public class ItemPowerUpUISlot : MonoBehaviour
         }
     }
 
+    public void SetAmount(int amount)
+    {
+        _amountText.text = amount.ToString();
+    }
+
     private void InvokeBuyButtonClickEvent()
     {
-        OnBuyButtonClicked?.Invoke(_powerUp.PowerUpType);
+        OnBuyButtonClicked?.Invoke(_powerUp);
     }
 
     private void InvokeUseButtonClickEvent()
     {
-        OnUseButtonClicked?.Invoke(_powerUp.PowerUpType);
+        OnUseButtonClicked?.Invoke(_powerUp);
     }
 }

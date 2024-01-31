@@ -9,11 +9,18 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
     private PowerUp[] _powerUps;
     private Dictionary<PowerUp.Type, int> _powerUpsLink;
     private ISaveService _saveService;
+    private ICurrenciesController _currenciesController;
 
     public PowerUp[] PowerUps => _powerUps;
 
-    public event Action<PowerUp.Type> OnPowerUpActivated;
-    public event Action<PowerUp.Type> OnPowerUpBought;
+    public event Action<PowerUp> OnPowerUpActivated;
+    public event Action<PowerUp> OnPowerUpBought;
+    public event OnPowerUpAmountChangedCallback OnPowerUpAmountChanged;
+
+    public void Initialize(ICurrenciesController currenciesController)
+    {
+        _currenciesController = currenciesController;
+    }
 
     public void LoadPowerUps(ISaveService saveService)
     {
@@ -71,18 +78,42 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
             uiItemSlot.SetUsableState(isUsable);
         }
     }
-
-    private void HandleUsePowerUpEvent(PowerUp.Type type)
+    
+    public void Add(PowerUp.Type powerUpType, int amount, bool redrawUI = true)
     {
-        Debug.Log($"Use power up {type}");
+        PowerUp powerUp = _powerUps[_powerUpsLink[powerUpType]];
+
+        powerUp.Amount += amount;
         
-        OnPowerUpActivated?.Invoke(type);
+        _saveService.MarkAsSaveIsRequired();
+        _saveService.Save();
+
+        if (redrawUI)
+        {
+            _itemsPopup.RedrawView(powerUpType, powerUp.Amount);
+        }
+        
+        OnPowerUpAmountChanged?.Invoke(powerUpType, powerUp.Amount, amount);
+    }
+    
+    public delegate void OnPowerUpAmountChangedCallback(PowerUp.Type powerUpType, int amount, int amountDifference);
+
+    private void HandleUsePowerUpEvent(PowerUp powerUp)
+    {
+        Debug.Log($"Use power up {powerUp}");
+        
+        Add(powerUp.PowerUpType, -1);
+
+        OnPowerUpActivated?.Invoke(powerUp);
     }
 
-    private void HandleBuyPowerUpEvent(PowerUp.Type type)
+    private void HandleBuyPowerUpEvent(PowerUp powerUp)
     {
-        Debug.Log($"Buy power up {type}");
+        Debug.Log($"Buy power up {powerUp}");
         
-        OnPowerUpBought?.Invoke(type);
+        _currenciesController.Add(Currency.Type.Money, -powerUp.Price);
+        Add(powerUp.PowerUpType, 1);
+
+        OnPowerUpBought?.Invoke(powerUp);
     }
 }
