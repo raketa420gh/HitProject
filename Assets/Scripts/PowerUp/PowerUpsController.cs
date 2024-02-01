@@ -79,14 +79,18 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
         }
     }
     
+    public bool HasAmount(PowerUp.Type powerUpType, int amount)
+    {
+        return _powerUps[_powerUpsLink[powerUpType]].Amount >= amount;
+    }
+    
     public void Add(PowerUp.Type powerUpType, int amount, bool redrawUI = true)
     {
         PowerUp powerUp = _powerUps[_powerUpsLink[powerUpType]];
 
         powerUp.Amount += amount;
-        
-        _saveService.MarkAsSaveIsRequired();
-        _saveService.Save();
+
+        _saveService.ForceSave();
 
         if (redrawUI)
         {
@@ -100,20 +104,26 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
 
     private void HandleUsePowerUpEvent(PowerUp powerUp)
     {
-        Debug.Log($"Use power up {powerUp}");
-        
-        Add(powerUp.PowerUpType, -1);
-
-        OnPowerUpActivated?.Invoke(powerUp);
+        if (HasAmount(powerUp.PowerUpType, 1))
+        {
+            Add(powerUp.PowerUpType, -1);
+            
+            Debug.Log($"Use power up {powerUp}");
+            
+            OnPowerUpActivated?.Invoke(powerUp);
+        }
     }
 
     private void HandleBuyPowerUpEvent(PowerUp powerUp)
     {
-        Debug.Log($"Buy power up {powerUp}");
-        
-        _currenciesController.Add(Currency.Type.Money, -powerUp.Price);
-        Add(powerUp.PowerUpType, 1);
-
-        OnPowerUpBought?.Invoke(powerUp);
+        if (_currenciesController.HasAmount(Currency.Type.Money, powerUp.Price))
+        {
+            _currenciesController.Add(Currency.Type.Money, -powerUp.Price);
+            Add(powerUp.PowerUpType, 1);
+            
+            Debug.Log($"Buy power up {powerUp}");
+            
+            OnPowerUpBought?.Invoke(powerUp);
+        }
     }
 }

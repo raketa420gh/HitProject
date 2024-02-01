@@ -371,7 +371,6 @@ public class SoloGameState : GameLoopState
             }
             
             ResetTurnTimer();
-            _uiController.ItemsPopup.Hide();
         }
 
         if (powerUp.PowerUpType == PowerUp.Type.Time)
@@ -384,5 +383,7 @@ public class SoloGameState : GameLoopState
         {
             _secondChancesCount = 1;
         }
+        
+        _uiController.ItemsPopup.Hide();
     }
 }

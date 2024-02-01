@@ -419,6 +419,15 @@ public class VersusGameState : GameLoopState
         _inGamePanel.QuestionPanel.ShowResultView(false);
         _answerUIButtons[index].SetAnswerViewResult(false);
         _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
+
+        if (_currentPlayerTurnType == PlayerTurnType.You)
+        {
+            if (_secondChancesCount == 1)
+            {
+                ActivateNextQuestionAnimation();
+                ResetSecondChance();
+            }
+        }
     }
     
     private void HandleYouPlayerGameSessionStatsUpdateEvent(PlayerGameSessionStats playerGameSessionStats)
@@ -459,7 +468,6 @@ public class VersusGameState : GameLoopState
             }
             
             ResetTurnTimer();
-            _uiController.ItemsPopup.Hide();
         }
         
         if (powerUp.PowerUpType == PowerUp.Type.Time)
@@ -472,5 +480,8 @@ public class VersusGameState : GameLoopState
         {
             _secondChancesCount = 1;
         }
+        
+        
+        _uiController.ItemsPopup.Hide();
     }
 }
