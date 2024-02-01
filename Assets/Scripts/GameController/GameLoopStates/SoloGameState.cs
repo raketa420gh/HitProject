@@ -24,21 +24,18 @@ public class SoloGameState : GameLoopState
     private List<QuestionData> _categoryQuestions = new List<QuestionData>();
     private int _currentCorrectAnswerIndex;
     private int _activeLevelNumber;
-
+    private PlayerGameSessionStats _playerGameSessionStats;
     private bool _isResultViewing;
     private float _resultViewTimer;
     private float _resultViewTime = 2f;
-
     private bool _isTurnTimerActive;
     private float _turnTimer;
     private float _turnTime = 5f;
     private float _turnTimeProgressNormalized;
-
     private bool _isGlobalTimerActive;
     private float _globalTimer;
-
-    private PlayerGameSessionStats _playerGameSessionStats;
-
+    private int _secondChancesCount;
+    
     public SoloGameState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _gameLoopStateMachine = gameLoopStateMachine;
@@ -143,6 +140,7 @@ public class SoloGameState : GameLoopState
         _playerGameSessionStats.ResetAll();
         ResetTurnTimer();
         ResetGlobalTimer();
+        ResetSecondChance();
 
         _powerUpsController.SetPowerUpsUsableState(false);
 
@@ -162,6 +160,7 @@ public class SoloGameState : GameLoopState
         _playerGameSessionStats.ResetAll();
         ResetTurnTimer();
         ResetGlobalTimer();
+        ResetSecondChance();
 
         _powerUpsController.SetPowerUpsUsableState(false);
 
@@ -238,6 +237,7 @@ public class SoloGameState : GameLoopState
     {
         _inGamePanel.QuestionPanel.CurrentQuestionPanelRect.DOAnchorPosX(0, 0);
         _isTurnTimerActive = true;
+        _turnTime = 5f;
 
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.Reset();
@@ -260,7 +260,7 @@ public class SoloGameState : GameLoopState
 
         _powerUpsController.SetPowerUpsUsableState(true);
     }
-    
+
     private List<AnswerUIButton> GetTwoRandomIncorrectAnswersUiButtons()
     {
         List<AnswerUIButton> twoIncorrectAnswersUiButtons = new List<AnswerUIButton>();
@@ -275,6 +275,11 @@ public class SoloGameState : GameLoopState
         allIncorrectAnswersUiButtons.Clear();
         
         return twoIncorrectAnswersUiButtons;
+    }
+
+    private void ResetSecondChance()
+    {
+        _secondChancesCount = 0;
     }
 
     private void HandleAnswerClickEvent(int index)
@@ -296,7 +301,7 @@ public class SoloGameState : GameLoopState
         if (index == _currentCorrectAnswerIndex)
             HandleCorrectAnswerAsync(index);
         else
-            HandleWrongAnswer(index);
+            HandleWrongAnswerAsync(index);
     }
 
     private void HandlePlayerGameSessionStatsUpdateEvent(PlayerGameSessionStats playerGameSessionStats)
@@ -337,15 +342,20 @@ public class SoloGameState : GameLoopState
         }
     }
 
-    private async UniTaskVoid HandleWrongAnswer(int index)
+    private async UniTaskVoid HandleWrongAnswerAsync(int index)
     {
         Debug.Log("WRONG ANSWER");
-
+        
         _inGamePanel.QuestionPanel.ShowResultView(false);
         _answerUIButtons[index].SetAnswerViewResult(false);
         _answerUIButtons[_currentCorrectAnswerIndex].SetAnswerViewResult(true);
-
-        GameOverSolo();
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(_resultViewTime));
+        
+        if (_secondChancesCount == 0)
+            GameOverSolo();
+        else
+            ResetSecondChance();
     }
 
     private void HandlePowerUpActivateEvent(PowerUp powerUp)
@@ -362,6 +372,17 @@ public class SoloGameState : GameLoopState
             
             ResetTurnTimer();
             _uiController.ItemsPopup.Hide();
+        }
+
+        if (powerUp.PowerUpType == PowerUp.Type.Time)
+        {
+            _turnTime += 60f;
+            _uiController.ItemsPopup.Hide();
+        }
+
+        if (powerUp.PowerUpType == PowerUp.Type.SecondChance)
+        {
+            _secondChancesCount = 1;
         }
     }
 }

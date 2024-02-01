@@ -26,21 +26,18 @@ public class VersusGameState : GameLoopState
     private int _currentCorrectAnswerIndex;
     private PlayerTurnType _currentPlayerTurnType = PlayerTurnType.You;
     private bool _isNewGame = true;
-    
+    private PlayerGameSessionStats _youPlayerGameSessionStats;
+    private PlayerGameSessionStats _opponentPlayerGameSessionStats;
     private bool _isResultViewing;
     private float _resultViewTimer;
     private float _resultViewTime = 2f;
-    
     private bool _isTurnTimerActive;
     private float _turnTimer;
     private float _turnTime = 5f;
     private float _turnTimeProgressNormalized;
-    
     private bool _isGlobalTimerActive;
     private float _globalTimer;
-
-    private PlayerGameSessionStats _youPlayerGameSessionStats;
-    private PlayerGameSessionStats _opponentPlayerGameSessionStats;
+    private int _secondChancesCount;
 
     public VersusGameState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -147,6 +144,11 @@ public class VersusGameState : GameLoopState
         _resultViewTimer = 0f;
         _isResultViewing = false;
     }
+    
+    private void ResetSecondChance()
+    {
+        _secondChancesCount = 0;
+    }
 
     private void InitializePlayersSession()
     {
@@ -211,6 +213,7 @@ public class VersusGameState : GameLoopState
     {
         _inGamePanel.QuestionPanel.CurrentQuestionPanelRect.DOAnchorPosX(0, 0);
         _isTurnTimerActive = true;
+        _turnTime = 5f;
         
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.Reset();
@@ -308,7 +311,8 @@ public class VersusGameState : GameLoopState
         _opponentPlayerGameSessionStats.ResetAll();
         ResetTurnTimer();
         ResetGlobalTimer();
-        
+        ResetSecondChance();
+            
         _powerUpsController.SetPowerUpsUsableState(false);
                 
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.GameOver);
@@ -331,6 +335,7 @@ public class VersusGameState : GameLoopState
                 
         ResetTurnTimer();
         ResetGlobalTimer();
+        ResetSecondChance();
         _youPlayerGameSessionStats.ResetAll();
         _opponentPlayerGameSessionStats.ResetAll();
         
@@ -455,6 +460,17 @@ public class VersusGameState : GameLoopState
             
             ResetTurnTimer();
             _uiController.ItemsPopup.Hide();
+        }
+        
+        if (powerUp.PowerUpType == PowerUp.Type.Time)
+        {
+            _turnTime += 60f;
+            _uiController.ItemsPopup.Hide();
+        }
+        
+        if (powerUp.PowerUpType == PowerUp.Type.SecondChance)
+        {
+            _secondChancesCount = 1;
         }
     }
 }

@@ -22,22 +22,19 @@ public class TimeChallengeGameState : GameLoopState
     private int _currentCorrectAnswerIndex;
     private int _activeLevelNumber;
     private List<QuestionData> _questionsDatabase = new List<QuestionData>();
-    
+    private PlayerGameSessionStats _playerGameSessionStats;
     private bool _isResultViewing;
     private float _resultViewTimer;
     private float _resultViewTime = 2f;
-
     private bool _isTurnTimerActive;
     private float _turnTimer;
     private float _turnTime = 5f;
     private float _turnTimeProgressNormalized;
-
     private bool _isGlobalTimerActive;
     private float _globalTimer;
     private float _globalTime = 300;
     private float _globalTimeProgressNormalized;
-    
-    private PlayerGameSessionStats _playerGameSessionStats;
+    private int _secondChancesCount;
     
     public TimeChallengeGameState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -148,6 +145,11 @@ public class TimeChallengeGameState : GameLoopState
         _turnTimer = 0f;
         _isTurnTimerActive = false;
     }
+    
+    private void ResetSecondChance()
+    {
+        _secondChancesCount = 0;
+    }
 
     private void InitializePlayerSession()
     {
@@ -183,6 +185,7 @@ public class TimeChallengeGameState : GameLoopState
     {
         _inGamePanel.QuestionPanel.CurrentQuestionPanelRect.DOAnchorPosX(0, 0);
         _isTurnTimerActive = true;
+        _turnTime = 5f;
         
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.Reset();
@@ -228,6 +231,7 @@ public class TimeChallengeGameState : GameLoopState
         
         ResetGlobalTimer();
         ResetTurnTimer();
+        ResetSecondChance();
         
         _powerUpsController.SetPowerUpsUsableState(false);
         
@@ -251,6 +255,7 @@ public class TimeChallengeGameState : GameLoopState
         
         ResetGlobalTimer();
         ResetTurnTimer();
+        ResetSecondChance();
         
         _powerUpsController.SetPowerUpsUsableState(false);
 
@@ -326,6 +331,17 @@ public class TimeChallengeGameState : GameLoopState
             
             ResetTurnTimer();
             _uiController.ItemsPopup.Hide();
+        }
+        
+        if (powerUp.PowerUpType == PowerUp.Type.Time)
+        {
+            _turnTime += 60f;
+            _uiController.ItemsPopup.Hide();
+        }
+        
+        if (powerUp.PowerUpType == PowerUp.Type.SecondChance)
+        {
+            _secondChancesCount = 1;
         }
     }
 }
