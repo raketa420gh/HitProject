@@ -333,13 +333,13 @@ public class TimeChallengeGameState : GameLoopState
                 incorrectAnswerUiButton.SetAnswerViewResult(false);
                 incorrectAnswerUiButton.SetInteractable(false);
             }
-            
-            ResetTurnTimer();
+
+            _turnTimer = 0f;
         }
         
         if (powerUp.PowerUpType == PowerUp.Type.Time)
         {
-            _turnTimer = 0f;
+            _turnTime += 60f;
             _uiController.ItemsPopup.Hide();
         }
         
