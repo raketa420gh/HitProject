@@ -13,4 +13,5 @@ public interface IUIController
     SoloGameStageCompleteUIPanel SoloGameStageCompletePanel { get; }
     ItemsUIPopup ItemsPopup { get; }
     StoreUIPopup StorePopup { get; }
+    SelectIconUIPanel SelectIconPanel { get; }
 }

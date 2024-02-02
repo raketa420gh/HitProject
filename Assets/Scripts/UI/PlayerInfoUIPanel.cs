@@ -7,10 +7,14 @@ public class PlayerInfoUIPanel : UIPanel
     [SerializeField] private Image _playerIcon;
     [SerializeField] private TMP_Text _playerNameText;
     [SerializeField] private TMP_Text _playerScoreText;
+    [SerializeField] private Button _openIconSelectButton;
+    
     private int _selectedIconNumber;
 
     public string PlayerName => _playerNameText.text;
     public int IconNumber => _selectedIconNumber;
+
+    public Button OpenIconSelectButton => _openIconSelectButton;
 
     public void SetView(bool isActive)
     {

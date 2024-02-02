@@ -48,11 +48,15 @@ public class GameController : MonoBehaviour
     private void OnEnable()
     {
         _levelController.OnRollDicePanelPlayButtonClicked += HandleRollDicePlayButtonEvent;
+        _uiController.PlayersInfoPanel.YouPlayerPanel.OpenIconSelectButton.onClick.AddListener(HandleOpenSelectIconPanelEvent);
+        _uiController.SelectIconPanel.OnIconSelected += HandleIconSelectEvent;
     }
 
     private void OnDisable()
     {
         _levelController.OnRollDicePanelPlayButtonClicked -= HandleRollDicePlayButtonEvent;
+        _uiController.PlayersInfoPanel.YouPlayerPanel.OpenIconSelectButton.onClick.RemoveListener(HandleOpenSelectIconPanelEvent);
+        _uiController.SelectIconPanel.OnIconSelected -= HandleIconSelectEvent;
     }
 
     private void Update()
@@ -81,6 +85,18 @@ public class GameController : MonoBehaviour
     {
         _gameLoopStateMachine = new GameLoopStateMachine();
         _gameLoopStateMachine.Initialise(this, GameLoopStateMachine.State.Initialize);
+    }
+    
+    private void HandleOpenSelectIconPanelEvent()
+    {
+        _uiController.SelectIconPanel.Show();
+    }
+    
+    private void HandleIconSelectEvent(IconUISlot iconUISlot)
+    {
+        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIcon(iconUISlot.Sprite);
+        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIconNumber(iconUISlot.IconNumber);
+        _uiController.SelectIconPanel.Hide();
     }
 
     private void HandleRollDicePlayButtonEvent(GameModeType gameModeType)

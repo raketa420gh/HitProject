@@ -5,12 +5,14 @@ public class CreatePlayerState : GameLoopState
     private readonly GameLoopStateMachine _gameLoopStateMachine;
     private readonly CreatePlayerUIPanel _createPlayerPanel;
     private readonly PlayersInfoUIPanel _playersInfoPanel;
+    private readonly SelectIconUIPanel _selectIconPanel;
 
     public CreatePlayerState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _gameLoopStateMachine = gameLoopStateMachine;
         _createPlayerPanel = _gameLoopStateMachine.Parent.UIController.CreatePlayerPanel;
         _playersInfoPanel = _gameLoopStateMachine.Parent.UIController.PlayersInfoPanel;
+        _selectIconPanel = _gameLoopStateMachine.Parent.UIController.SelectIconPanel;
     }
 
     public override void OnStateRegistered()
@@ -50,6 +52,6 @@ public class CreatePlayerState : GameLoopState
     {
         _playersInfoPanel.YouPlayerPanel.SetIcon(sprite);
         _playersInfoPanel.YouPlayerPanel.SetIconNumber(iconNumber);
-        _createPlayerPanel.SelectIconPanel.Hide();
+        _selectIconPanel.Hide();
     }
 }
