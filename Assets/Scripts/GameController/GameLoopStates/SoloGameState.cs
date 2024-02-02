@@ -375,7 +375,7 @@ public class SoloGameState : GameLoopState
 
         if (powerUp.PowerUpType == PowerUp.Type.Time)
         {
-            _turnTime += 60f;
+            _turnTimer = 0f;
             _uiController.ItemsPopup.Hide();
         }
 

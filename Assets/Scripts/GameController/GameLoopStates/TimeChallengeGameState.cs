@@ -69,6 +69,7 @@ public class TimeChallengeGameState : GameLoopState
         _isTurnTimerActive = true;
         
         _parallaxController.EnableParallax();
+        _parallaxController.ResetPositions();
         ResetResultViewTimer();
         InitializePlayerSession();
         InitializeQuestions();
@@ -338,7 +339,7 @@ public class TimeChallengeGameState : GameLoopState
         
         if (powerUp.PowerUpType == PowerUp.Type.Time)
         {
-            _turnTime += 60f;
+            _turnTimer = 0f;
             _uiController.ItemsPopup.Hide();
         }
         

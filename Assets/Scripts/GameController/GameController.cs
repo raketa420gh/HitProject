@@ -97,6 +97,8 @@ public class GameController : MonoBehaviour
         _uiController.PlayersInfoPanel.YouPlayerPanel.SetIcon(iconUISlot.Sprite);
         _uiController.PlayersInfoPanel.YouPlayerPanel.SetIconNumber(iconUISlot.IconNumber);
         _uiController.SelectIconPanel.Hide();
+        
+        _saveService.ForceSave();
     }
 
     private void HandleRollDicePlayButtonEvent(GameModeType gameModeType)

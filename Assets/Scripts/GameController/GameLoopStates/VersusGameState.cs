@@ -66,6 +66,7 @@ public class VersusGameState : GameLoopState
 
         _levelController.SetGameMode(GameModeType.Versus);
         _parallaxController.EnableParallax();
+        _parallaxController.ResetPositions();
         InitializePlayersInfoPanel();
         _inGamePanel.TurnTimeProgressBar.Show();
         _inGamePanel.GlobalTimeProgressBar.Hide();
@@ -472,7 +473,7 @@ public class VersusGameState : GameLoopState
         
         if (powerUp.PowerUpType == PowerUp.Type.Time)
         {
-            _turnTime += 60f;
+            _turnTimer = 0f;
             _uiController.ItemsPopup.Hide();
         }
         
@@ -480,7 +481,6 @@ public class VersusGameState : GameLoopState
         {
             _secondChancesCount = 1;
         }
-        
         
         _uiController.ItemsPopup.Hide();
     }

@@ -39,7 +39,7 @@ public class SelectIconUIPanel : UIPanel
     {
         IconUISlot slotWithSameNumber = _iconSlots.FirstOrDefault(slot => slot.IconNumber == number);
 
-        return slotWithSameNumber.Sprite;
+        return slotWithSameNumber == null ? _iconSlots[0].Sprite : slotWithSameNumber.Sprite;
     }
 
     private void HandleSelectIconButtonClickEvent(IconUISlot iconSlot)
