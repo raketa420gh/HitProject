@@ -56,7 +56,7 @@ public class RollDiceState : GameLoopState
         {
             _rollDicePanel.DisableButtons();
             
-            await UniTask.Delay(TimeSpan.FromSeconds(2));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.75f));
             
             _rollDicePanel.EnableSelectCategoryPanel();
             

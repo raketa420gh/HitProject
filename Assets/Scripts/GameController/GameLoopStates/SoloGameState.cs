@@ -141,6 +141,7 @@ public class SoloGameState : GameLoopState
         ResetTurnTimer();
         ResetGlobalTimer();
         ResetSecondChance();
+        ResetResultViewTimer();
 
         _powerUpsController.SetPowerUpsUsableState(false);
 

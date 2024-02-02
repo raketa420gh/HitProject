@@ -6,6 +6,7 @@ public class MainMenuState : GameLoopState
     private readonly IUIController _uiController;
     private readonly GameModesUIPanel _gameModesPanel;
     private readonly ILevelController _levelController;
+    private readonly IPowerUpsController _powerUpsController;
 
     public MainMenuState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -13,6 +14,7 @@ public class MainMenuState : GameLoopState
         _uiController = _gameLoopStateMachine.Parent.UIController;
         _gameModesPanel = _uiController.GameModesPanel;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
+        _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
     }
 
     public override void OnStateRegistered()
@@ -27,7 +29,7 @@ public class MainMenuState : GameLoopState
         _uiController.GameModesPanel.OnSoloButtonClicked += HandleSoloGameStartButtonEvent;
         _uiController.GameModesPanel.OnVersusButtonClicked += HandleVersusGameStartButtonEvent;
         _uiController.GameModesPanel.OnTimeChallengeButtonClicked += HandleTimeChallengeGameStartButtonEvent;
-
+        
         InitializeMainMenu();
         InitializePlayerInfoPanelsView();
     }
@@ -57,6 +59,7 @@ public class MainMenuState : GameLoopState
     private void InitializeMainMenu()
     {
         _uiController.MainMenuPanel.SetStartButtonObjectView(true);
+        _powerUpsController.SetPowerUpsUsableState(false);
     }
 
     private void HandleSoloGameStartButtonEvent()
