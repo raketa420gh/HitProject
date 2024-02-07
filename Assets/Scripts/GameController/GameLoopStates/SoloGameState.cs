@@ -69,14 +69,15 @@ public class SoloGameState : GameLoopState
         _inGamePanel.TurnTimeProgressBar.Show();
         _inGamePanel.GlobalTimeProgressBar.Hide();
         _isGlobalTimerActive = true;
-
         _parallaxController.EnableParallax();
+        _parallaxController.ResetPositions();
         ResetResultViewTimer();
         InitializePlayerSession();
         InitializeQuestionsCategory();
         ActivateNextQuestion();
 
         _inGamePanel.Show();
+        _uiController.MainMenuPanel.ShowOnlyItemsButton();
     }
 
     public override void OnStateDisabled()
@@ -93,6 +94,7 @@ public class SoloGameState : GameLoopState
         _isGlobalTimerActive = false;
 
         _inGamePanel.Hide();
+        _uiController.MainMenuPanel.ShowAllButtons();
     }
 
     public override void Update()

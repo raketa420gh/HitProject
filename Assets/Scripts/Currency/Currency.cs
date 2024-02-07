@@ -29,7 +29,7 @@ public class Currency
     [System.Serializable]
     public class Save : ISaveObject
     {
-        [SerializeField] int _amount;
+        [SerializeField] int _amount = 1000;
 
         public int Amount
         {

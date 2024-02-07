@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa84dd978564d81b4b305617394b19f, type: 3}
   m_Name: Question_Movies_1
   m_EditorClassIdentifier: 
-  _question: Movies1
+  _question: Which comedy set in Mexico stars Chevy Chase, Steve Martin and Martin
+    Short?
   _answers:
-  - Answer True
-  - Answer False
-  - Answer False
-  - Answer False
-  _correctAnswerIndex: 0
+  - Wet Bandits
+  - Three Amigos
+  - Los Compadres
+  - Three Musketeers
+  _correctAnswerIndex: 1
   _categoryType: 0
   _difficultyType: 0

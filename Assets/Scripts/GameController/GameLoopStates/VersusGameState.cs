@@ -70,6 +70,7 @@ public class VersusGameState : GameLoopState
         InitializePlayersInfoPanel();
         _inGamePanel.TurnTimeProgressBar.Show();
         _inGamePanel.GlobalTimeProgressBar.Hide();
+        _uiController.MainMenuPanel.ShowOnlyItemsButton();
         
         _powerUpsController.OnPowerUpActivated += HandlePowerUpActivateEvent;
 
@@ -92,8 +93,8 @@ public class VersusGameState : GameLoopState
         
         _parallaxController.ResetPositions();
         _parallaxController.DisableParallax();
-        
         _inGamePanel.Hide();
+        _uiController.MainMenuPanel.ShowAllButtons();
     }
 
     public override void Update()
@@ -219,8 +220,8 @@ public class VersusGameState : GameLoopState
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.Reset();
 
-        var rQuestionDataIndex = Random.Range(0, _categoryQuestions.Count);
-        var currentQuestionData = _categoryQuestions[rQuestionDataIndex];
+        int rQuestionDataIndex = Random.Range(0, _categoryQuestions.Count);
+        QuestionData currentQuestionData = _categoryQuestions[rQuestionDataIndex];
 
         _currentCorrectAnswerIndex = currentQuestionData.CorrectAnswerIndex;
         _inGamePanel.QuestionPanel.SetQuestion(currentQuestionData);

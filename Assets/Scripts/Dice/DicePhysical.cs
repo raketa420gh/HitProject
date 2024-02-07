@@ -59,6 +59,8 @@ public class DicePhysical : MonoBehaviour
                 _isDiceStopCheckActive = false;
 
                 Debug.Log("Dice stopped");
+                
+                Debug.Log($"Dice rotation euler angles = {_diceRigidbody.rotation.eulerAngles}");
 
                 DiceSide resultSide = _diceSides[0];
                 float minZ = resultSide.transform.position.z;

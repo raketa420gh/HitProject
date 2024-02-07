@@ -67,15 +67,14 @@ public class TimeChallengeGameState : GameLoopState
         _inGamePanel.GlobalTimeProgressBar.Show();
         _isGlobalTimerActive = true;
         _isTurnTimerActive = true;
-        
         _parallaxController.EnableParallax();
         _parallaxController.ResetPositions();
         ResetResultViewTimer();
         InitializePlayerSession();
         InitializeQuestions();
         ActivateNextQuestion();
-        
         _inGamePanel.Show();
+        _uiController.MainMenuPanel.ShowOnlyItemsButton();
     }
 
     public override void OnStateDisabled()
@@ -88,6 +87,7 @@ public class TimeChallengeGameState : GameLoopState
         _parallaxController.DisableParallax();
         _playerGameSessionStats.ResetAll();
         _inGamePanel.Hide();
+        _uiController.MainMenuPanel.ShowAllButtons();
     }
 
     public override void Update()
@@ -161,7 +161,9 @@ public class TimeChallengeGameState : GameLoopState
 
     private void InitializeQuestions()
     {
-        _questionsDatabase = _gameLoopStateMachine.Parent.QuestionsDatabase;
+        _questionsDatabase = new(_gameLoopStateMachine.Parent.QuestionsDatabase);
+        
+        Debug.Log($"Questions initialized. Questions count = {_questionsDatabase.Count}");
     }    
     
     private void ActivateNextQuestionAnimation()
@@ -191,8 +193,8 @@ public class TimeChallengeGameState : GameLoopState
         foreach (AnswerUIButton answerUIButton in _answerUIButtons)
             answerUIButton.Reset();
 
-        var rQuestionDataIndex = Random.Range(0, _questionsDatabase.Count);
-        var currentQuestionData = _questionsDatabase[rQuestionDataIndex];
+        int rQuestionDataIndex = Random.Range(0, _questionsDatabase.Count);
+        QuestionData currentQuestionData = _questionsDatabase[rQuestionDataIndex];
 
         _currentCorrectAnswerIndex = currentQuestionData.CorrectAnswerIndex;
         _inGamePanel.QuestionPanel.SetQuestion(currentQuestionData);

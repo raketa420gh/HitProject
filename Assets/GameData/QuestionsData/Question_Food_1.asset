@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa84dd978564d81b4b305617394b19f, type: 3}
   m_Name: Question_Food_1
   m_EditorClassIdentifier: 
-  _question: Food1
+  _question: 'Which brand of gum used twins in their advertisements? '
   _answers:
-  - Answer True
-  - Answer False
-  - Answer False
-  - Answer False
-  _correctAnswerIndex: 0
+  - Fruit Stripes
+  - Doublemint
+  - Bubblelicious
+  - Juicy Fruit
+  _correctAnswerIndex: 1
   _categoryType: 4
   _difficultyType: 0

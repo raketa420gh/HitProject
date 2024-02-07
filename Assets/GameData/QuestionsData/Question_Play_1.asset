@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa84dd978564d81b4b305617394b19f, type: 3}
   m_Name: Question_Play_1
   m_EditorClassIdentifier: 
-  _question: Play1
+  _question: 'Which line of action figures featured Snake Mountain? '
   _answers:
-  - Answer True
-  - Answer False
-  - Answer False
-  - Answer False
+  - He-Man
+  - G.I. Joe
+  - ThunderCats
+  - Transformers
   _correctAnswerIndex: 0
   _categoryType: 3
   _difficultyType: 0

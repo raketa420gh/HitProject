@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa84dd978564d81b4b305617394b19f, type: 3}
   m_Name: Question_TV_1
   m_EditorClassIdentifier: 
-  _question: TV1
+  _question: 'What was the name of Michael Knight''s talking car in Knight Rider? '
   _answers:
-  - Answer True
-  - Answer False
-  - Answer False
-  - Answer False
-  _correctAnswerIndex: 0
+  - Katt
+  - Knight
+  - Karr
+  - Kitt
+  _correctAnswerIndex: 3
   _categoryType: 1
   _difficultyType: 0
