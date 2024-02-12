@@ -11,7 +11,6 @@ public class GameOverState : GameLoopState
     public GameOverState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _gameLoopStateMachine = gameLoopStateMachine;
-        _gameOverPanel = gameLoopStateMachine.Parent.UIController.GameOverPanel;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
         _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
         _uiController = _gameLoopStateMachine.Parent.UIController;
@@ -30,7 +29,6 @@ public class GameOverState : GameLoopState
         _gameOverPanel.OnHomeButtonClicked += HandleHomeButtonClickEvent;
         _gameOverPanel.OnReplayButtonClicked += HandleReplayButtonClickEvent;
         _gameOverPanel.Show();
-        _uiController.ItemsPopup.Hide();
         _powerUpsController.SetPowerUpsUsableState(false);
         
     }

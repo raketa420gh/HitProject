@@ -5,7 +5,6 @@ using UnityEngine;
 public class PowerUpsController : MonoBehaviour, IPowerUpsController
 {
     [SerializeField] private PowerUpItemsDatabase _powerUpItemsDatabase;
-    [SerializeField] private ItemsUIPopup _itemsPopup;
     private PowerUp[] _powerUps;
     private Dictionary<PowerUp.Type, int> _powerUpsLink;
     private ISaveService _saveService;
@@ -47,36 +46,36 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
             _powerUps[i].SetSave(powerUpSave ?? new PowerUp.Save());
         }
         
-        _itemsPopup.InitialisePowerUps(this);
+        //_itemsPopup.InitialisePowerUps(this);
         
         Enable();
     }
 
     public void Enable()
     {
-        foreach (ItemPowerUpUISlot uiSlot in _itemsPopup.UiItemSlots)
+        /*foreach (ItemPowerUpUISlot uiSlot in _itemsPopup.UiItemSlots)
         {
             uiSlot.OnBuyButtonClicked += HandleBuyPowerUpEvent;
             uiSlot.OnUseButtonClicked += HandleUsePowerUpEvent;
-        }
+        }*/
     }
 
     public void Disable()
     {
-        foreach (ItemPowerUpUISlot uiSlot in _itemsPopup.UiItemSlots)
+        /*foreach (ItemPowerUpUISlot uiSlot in _itemsPopup.UiItemSlots)
         {
             uiSlot.OnBuyButtonClicked -= HandleBuyPowerUpEvent;
             uiSlot.OnUseButtonClicked -= HandleUsePowerUpEvent;
-        }
+        }*/
     }
 
     public void SetPowerUpsUsableState(bool isUsable)
     {
-        for (int i = 0; i < _itemsPopup.UiItemSlots.Length; i++)
+        /*for (int i = 0; i < _itemsPopup.UiItemSlots.Length; i++)
         {
             ItemPowerUpUISlot uiItemSlot = _itemsPopup.UiItemSlots[i];
             uiItemSlot.SetUsableState(isUsable);
-        }
+        }*/
     }
     
     public bool HasAmount(PowerUp.Type powerUpType, int amount)
@@ -94,7 +93,7 @@ public class PowerUpsController : MonoBehaviour, IPowerUpsController
 
         if (redrawUI)
         {
-            _itemsPopup.RedrawView(powerUpType, powerUp.Amount);
+            //_itemsPopup.RedrawView(powerUpType, powerUp.Amount);
         }
         
         OnPowerUpAmountChanged?.Invoke(powerUpType, powerUp.Amount, amount);

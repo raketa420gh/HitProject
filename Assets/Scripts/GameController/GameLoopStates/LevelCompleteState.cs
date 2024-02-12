@@ -13,7 +13,6 @@ public class LevelCompleteState : GameLoopState
     public LevelCompleteState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _gameLoopStateMachine = gameLoopStateMachine;
-        _levelCompletePanel = gameLoopStateMachine.Parent.UIController.LevelCompletePanel;
         _saveService = _gameLoopStateMachine.Parent.SaveService;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
         _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
@@ -30,11 +29,9 @@ public class LevelCompleteState : GameLoopState
         Debug.Log($"{this} entered");
         
         _levelCompletePanel.OnHomeButtonClicked += HandleHomeButtonClickEvent;
-        _levelCompletePanel.OnReplayButtonClicked += HandleReplayButtonClickEvent;
         _levelCompletePanel.OnNextLevelButtonClicked += HandleNextLevelButtonClickEvent;
         
         _levelCompletePanel.Show();
-        _uiController.ItemsPopup.Hide();
         _powerUpsController.SetPowerUpsUsableState(false);
         
         _saveService.ForceSave();
@@ -43,7 +40,6 @@ public class LevelCompleteState : GameLoopState
     public override void OnStateDisabled()
     {
         _levelCompletePanel.OnHomeButtonClicked -= HandleHomeButtonClickEvent;
-        _levelCompletePanel.OnReplayButtonClicked -= HandleReplayButtonClickEvent;
         _levelCompletePanel.OnNextLevelButtonClicked -= HandleNextLevelButtonClickEvent;
         
         _levelCompletePanel.Hide();
@@ -57,18 +53,6 @@ public class LevelCompleteState : GameLoopState
     private void HandleHomeButtonClickEvent()
     {
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
-    }
-    
-    private void HandleReplayButtonClickEvent()
-    {
-        if (_levelController.CurrentGameMode == GameModeType.TimeChallenge)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.TimeChallenge);
-        
-        if (_levelController.CurrentGameMode == GameModeType.Solo)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
-        
-        if (_levelController.CurrentGameMode == GameModeType.Versus)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.VersusGame);
     }
     
     private void HandleNextLevelButtonClickEvent()

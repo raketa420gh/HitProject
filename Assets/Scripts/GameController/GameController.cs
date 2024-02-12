@@ -1,43 +1,40 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private List<QuestionData> _questionsDatabase = new List<QuestionData>();
     private GameLoopStateMachine _gameLoopStateMachine;
     private ISaveService _saveService;
     private IFactory _factory;
     private ICurrenciesController _currenciesController;
     private IUIController _uiController;
     private ILevelController _levelController;
-    private DicePhysical _dicePhysical;
-    private ParallaxController _parallaxController;
     private IPowerUpsController _powerUpsController;
-
-    public List<QuestionData> QuestionsDatabase => _questionsDatabase;
+    private IPlayerController _playerController;
+    private TimeCounter _timeCounter;
+    
     public ISaveService SaveService => _saveService;
     public IFactory Factory => _factory;
     public ICurrenciesController CurrenciesController => _currenciesController;
     public IUIController UIController => _uiController;
     public ILevelController LevelController => _levelController;
-    public DicePhysical DicePhysical => _dicePhysical;
-    public ParallaxController ParallaxController => _parallaxController;
     public IPowerUpsController PowerUpsController => _powerUpsController;
+    public IPlayerController PlayerController => _playerController;
+    public TimeCounter TimeCounter => _timeCounter;
 
     [Inject]
     public void Construct(ISaveService saveService, IFactory factory, ICurrenciesController currenciesController,
-        IUIController uiController, ILevelController levelController, DicePhysical dicePhysical, 
-        ParallaxController parallaxController, IPowerUpsController powerUpsController)
+        IUIController uiController, ILevelController levelController, IPowerUpsController powerUpsController,
+        IPlayerController playerController, TimeCounter timeCounter)
     {
         _saveService = saveService;
         _factory = factory;
         _currenciesController = currenciesController;
         _uiController = uiController;
         _levelController = levelController;
-        _dicePhysical = dicePhysical;
-        _parallaxController = parallaxController;
         _powerUpsController = powerUpsController;
+        _playerController = playerController;
+        _timeCounter = timeCounter;
     }
 
     private void Start()
@@ -45,25 +42,9 @@ public class GameController : MonoBehaviour
         InitializeGameLoopStateMachine();
     }
 
-    private void OnEnable()
-    {
-        _levelController.OnRollDicePanelPlayButtonClicked += HandleRollDicePlayButtonEvent;
-        _uiController.PlayersInfoPanel.YouPlayerPanel.OpenIconSelectButton.onClick.AddListener(HandleOpenSelectIconPanelEvent);
-        _uiController.SelectIconPanel.OnIconSelected += HandleIconSelectEvent;
-    }
-
-    private void OnDisable()
-    {
-        _levelController.OnRollDicePanelPlayButtonClicked -= HandleRollDicePlayButtonEvent;
-        _uiController.PlayersInfoPanel.YouPlayerPanel.OpenIconSelectButton.onClick.RemoveListener(HandleOpenSelectIconPanelEvent);
-        _uiController.SelectIconPanel.OnIconSelected -= HandleIconSelectEvent;
-    }
-
     private void Update()
     {
         _gameLoopStateMachine?.ActiveState?.Update();
-
-        _parallaxController?.UpdateParallax();
 
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -85,35 +66,5 @@ public class GameController : MonoBehaviour
     {
         _gameLoopStateMachine = new GameLoopStateMachine();
         _gameLoopStateMachine.Initialise(this, GameLoopStateMachine.State.Initialize);
-    }
-    
-    private void HandleOpenSelectIconPanelEvent()
-    {
-        _uiController.SelectIconPanel.Show();
-    }
-    
-    private void HandleIconSelectEvent(IconUISlot iconUISlot)
-    {
-        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIcon(iconUISlot.Sprite);
-        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIconNumber(iconUISlot.IconNumber);
-        _uiController.SelectIconPanel.Hide();
-        
-        _saveService.ForceSave();
-    }
-
-    private void HandleRollDicePlayButtonEvent(GameModeType gameModeType)
-    {
-        switch (gameModeType)
-        {
-            case GameModeType.Solo:
-                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.SoloGame);
-                break;
-            case GameModeType.Versus:
-                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.VersusGame);
-                break;
-            case GameModeType.TimeChallenge:
-                _gameLoopStateMachine.SetState(GameLoopStateMachine.State.TimeChallenge);
-                break;
-        }
     }
 }

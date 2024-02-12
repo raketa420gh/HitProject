@@ -4,13 +4,14 @@ public class InitializeState : GameLoopState
 {
     private readonly GameLoopStateMachine _gameLoopStateMachine;
     private ISaveService _saveService;
-    private LevelSave _levelSave;
+    private PlayerSave _playerSave;
     private IFactory _factory;
     private ICurrenciesController _currenciesController;
     private ILevelController _levelController;
     private IPowerUpsController _powerUpsController;
     private IUIController _uiController;
-    private ParallaxController _parallaxController;
+    private IPlayerController _playerController;
+    private TimeCounter _timeCounter;
 
     public InitializeState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -24,8 +25,9 @@ public class InitializeState : GameLoopState
         _currenciesController = _gameLoopStateMachine.Parent.CurrenciesController;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
         _uiController = _gameLoopStateMachine.Parent.UIController;
-        _parallaxController = _gameLoopStateMachine.Parent.ParallaxController;
         _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
+        _playerController = _gameLoopStateMachine.Parent.PlayerController;
+        _timeCounter = _gameLoopStateMachine.Parent.TimeCounter;
 
         Debug.Log($"{this} registered");
     }
@@ -37,13 +39,9 @@ public class InitializeState : GameLoopState
         _saveService.Initialise(Time.time, false);
         _factory.Initialize();
         _currenciesController.Initialise(_saveService);
-        _powerUpsController.Initialize(_currenciesController);
-        _powerUpsController.LoadPowerUps(_saveService);
-        _parallaxController.Initialize();
         _levelController.InitializeLevelSave();
-        _uiController.ItemsPopup.InitializeCurrencies(_currenciesController);
-        _uiController.StorePopup.Initialize(_currenciesController);
-        _uiController.CreatePlayerPanel.SelectIconPanel.InitializeSlots();
+        _playerController.Initialize(_factory, _uiController);
+        _timeCounter.Initialize(_uiController.HudPanel.GameTimerView);
 
         Debug.Log("Game systems initialized");
 
@@ -60,28 +58,10 @@ public class InitializeState : GameLoopState
 
     private void InitializeStartGameState()
     {
-        _levelSave = _saveService.GetSaveObject<LevelSave>("save");
+        _playerSave = _saveService.GetSaveObject<PlayerSave>("save");
 
-        Debug.Log($"Try to load level save. {_levelSave != null}, PlayerName = {_levelSave?.PlayerName}");
-
-        if (_levelSave != null && _levelSave.PlayerName != null)
-        {
-            SetLoadedPlayerInfoAndSave();
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
-        }
-        else
-        {
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.CreatePlayer);
-        }
-    }
-
-    private void SetLoadedPlayerInfoAndSave()
-    {
-        _uiController.PlayersInfoPanel.YouPlayerPanel.SetPlayerName(_levelSave.PlayerName);
-        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIconNumber(_levelSave.IconNumber);
-        _uiController.PlayersInfoPanel.YouPlayerPanel.SetIcon(_uiController.CreatePlayerPanel.SelectIconPanel
-            .GetSprite(_levelSave.IconNumber));
+        Debug.Log($"Try to load level save. {_playerSave != null}");
         
-        _saveService.ForceSave();
+        _gameLoopStateMachine.SetState(GameLoopStateMachine.State.TestRun);
     }
 }

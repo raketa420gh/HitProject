@@ -5,7 +5,7 @@ using Zenject;
 public class LevelController : MonoBehaviour, ILevelController
 {
     private ISaveService _saveService;
-    private LevelSave _levelSave;
+    private PlayerSave _playerSave;
     private IUIController _uiController;
     private LevelSelectUISlot[] _levelSlots;
     private int _lastCompletedLevelNumber;
@@ -26,42 +26,29 @@ public class LevelController : MonoBehaviour, ILevelController
 
     public void InitializeLevelSave()
     {
-        _levelSlots = _uiController.LevelSelectPanel.LevelSelectSlots;
+        /*_levelSlots = _uiController.LevelSelectPanel.LevelSelectSlots;
 
-        _levelSave = _saveService.GetSaveObject<LevelSave>("save");
+        _playerSave = _saveService.GetSaveObject<PlayerSave>("save");
 
-        if (_levelSave == null)
+        if (_playerSave == null)
         {
             foreach (LevelSelectUISlot levelSlot in _levelSlots)
                 levelSlot.Reset();
         }
-
-        if (_levelSave != null && !_levelSave.LevelSlotSaveDatas.IsNullOrEmpty())
-        {
-            for (int i = 0; i < _levelSave.LevelSlotSaveDatas.Length; i++)
-            {
-                _levelSlots[i].Load(_levelSave.LevelSlotSaveDatas[i]);
-            }
-
-            _lastCompletedLevelNumber = _levelSave.LastCompletedLevelNumber;
-        }
-        
-        _levelSave?.LinkLevelSlots(_levelSlots);
-        _levelSave?.LinkPlayersInfoPanel(_uiController.PlayersInfoPanel);
         
         SetLevelNumbers();
-        UnlockFirstLevel();
+        UnlockFirstLevel();*/
     }
 
     public void InitializeSelectLevelPanel()
     {
-        int allStarsCount = _levelSlots.Length * 3;
+        /*int allStarsCount = _levelSlots.Length * 3;
         int currentStarsCount = _lastCompletedLevelNumber * 3;
         _uiController.LevelSelectPanel.SetLevelsInfoText(currentStarsCount, allStarsCount);
         
         _uiController.LevelSelectPanel.OnLevelSelected += HandleLevelSelectEvent;
         _uiController.LevelSelectPanel.Show();
-        _uiController.GameModesPanel.Hide();
+        _uiController.GameModesPanel.Hide();*/
     }
 
     public void SetGameMode(GameModeType type)
@@ -80,7 +67,7 @@ public class LevelController : MonoBehaviour, ILevelController
 
     private void UnlockFirstLevel()
     {
-        _uiController.LevelSelectPanel.LevelSelectSlots[0].SetUnlockState(true);
+        /*_uiController.LevelSelectPanel.LevelSelectSlots[0].SetUnlockState(true);*/
     }
 
     private void SetLevelNumbers()
@@ -97,14 +84,5 @@ public class LevelController : MonoBehaviour, ILevelController
     public void HandleRollDicePlayButtonEvent()
     {
         OnRollDicePanelPlayButtonClicked?.Invoke(_currentGameMode);
-    }
-
-    private void HandleLevelSelectEvent(int levelNumber)
-    {
-        _uiController.LevelSelectPanel.Hide();
-        
-        OnLevelSelected?.Invoke(levelNumber);
-        
-        _uiController.LevelSelectPanel.OnLevelSelected -= HandleLevelSelectEvent;
     }
 }
