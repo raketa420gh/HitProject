@@ -5,12 +5,12 @@ public class DestroyableObjectProjectilesAdder : DestroyableObject
 {
     [SerializeField] private int _projectilesAddAmount = 3;
 
-    public event Action<int> OnDestroyProjectileAdder;
+    public event Action<Vector3, int> OnDestroyProjectileAdder;
 
     protected override void InvokeCollidedPlayerProjectileEvent()
     {
         base.InvokeCollidedPlayerProjectileEvent();
         
-        OnDestroyProjectileAdder?.Invoke(_projectilesAddAmount);
+        OnDestroyProjectileAdder?.Invoke(transform.position, _projectilesAddAmount);
     }
 }

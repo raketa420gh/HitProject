@@ -1,4 +1,4 @@
 public interface IDestroyableObjectsController
 {
-    void Initialize(IPlayerController playerController);
+    void Initialize(IFactory factory, IPlayerController playerController, IUIController uiController);
 }

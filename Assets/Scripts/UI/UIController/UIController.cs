@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour, IUIController
 {
+    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private HudUIPanel _hudPanel;
     [SerializeField] private MainMenuUIPanel _mainMenuPanel;
     [SerializeField] private LevelCompleteUIPanel _levelCompletePanel;
@@ -11,4 +12,5 @@ public class UIController : MonoBehaviour, IUIController
     public MainMenuUIPanel MainMenuPanel => _mainMenuPanel;
     public LevelCompleteUIPanel LevelCompletePanel => _levelCompletePanel;
     public GameOverUIPanel GameOverPanel => _gameOverPanel;
+    public RectTransform CanvasRect => _canvasRect;
 }

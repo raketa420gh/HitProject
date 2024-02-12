@@ -4,7 +4,9 @@ using UnityEngine;
 public class DestroyableObjectsController : MonoBehaviour, IDestroyableObjectsController
 {
     [SerializeField] private List<DestroyableObjectProjectilesAdder> _destroyableProjectilesAdders;
+    private IFactory _factory;
     private IPlayerController _playerController;
+    private IUIController _uiController;
 
     private void OnEnable()
     {
@@ -22,13 +24,19 @@ public class DestroyableObjectsController : MonoBehaviour, IDestroyableObjectsCo
         }
     }
 
-    public void Initialize(IPlayerController playerController)
+    public void Initialize(IFactory factory, IPlayerController playerController, IUIController uiController)
     {
+        _factory = factory;
         _playerController = playerController;
+        _uiController = uiController;
     }
 
-    private void HandleDestroyProjectileAddersEvent(int projectilesAddAmount)
+    private void HandleDestroyProjectileAddersEvent(Vector3 position, int projectilesAddAmount)
     {
         _playerController.AddProjectiles(projectilesAddAmount);
+
+        UIFloatingText floatingText = _factory.UI.CreateFloatingText(_uiController.HudPanel.transform);
+        floatingText.Initialize(_uiController.CanvasRect);
+        floatingText.ActivateFloatingText(position, projectilesAddAmount);
     }
 }

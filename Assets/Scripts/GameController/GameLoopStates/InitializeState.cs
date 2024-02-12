@@ -44,7 +44,7 @@ public class InitializeState : GameLoopState
         _levelController.InitializeLevelSave();
         _playerController.Initialize(_factory, _uiController);
         _timeCounter.Initialize(_uiController.HudPanel.GameTimerView);
-        _destroyableObjectsController.Initialize(_playerController);
+        _destroyableObjectsController.Initialize(_factory, _playerController, _uiController);
 
         Debug.Log("Game systems initialized");
 
