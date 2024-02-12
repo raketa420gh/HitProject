@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: fractureOptions.fragmentCount
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: fractureOptions.insideMaterial
@@ -217,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283790103090584614, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_Name
-      value: Cylinder Variant_3
+      value: DestroyableProjectileAdder_3
       objectReference: {fileID: 0}
     - target: {fileID: 7062675377110784516, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_Mass
@@ -233,6 +233,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
   m_PrefabInstance: {fileID: 364132118}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &364132120 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2593294032469111953, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
+  m_PrefabInstance: {fileID: 364132118}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75082851b2d542a2b8b68efa0e87781d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &844275982
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,62 +342,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 410593345757314373}
     m_Modifications:
-    - target: {fileID: 2361204310277640760, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: m_CastShadows
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2361204310277640760, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+    - target: {fileID: 2593294032469111953, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
+      propertyPath: _fracture
       value: 
-      objectReference: {fileID: -3033667219593020291, guid: eb2cf7c49babeb14b9ca8b06a2e48512, type: 3}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: fractureOptions.asynchronous
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: fractureOptions.fragmentCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: fractureOptions.insideMaterial
-      value: 
-      objectReference: {fileID: -3033667219593020291, guid: eb2cf7c49babeb14b9ca8b06a2e48512, type: 3}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: refractureOptions.enableRefracturing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: refractureOptions.maxRefractureCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: triggerOptions.minimumCollisionForce
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: callbackOptions.onCompleted.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: callbackOptions.onCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: callbackOptions.onCompleted.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1975924947}
     - target: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -429,11 +388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283790103090584614, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_Name
-      value: Cylinder Variant_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7062675377110784516, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
-      propertyPath: m_Mass
-      value: 1
+      value: DestroyableProjectileAdder_1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -445,6 +400,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
   m_PrefabInstance: {fileID: 896979180}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &896979183 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2593294032469111953, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
+  m_PrefabInstance: {fileID: 896979180}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75082851b2d542a2b8b68efa0e87781d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &969265419
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +516,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969265419}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1343621194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1343621196}
+  - component: {fileID: 1343621195}
+  m_Layer: 0
+  m_Name: DestroyableObjectsController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1343621195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343621194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73064eaca27348f7bb7bb1915cb5b785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destroyableProjectilesAdders:
+  - {fileID: 896979183}
+  - {fileID: 1347028193}
+  - {fileID: 364132120}
+  - {fileID: 1975924946}
+--- !u!4 &1343621196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343621194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1347028191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -572,7 +587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: fractureOptions.fragmentCount
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: fractureOptions.insideMaterial
@@ -644,7 +659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283790103090584614, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_Name
-      value: Cylinder Variant_2
+      value: DestroyableProjectileAdder_2
       objectReference: {fileID: 0}
     - target: {fileID: 7062675377110784516, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_Mass
@@ -660,6 +675,62 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
   m_PrefabInstance: {fileID: 1347028191}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1347028193 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2593294032469111953, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
+  m_PrefabInstance: {fileID: 1347028191}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75082851b2d542a2b8b68efa0e87781d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1666832961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1666832963}
+  - component: {fileID: 1666832962}
+  m_Layer: 0
+  m_Name: DestroyableObjectsControllerInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1666832962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666832961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59570b4ad0a64362a47587442b301507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destroyableObjectsController: {fileID: 1343621195}
+--- !u!4 &1666832963
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666832961}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8555268983659104627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1713395982
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,7 +887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: fractureOptions.fragmentCount
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: fractureOptions.insideMaterial
@@ -888,7 +959,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283790103090584614, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_Name
-      value: Cylinder Variant_4
+      value: DestroyableProjectileAdder_4
       objectReference: {fileID: 0}
     - target: {fileID: 7062675377110784516, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
       propertyPath: m_Mass
@@ -904,6 +975,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4637378969291078174, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
   m_PrefabInstance: {fileID: 1975924944}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1975924946 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2593294032469111953, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
+  m_PrefabInstance: {fileID: 1975924944}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75082851b2d542a2b8b68efa0e87781d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1975924947 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3701450825013573154, guid: f4e6687e1b13a9943a8d81744610c89e, type: 3}
+  m_PrefabInstance: {fileID: 1975924944}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91fc9178a0b0c3d4bb8b6d91b16d9893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &54871740490776513
 Canvas:
   m_ObjectHideFlags: 0
@@ -1375,7 +1468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poolCount: 25
   _isAutoExpand: 1
-  _prefab: {fileID: 6353063213954638061, guid: 46ea8445a5657774c9ed8e289ddc4fa6, type: 3}
+  _prefab: {fileID: 7879880733202569803, guid: 46ea8445a5657774c9ed8e289ddc4fa6, type: 3}
 --- !u!114 &1972250637726384635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1605,6 +1698,7 @@ MonoBehaviour:
   - {fileID: 900958968119759670}
   - {fileID: 7496945070631082847}
   - {fileID: 7721247409845581873}
+  - {fileID: 1666832962}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -3311,6 +3405,7 @@ Transform:
   - {fileID: 894361284485005210}
   - {fileID: 2794417316739058652}
   - {fileID: 7741159848971966592}
+  - {fileID: 1666832963}
   m_Father: {fileID: 70564177784331358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8663653094192007792
@@ -3499,6 +3594,7 @@ SceneRoots:
   - {fileID: 4663694596632213657}
   - {fileID: 2763381051690148626}
   - {fileID: 485111059246667239}
+  - {fileID: 1343621196}
   - {fileID: 1251806659890262183}
   - {fileID: 4368643492284983222}
   - {fileID: 5650629637406590906}

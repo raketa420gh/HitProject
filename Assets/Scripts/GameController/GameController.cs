@@ -21,11 +21,12 @@ public class GameController : MonoBehaviour
     public IPowerUpsController PowerUpsController => _powerUpsController;
     public IPlayerController PlayerController => _playerController;
     public TimeCounter TimeCounter => _timeCounter;
+    public IDestroyableObjectsController DestroyableObjectsController;
 
     [Inject]
     public void Construct(ISaveService saveService, IFactory factory, ICurrenciesController currenciesController,
         IUIController uiController, ILevelController levelController, IPowerUpsController powerUpsController,
-        IPlayerController playerController, TimeCounter timeCounter)
+        IPlayerController playerController, TimeCounter timeCounter, IDestroyableObjectsController destroyableObjectsController)
     {
         _saveService = saveService;
         _factory = factory;
@@ -35,6 +36,7 @@ public class GameController : MonoBehaviour
         _powerUpsController = powerUpsController;
         _playerController = playerController;
         _timeCounter = timeCounter;
+        DestroyableObjectsController = destroyableObjectsController;
     }
 
     private void Start()

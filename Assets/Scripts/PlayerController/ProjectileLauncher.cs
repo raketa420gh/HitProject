@@ -49,6 +49,14 @@ public class ProjectileLauncher : MonoBehaviour, IProjectileLauncher
             OnProjectilesOut?.Invoke();
     }
 
+    public void AddProjectiles(int amount)
+    {
+        _projectilesAmount += amount;
+        
+        _projectilesAmountView.SetValueView(_projectilesAmount);
+        OnProjectilesAmountChanged?.Invoke();
+    }
+
     private void SetProjectilesAmount(int amount)
     {
         _projectilesAmount = amount;

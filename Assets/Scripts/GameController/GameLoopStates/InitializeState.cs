@@ -12,6 +12,7 @@ public class InitializeState : GameLoopState
     private IUIController _uiController;
     private IPlayerController _playerController;
     private TimeCounter _timeCounter;
+    private IDestroyableObjectsController _destroyableObjectsController;
 
     public InitializeState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
@@ -28,6 +29,7 @@ public class InitializeState : GameLoopState
         _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
         _playerController = _gameLoopStateMachine.Parent.PlayerController;
         _timeCounter = _gameLoopStateMachine.Parent.TimeCounter;
+        _destroyableObjectsController = _gameLoopStateMachine.Parent.DestroyableObjectsController;
 
         Debug.Log($"{this} registered");
     }
@@ -42,6 +44,7 @@ public class InitializeState : GameLoopState
         _levelController.InitializeLevelSave();
         _playerController.Initialize(_factory, _uiController);
         _timeCounter.Initialize(_uiController.HudPanel.GameTimerView);
+        _destroyableObjectsController.Initialize(_playerController);
 
         Debug.Log("Game systems initialized");
 

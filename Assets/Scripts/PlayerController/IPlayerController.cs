@@ -5,4 +5,5 @@ public interface IPlayerController
     void StopMove();
     void EnableShooting();
     void DisableShooting();
+    void AddProjectiles(int amount);
 }

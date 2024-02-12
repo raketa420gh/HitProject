@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IPlayerController
@@ -51,5 +52,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public void DisableShooting()
     {
         _isShootingEnabled = false;
+    }
+
+    public void AddProjectiles(int amount)
+    {
+        _playerBehaviour.ProjectileLauncher.AddProjectiles(amount);
     }
 }
