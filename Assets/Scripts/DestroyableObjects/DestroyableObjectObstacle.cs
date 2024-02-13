@@ -14,6 +14,8 @@ public class DestroyableObjectObstacle : DestroyableObject
         if (!playerCollider)
             return;
         
+        Debug.Log($"OnCollidedPlayer");
+        
         OnCollidedPlayer?.Invoke();
     }
 }
