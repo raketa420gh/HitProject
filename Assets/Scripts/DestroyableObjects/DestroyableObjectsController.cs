@@ -4,24 +4,27 @@ using UnityEngine;
 public class DestroyableObjectsController : MonoBehaviour, IDestroyableObjectsController
 {
     [SerializeField] private List<DestroyableObjectProjectilesAdder> _destroyableProjectilesAdders;
+    [SerializeField] private List<DestroyableObjectObstacle> _destroyableObstacles;
     private IFactory _factory;
     private IPlayerController _playerController;
     private IUIController _uiController;
 
     private void OnEnable()
     {
-        for (int i = 0; i < _destroyableProjectilesAdders.Count; i++)
-        {
-            _destroyableProjectilesAdders[i].OnDestroyProjectileAdder += HandleDestroyProjectileAddersEvent;
-        }
+        foreach (DestroyableObjectProjectilesAdder destroyableProjectilesAdder in _destroyableProjectilesAdders)
+            destroyableProjectilesAdder.OnDestroyProjectileAdder += HandleDestroyProjectileAddersEvent;
+
+        foreach (DestroyableObjectObstacle destroyableObstacle in _destroyableObstacles)
+            destroyableObstacle.OnCollidedPlayer += HandleObstacleCollidedPlayerEvent;
     }
 
     private void OnDisable()
     {
-        for (int i = 0; i < _destroyableProjectilesAdders.Count; i++)
-        {
-            _destroyableProjectilesAdders[i].OnDestroyProjectileAdder -= HandleDestroyProjectileAddersEvent;
-        }
+        foreach (DestroyableObjectProjectilesAdder destroyableProjectilesAdder in _destroyableProjectilesAdders)
+            destroyableProjectilesAdder.OnDestroyProjectileAdder -= HandleDestroyProjectileAddersEvent;
+        
+        foreach (DestroyableObjectObstacle destroyableObstacle in _destroyableObstacles)
+            destroyableObstacle.OnCollidedPlayer -= HandleObstacleCollidedPlayerEvent;
     }
 
     public void Initialize(IFactory factory, IPlayerController playerController, IUIController uiController)
@@ -38,5 +41,10 @@ public class DestroyableObjectsController : MonoBehaviour, IDestroyableObjectsCo
         UIFloatingText floatingText = _factory.UI.CreateFloatingText(_uiController.HudPanel.transform);
         floatingText.Initialize(_uiController.CanvasRect);
         floatingText.ActivateFloatingText(position, projectilesAddAmount);
+    }
+
+    private void HandleObstacleCollidedPlayerEvent()
+    {
+        _playerController.StopMove();
     }
 }

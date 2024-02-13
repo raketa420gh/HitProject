@@ -10,7 +10,7 @@ public class DestroyableObject : MonoBehaviour
         _isCollidedBefore = false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (_isCollidedBefore)
             return;
