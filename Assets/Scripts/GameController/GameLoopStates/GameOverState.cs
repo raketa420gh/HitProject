@@ -3,16 +3,15 @@ using UnityEngine;
 public class GameOverState : GameLoopState
 {
     private readonly GameLoopStateMachine _gameLoopStateMachine;
-    private readonly GameOverUIPanel _gameOverPanel;
+    private readonly IPlayerController _playerController;
     private readonly ILevelController _levelController;
-    private readonly IPowerUpsController _powerUpsController;
     private readonly IUIController _uiController;
     
     public GameOverState(GameLoopStateMachine gameLoopStateMachine) : base(gameLoopStateMachine)
     {
         _gameLoopStateMachine = gameLoopStateMachine;
+        _playerController = _gameLoopStateMachine.Parent.PlayerController;
         _levelController = _gameLoopStateMachine.Parent.LevelController;
-        _powerUpsController = _gameLoopStateMachine.Parent.PowerUpsController;
         _uiController = _gameLoopStateMachine.Parent.UIController;
     }
 
@@ -25,20 +24,15 @@ public class GameOverState : GameLoopState
     {
         Debug.Log($"{this} entered");
         
-        _gameOverPanel.GameStatsPanel.Show();
-        _gameOverPanel.OnHomeButtonClicked += HandleHomeButtonClickEvent;
-        _gameOverPanel.OnReplayButtonClicked += HandleReplayButtonClickEvent;
-        _gameOverPanel.Show();
-        _powerUpsController.SetPowerUpsUsableState(false);
+        _playerController.StopMove();
+        _uiController.HudPanel.Hide();
+        _uiController.LosePanel.Show();
         
+        Debug.Log("LOSE");
     }
 
     public override void OnStateDisabled()
     {
-        _gameOverPanel.GameStatsPanel.Hide();
-        _gameOverPanel.OnHomeButtonClicked -= HandleHomeButtonClickEvent;
-        _gameOverPanel.OnReplayButtonClicked -= HandleReplayButtonClickEvent;
-        _gameOverPanel.Hide();
     }
 
     public override void Update()
@@ -46,20 +40,8 @@ public class GameOverState : GameLoopState
         
     }
     
-    private void HandleHomeButtonClickEvent()
+    private void HandleRestartButtonClickEvent()
     {
         _gameLoopStateMachine.SetState(GameLoopStateMachine.State.MainMenu);
-    }
-    
-    private void HandleReplayButtonClickEvent()
-    {
-        if (_levelController.CurrentGameMode == GameModeType.TimeChallenge)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.TimeChallenge);
-        
-        if (_levelController.CurrentGameMode == GameModeType.Solo)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
-        
-        if (_levelController.CurrentGameMode == GameModeType.Versus)
-            _gameLoopStateMachine.SetState(GameLoopStateMachine.State.RollDice);
     }
 }

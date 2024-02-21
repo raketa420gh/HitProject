@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private IUIController _uiController;
     private bool _isShootingEnabled;
 
+    public event Action OnProjectilesEnd;
+
     private void Update()
     {
         if (!_isShootingEnabled)
@@ -57,5 +59,13 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public void AddProjectiles(int amount)
     {
         _playerBehaviour.ProjectileLauncher.AddProjectiles(amount);
+    }
+
+    public void RemoveProjectiles(int amount)
+    {
+        _playerBehaviour.ProjectileLauncher.RemoveProjectiles(amount);
+
+        if (_playerBehaviour.ProjectileLauncher.ProjectilesAmount == 0)
+            OnProjectilesEnd?.Invoke();
     }
 }

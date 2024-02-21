@@ -11,9 +11,11 @@ public class ProjectileLauncher : MonoBehaviour, IProjectileLauncher
     private Camera _camera;
     private IFactory _factory;
 
-    public event Action OnProjectilesAmountChanged;
-    public event Action OnProjectilesOut;
+    public int ProjectilesAmount => _projectilesAmount;
     
+    public event Action OnProjectilesAmountChanged;
+    public event Action OnProjectilesEnd;
+
     public void Initialize(IFactory factory, UIIntValueView projectilesAmountView, int startProjectilesAmount)
     {
         _factory = factory;
@@ -46,12 +48,23 @@ public class ProjectileLauncher : MonoBehaviour, IProjectileLauncher
         OnProjectilesAmountChanged?.Invoke();
         
         if (_projectilesAmount == 0)
-            OnProjectilesOut?.Invoke();
+            OnProjectilesEnd?.Invoke();
     }
 
     public void AddProjectiles(int amount)
     {
         _projectilesAmount += amount;
+        
+        _projectilesAmountView.SetValueView(_projectilesAmount);
+        OnProjectilesAmountChanged?.Invoke();
+    }
+
+    public void RemoveProjectiles(int amount)
+    {
+        _projectilesAmount -= amount;
+
+        if (_projectilesAmount <= 0)
+            _projectilesAmount = 0;
         
         _projectilesAmountView.SetValueView(_projectilesAmount);
         OnProjectilesAmountChanged?.Invoke();

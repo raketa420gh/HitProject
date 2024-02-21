@@ -27,6 +27,5 @@ public class DestroyableObject : MonoBehaviour
 
     protected virtual void InvokeCollidedPlayerProjectileEvent()
     {
-        Debug.Log($"{gameObject.name} collided with player projectile");
     }
 }

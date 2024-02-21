@@ -3,14 +3,10 @@ using UnityEngine;
 public class UIController : MonoBehaviour, IUIController
 {
     [SerializeField] private RectTransform _canvasRect;
-    [SerializeField] private HudUIPanel _hudPanel;
-    [SerializeField] private MainMenuUIPanel _mainMenuPanel;
-    [SerializeField] private LevelCompleteUIPanel _levelCompletePanel;
-    [SerializeField] private GameOverUIPanel _gameOverPanel;
+    [SerializeField] private UIPanelHud _hudPanel;
+    [SerializeField] private UIPanelLose _losePanel;
 
-    public HudUIPanel HudPanel => _hudPanel;
-    public MainMenuUIPanel MainMenuPanel => _mainMenuPanel;
-    public LevelCompleteUIPanel LevelCompletePanel => _levelCompletePanel;
-    public GameOverUIPanel GameOverPanel => _gameOverPanel;
     public RectTransform CanvasRect => _canvasRect;
+    public UIPanelHud HudPanel => _hudPanel;
+    public UIPanelLose LosePanel => _losePanel;
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HudUIPanel : UIPanel
+public class UIPanelHud : UIPanel
 {
     [SerializeField] private UIIntValueView _gameTimerView;
     [SerializeField] private UIIntValueView _projectilesAmountView;

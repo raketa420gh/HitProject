@@ -6,7 +6,7 @@ public class GameLoopStateMachine : StateMachineController<GameController, GameL
         RegisterState(new MainMenuState(this), State.MainMenu);
         RegisterState(new LevelCompleteState(this), State.LevelComplete);
         RegisterState(new GameOverState(this), State.GameOver);
-        RegisterState(new TestRunState(this), State.TestRun);
+        RegisterState(new GameplayState(this), State.TestRun);
     }
 
     public enum State

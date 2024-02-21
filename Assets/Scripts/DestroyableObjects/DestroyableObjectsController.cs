@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class DestroyableObjectsController : MonoBehaviour, IDestroyableObjectsCo
     private IFactory _factory;
     private IPlayerController _playerController;
     private IUIController _uiController;
+
+    public event Action OnObstacleCollidePlayer;
 
     private void OnEnable()
     {
@@ -32,6 +35,9 @@ public class DestroyableObjectsController : MonoBehaviour, IDestroyableObjectsCo
         _factory = factory;
         _playerController = playerController;
         _uiController = uiController;
+        
+        foreach (DestroyableObjectObstacle destroyableObstacle in _destroyableObstacles)
+            destroyableObstacle.Initialize();
     }
 
     private void HandleDestroyProjectileAddersEvent(Vector3 position, int projectilesAddAmount)
@@ -45,6 +51,6 @@ public class DestroyableObjectsController : MonoBehaviour, IDestroyableObjectsCo
 
     private void HandleObstacleCollidedPlayerEvent()
     {
-        _playerController.StopMove();
+        OnObstacleCollidePlayer?.Invoke();
     }
 }
