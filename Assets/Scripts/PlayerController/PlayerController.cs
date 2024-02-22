@@ -34,6 +34,15 @@ public class PlayerController : MonoBehaviour, IPlayerController
             .Initialize(_factory, _uiController.HudPanel.ProjectilesAmountView, _startProjectilesAmount);
         
         DisableShooting();
+
+        _playerBehaviour.ProjectileLauncher.OnProjectilesAmountChanged += HandleProjectilesAmountChangeEvent;
+        _playerBehaviour.ProjectileLauncher.OnProjectilesEnd += HandleProjectilesEndEvent;
+    }
+
+    public void Destroy()
+    {
+        _playerBehaviour.ProjectileLauncher.OnProjectilesAmountChanged -= HandleProjectilesAmountChangeEvent;
+        _playerBehaviour.ProjectileLauncher.OnProjectilesEnd -= HandleProjectilesEndEvent;
     }
 
     public void StartMoveForward()
@@ -64,8 +73,15 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public void RemoveProjectiles(int amount)
     {
         _playerBehaviour.ProjectileLauncher.RemoveProjectiles(amount);
-
-        if (_playerBehaviour.ProjectileLauncher.ProjectilesAmount == 0)
-            OnProjectilesEnd?.Invoke();
+    }
+    
+    private void HandleProjectilesAmountChangeEvent()
+    {
+        Debug.Log($"{_playerBehaviour.ProjectileLauncher.ProjectilesAmount}  projectiles left");
+    }
+    
+    private void HandleProjectilesEndEvent()
+    {
+        OnProjectilesEnd?.Invoke();
     }
 }
