@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: c70d5bff04c4eff4d9f949be72cf8210
+guid: 53f8076ac8840484b9d93489b71f3e81
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassMat
+    second: {fileID: 2100000, guid: 9ea9ee89acf8e424caf296528cddaf6f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Probka
+    second: {fileID: 2100000, guid: da3c4a529426c5541a06fe1a75fd9432, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -41,10 +51,10 @@ ModelImporter:
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
-    importVisibility: 0
-    importBlendShapes: 0
-    importCameras: 0
-    importLights: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0

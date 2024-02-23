@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44862914, g: 0.49494398, b: 0.5555889, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -164,6 +164,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1696652439}
     m_Modifications:
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ea9ee89acf8e424caf296528cddaf6f, type: 2}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: da3c4a529426c5541a06fe1a75fd9432, type: 2}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 33.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 33.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 33.59
+      objectReference: {fileID: 0}
     - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -208,6 +232,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DestroyableProjectileAdder_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5327563393131622113, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
+    - target: {fileID: 6820528822639478790, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -272,6 +304,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1696652439}
     m_Modifications:
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ea9ee89acf8e424caf296528cddaf6f, type: 2}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: da3c4a529426c5541a06fe1a75fd9432, type: 2}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 60.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 60.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 60.4
+      objectReference: {fileID: 0}
     - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5
@@ -316,6 +372,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DestroyableProjectileAdder_5
       objectReference: {fileID: 0}
+    - target: {fileID: 5327563393131622113, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
+    - target: {fileID: 6820528822639478790, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -345,21 +409,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1696652439}
     m_Modifications:
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ea9ee89acf8e424caf296528cddaf6f, type: 2}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: da3c4a529426c5541a06fe1a75fd9432, type: 2}
     - target: {fileID: 3701450825013573154, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: fractureOptions.fragmentCount
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: m_LocalScale.x
-      value: 25
+      value: 58.7
       objectReference: {fileID: 0}
     - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: m_LocalScale.y
-      value: 25
+      value: 58.7
       objectReference: {fileID: 0}
     - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: m_LocalScale.z
-      value: 25
+      value: 58.7
       objectReference: {fileID: 0}
     - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: m_LocalPosition.x
@@ -405,6 +481,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DestroyableProjectileAdder_6
       objectReference: {fileID: 0}
+    - target: {fileID: 5327563393131622113, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
+    - target: {fileID: 6820528822639478790, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1835,6 +1919,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1696652439}
     m_Modifications:
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ea9ee89acf8e424caf296528cddaf6f, type: 2}
+    - target: {fileID: 2361204310277640760, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: da3c4a529426c5541a06fe1a75fd9432, type: 2}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 37.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 37.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 37.87
+      objectReference: {fileID: 0}
     - target: {fileID: 4637378969291078174, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8
@@ -1879,6 +1987,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DestroyableProjectileAdder_1
       objectReference: {fileID: 0}
+    - target: {fileID: 5327563393131622113, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
+    - target: {fileID: 6820528822639478790, guid: 8136bc18e224ff040899c1561f27c350, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2954152718963181679, guid: 53f8076ac8840484b9d93489b71f3e81, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
