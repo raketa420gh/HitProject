@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 5a5bd38e9692bba42a68027b5a924f4d
+guid: 03a5ca043519b5346a2c620389838eb6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: LeaverMat
-    second: {fileID: 2100000, guid: d33cade7c2e6fb94896c0a78080b10cf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: tree
-    second: {fileID: 2100000, guid: 2fc20b260b2018448b957b552baa7124, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -53,7 +43,7 @@ ModelImporter:
     importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
+    importCameras: 1
     importLights: 1
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
