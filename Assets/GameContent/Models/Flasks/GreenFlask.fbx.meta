@@ -1,9 +1,24 @@
 fileFormatVersion: 2
-guid: f4d88585c7dd0a54e8653c26a581bca7
+guid: e07da1d0fd9567c448b7b1de1968f0f9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: fbf6e21bf41a5734ba00a324ac311051, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: glass
+    second: {fileID: 2100000, guid: 2d375e6fb9343b54b925d64d313f6203, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: probka
+    second: {fileID: 2100000, guid: 90145c5ef06b7e4479b8a7e8a864c581, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -43,7 +58,7 @@ ModelImporter:
     importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
+    importCameras: 0
     importLights: 1
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
