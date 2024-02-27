@@ -25,6 +25,10 @@ public class DestroyableObject : MonoBehaviour
         InvokeCollidedPlayerProjectileEvent();
     }
 
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+    }
+
     protected virtual void InvokeCollidedPlayerProjectileEvent()
     {
     }

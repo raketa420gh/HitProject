@@ -64,8 +64,11 @@ public class ProjectileLauncher : MonoBehaviour, IProjectileLauncher
         _projectilesAmount -= amount;
 
         if (_projectilesAmount <= 0)
+        {
             _projectilesAmount = 0;
-        
+            OnProjectilesEnd?.Invoke();
+        }
+
         _projectilesAmountView.SetValueView(_projectilesAmount);
         OnProjectilesAmountChanged?.Invoke();
     }

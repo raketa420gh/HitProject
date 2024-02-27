@@ -16,15 +16,24 @@ public class DestroyableObjectObstacle : DestroyableObject
     protected override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
+    }
 
-        PlayerCollider playerCollider = collision.gameObject.GetComponent<PlayerCollider>();
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        Debug.Log($"{gameObject.name} triggered {other.gameObject.name}");
+
+        PlayerBehaviour player = other.gameObject.GetComponent<PlayerBehaviour>();
         
-        if (!playerCollider)
+        if (!player)
             return;
         
-        Debug.Log($"OnCollidedPlayer");
+        Debug.Log($"Obstacle triggered Player");
         
         OnCollidedPlayer?.Invoke();
+        
+        gameObject.SetActive(false);
     }
 
     protected override void InvokeCollidedPlayerProjectileEvent()

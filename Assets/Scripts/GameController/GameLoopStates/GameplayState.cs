@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class GameplayState : GameLoopState
@@ -53,6 +54,7 @@ public class GameplayState : GameLoopState
     private void HandleObstacleCollidePlayerEvent()
     {
         _playerController.RemoveProjectiles(5);
+        Camera.main.transform.DOShakeRotation(0.5f, 50, 50);
     }
 
     private void HandleProjectilesEndEvent()
