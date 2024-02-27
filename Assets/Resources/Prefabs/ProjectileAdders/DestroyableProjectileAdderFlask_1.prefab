@@ -91,7 +91,7 @@ PrefabInstance:
     - target: {fileID: 8275927625967993986, guid: 1ed44f6ab425aa44aa5197d3b823c04c, type: 3}
       propertyPath: fractureOptions.insideMaterial
       value: 
-      objectReference: {fileID: -3033667219593020291, guid: eb2cf7c49babeb14b9ca8b06a2e48512, type: 3}
+      objectReference: {fileID: 2100000, guid: 9ea9ee89acf8e424caf296528cddaf6f, type: 2}
     - target: {fileID: 8275927625967993986, guid: 1ed44f6ab425aa44aa5197d3b823c04c, type: 3}
       propertyPath: refractureOptions.enableRefracturing
       value: 1
